@@ -1,0 +1,13 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+/logs
+out/
+/docker/app/*

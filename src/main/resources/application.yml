@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: develop
+
+logging:
+  level:
+    org.springframework: warn
+    com.faystmax: info
+    root: warn
+
+telegram:
+  proxy:
+    port: 999
+    host: orbtl.s5.opennetwork.cc
+    type: SOCKS5
+    user: 202081219
+    password: iVKCVOnj

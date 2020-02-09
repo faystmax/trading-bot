@@ -1,0 +1,14 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+insert_final_newline = false
+
+[*.{java, js, coffee, ts, xml, xhtml, groovy, gradle}]
+charset = utf-8
+indent_size = 4
+
+[*.{css, less}]
+charset = utf-8
+indent_size = 2

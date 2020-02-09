@@ -1,0 +1,100 @@
+/*
+ * Copyright (c)  2020, Amosov Maxim, faystmax@gmail.com.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+plugins {
+    id 'java-library'
+    id "org.hidetake.ssh" version "2.10.1"
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+apply from: "build-${profile}.gradle"
+
+group = ext.mainGroup
+version = ext.mainVersion + (ext.snapshot ? '-SNAPSHOT' : '')
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+wrapper {
+    gradleVersion = '6.1.1'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter:'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.telegram:telegrambots-spring-boot-starter:4.6'
+    implementation 'com.github.binance-exchange:binance-java-api:master-SNAPSHOT'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// Docker configuration
+def dockerPath ="docker.pkg.github.com/faystmax/trading-bot/${rootProject.name}:${rootProject.version}"
+task buildDocker {
+    doLast {
+        copy {
+            from jar.archiveFile
+            into './docker/app/'
+        }
+        exec { commandLine "docker", "build", "--pull", "-t", "${dockerPath}", "./docker" }
+        exec { commandLine "docker", "push", "${dockerPath}" }
+    }
+}
+buildDocker.dependsOn build
+
+// Deployment configuration
+remotes {
+    server {
+        host = "${remoteHost}"
+        port = remotePort
+        user = "${remoteUser}"
+        password = "${remotePassword}"
+        knownHosts = allowAnyHosts
+    }
+}
+
+task deploy {
+    doLast {
+        ssh.run {
+            session(remotes.server) {
+                put from: jar.archiveFile.get().asFile.absolutePath , into: "./"
+                executeSudo "service trading-bot stop", pty: true
+                executeSudo "cp ./${jar.archiveFileName.get()} /srv/trading-bot/", pty: true
+                executeSudo "rm -f /srv/trading-bot/application.jar", pty: true
+                executeSudo "ln -s /srv/trading-bot/${jar.archiveFileName.get()} /srv/trading-bot/application.jar", pty: true
+                executeSudo "service trading-bot start", pty: true
+            }
+        }
+    }
+}
+deploy.dependsOn build
