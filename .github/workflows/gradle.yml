@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 11.0.4
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew -Pprofile=develop clean build
