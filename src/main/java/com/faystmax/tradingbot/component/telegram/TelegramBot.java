@@ -23,9 +23,11 @@
 package com.faystmax.tradingbot.component.telegram;
 
 import com.faystmax.tradingbot.config.TelegramConfig;
+import com.faystmax.tradingbot.service.binance.BinanceService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -33,23 +35,42 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.text.MessageFormat;
+import java.util.Objects;
+
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
+    public static final String MESSAGE_FROM_STRANGER = "telegram.bot.message.from.stranger";
+
     private final TelegramConfig config;
+    private final BinanceService binanceService;
+    private final MessageSourceAccessor messageSourceAccessor;
 
     @Autowired
-    public TelegramBot(DefaultBotOptions options, TelegramConfig config) {
+    public TelegramBot(DefaultBotOptions options,
+                       TelegramConfig config,
+                       BinanceService binanceService,
+                       MessageSourceAccessor messageSourceAccessor) {
         super(options);
         this.config = config;
+        this.binanceService = binanceService;
+        this.messageSourceAccessor = messageSourceAccessor;
     }
 
     @Override
     @SneakyThrows
-    public void onUpdateReceived(Update update) {
-        Message msg = update.getMessage();
-        log.info("Received " + msg.getText() + " from chatId = " + msg.getChatId());
-        this.sendApiMethod(new SendMessage(msg.getChatId(), "I received '" + msg.getText() + "'. " + " Your chatId = " + msg.getChatId()));
+    public void onUpdateReceived(final Update update) {
+        final Message msg = update.getMessage();
+        if (!Objects.equals(msg.getChatId(), config.getChatId())) {
+            final String message = MessageFormat.format(messageSourceAccessor.getMessage(MESSAGE_FROM_STRANGER),
+                msg.getText(), msg.getContact().getUserID(), msg.getChatId()
+            );
+            log.info(message);
+            this.sendApiMethod(new SendMessage(msg.getChatId(), message));
+        }
+
+        this.sendApiMethod(new SendMessage(msg.getChatId(), "Hello Admin! ETH price = " + binanceService.getLastPrice()));
     }
 
     @Override
@@ -63,7 +84,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     @SneakyThrows
-    public void sendMsg(String text) {
+    public void sendMsg(final String text) {
         log.info("Sending message {} to chat = {} ", text, config.getChatId());
         this.sendApiMethod(new SendMessage(config.getChatId(), text));
     }

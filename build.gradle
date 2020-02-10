@@ -51,6 +51,9 @@ dependencies {
     implementation 'org.telegram:telegrambots-spring-boot-starter:4.6'
     implementation 'com.github.binance-exchange:binance-java-api:master-SNAPSHOT'
 
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
