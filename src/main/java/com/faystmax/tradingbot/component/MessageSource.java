@@ -20,20 +20,20 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.config;
+package com.faystmax.tradingbot.component;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class MessageSourceConfig {
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
+import java.util.Locale;
+
+@Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+public class MessageSource {
+    private final org.springframework.context.MessageSource messageSource;
+
+    public String getMsg(final String code, final Object... args) {
+        return this.messageSource.getMessage(code, args, Locale.ENGLISH);
     }
 }
