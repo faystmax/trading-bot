@@ -20,24 +20,41 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.service.notification.impl;
+package com.faystmax.tradingbot.service.command.impl;
 
-import com.faystmax.tradingbot.service.notification.NotificationService;
-import com.faystmax.tradingbot.service.telegram.TelegramBot;
+import com.faystmax.tradingbot.component.MessageSource;
+import com.faystmax.tradingbot.config.BinanceConfig;
+import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Slf4j
-@Service
+import java.util.Collection;
+
+@Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class NotificationServiceImpl implements NotificationService {
-    private final TelegramBot telegramBot;
+public class CurrentPriceCommand implements Command {
+    private final static String CURRENT_PRICE_CODE = "currentPrice";
+    private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";
+    private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
+
+    private final MessageSource messageSource;
+    private final BinanceConfig binanceConfig;
+    private final BinanceService binanceService;
 
     @Override
-    public boolean sendMessage(String title, String text) {
-        telegramBot.sendMsgToOwner(text);
-        return true;
+    public String getCode() {
+        return CURRENT_PRICE_CODE;
+    }
+
+    @Override
+    public String getDescription() {
+        return messageSource.getMsg(CURRENT_PRICE_DESCRIPTION, binanceConfig.getSymbol());
+    }
+
+    @Override
+    public String execute(Collection<String> args) {
+        return messageSource.getMsg(CURRENT_PRICE_ANSWER, binanceConfig.getSymbol(), binanceService.getLastPrice());
     }
 }

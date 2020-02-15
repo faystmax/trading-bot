@@ -20,24 +20,20 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.service.notification.impl;
+package com.faystmax.tradingbot.service.command;
 
-import com.faystmax.tradingbot.service.notification.NotificationService;
-import com.faystmax.tradingbot.service.telegram.TelegramBot;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.tuple.Pair;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class NotificationServiceImpl implements NotificationService {
-    private final TelegramBot telegramBot;
+import java.util.Collection;
 
-    @Override
-    public boolean sendMessage(String title, String text) {
-        telegramBot.sendMsgToOwner(text);
-        return true;
-    }
+/**
+ * Basic interface for parsing commands
+ */
+public interface CommandParser {
+    /**
+     * Parse a command
+     *
+     * @return pair of code and its args
+     */
+    Pair<String, Collection<String>> parse(String command);
 }

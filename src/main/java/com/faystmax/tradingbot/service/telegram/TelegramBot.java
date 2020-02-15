@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.component.telegram;
+package com.faystmax.tradingbot.service.telegram;
 
 import com.faystmax.tradingbot.component.MessageSource;
 import com.faystmax.tradingbot.config.TelegramConfig;
-import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.command.CommandExecutor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +40,24 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-    public static final String MESSAGE_FROM_STRANGER = "telegram.bot.message.from.stranger";
+    public static final String SEND_MESSAGE = "telegramBot.send.message";
+    public static final String SEND_MESSAGE_TO_OWNER = "telegramBot.send.message.to.owner";
+    public static final String MESSAGE_FROM_OWNER = "telegramBot.message.from.owner";
+    public static final String MESSAGE_FROM_STRANGER = "telegramBot.message.from.stranger";
 
     private final TelegramConfig config;
-    private final BinanceService binanceService;
     private final MessageSource messageSource;
+    private final CommandExecutor commandExecutor;
 
     @Autowired
     public TelegramBot(DefaultBotOptions options,
                        TelegramConfig config,
-                       BinanceService binanceService,
-                       MessageSource messageSource) {
+                       MessageSource messageSource,
+                       CommandExecutor commandExecutor) {
         super(options);
         this.config = config;
-        this.binanceService = binanceService;
         this.messageSource = messageSource;
+        this.commandExecutor = commandExecutor;
     }
 
     @Override
@@ -68,8 +71,14 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     @SneakyThrows
-    public void sendMsg(final String text) {
-        log.info("Sending message {} to chat = {} ", text, config.getChatId());
+    public void sendMsg(final long chatId, final String text) {
+        log.info(messageSource.getMsg(SEND_MESSAGE, text, chatId));
+        this.sendApiMethod(new SendMessage(chatId, text));
+    }
+
+    @SneakyThrows
+    public void sendMsgToOwner(final String text) {
+        log.info(messageSource.getMsg(SEND_MESSAGE_TO_OWNER, text));
         this.sendApiMethod(new SendMessage(config.getChatId(), text));
     }
 
@@ -78,14 +87,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(final Update update) {
         final Message msg = update.getMessage();
         if (!Objects.equals(msg.getChatId(), config.getChatId())) {
-            final String message = messageSource.getMsg(MESSAGE_FROM_STRANGER, msg.getText(),
-                msg.getContact().getUserID(),
-                msg.getChatId()
-            );
-            log.info(message);
-            this.sendApiMethod(new SendMessage(msg.getChatId(), message));
+            final String message = messageSource.getMsg(MESSAGE_FROM_STRANGER, msg.getText(), msg.getChatId());
+            sendMsg(msg.getChatId(), message);
+            return;
         }
 
-        this.sendApiMethod(new SendMessage(msg.getChatId(), "Hello Admin! ETH price = " + binanceService.getLastPrice()));
+        // Received message from owner
+        log.info(messageSource.getMsg(MESSAGE_FROM_OWNER, msg.getText()));
+
+        // Execute command and send command to Owner
+        sendMsgToOwner(commandExecutor.parseAndExecute(msg.getText()));
     }
 }
