@@ -24,6 +24,7 @@ package com.faystmax.tradingbot.service.command.impl;
 
 import com.binance.api.client.domain.account.Trade;
 import com.faystmax.tradingbot.component.MessageSource;
+import com.faystmax.tradingbot.config.BinanceConfig;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.util.DateUtils;
@@ -41,6 +42,7 @@ public class MyTradesCommand implements Command {
     private static final String MY_TRADES_DESCRIPTION = "myTrades.description";
     private static final String MY_TRADES_EMPTY = "myTrades.empty";
 
+    private final BinanceConfig config;
     private final MessageSource messageSource;
     private final BinanceService binanceService;
 
@@ -62,7 +64,7 @@ public class MyTradesCommand implements Command {
         }
 
         var builder = new StringBuilder();
-        builder.append("My last trades of \"").append("\":\n");
+        builder.append("My last trades of \"").append(config.getSymbol()).append("\":\n");
         trades.forEach(trade -> {
             builder.append("OrderId = <b>").append(trade.getOrderId()).append("</b>\n");
             builder.append("Price = <b>").append(trade.getPrice()).append("</b>\n");
