@@ -34,10 +34,19 @@ import javax.validation.constraints.NotBlank;
 @Configuration
 @ConfigurationProperties(prefix = "binance")
 public class BinanceConfig {
+    /**
+     * Main trading symbol (like 'ETHUSDT')
+     */
     @NotBlank
     private String symbol;
+    /**
+     * Api key from binance.com account
+     */
     @NotBlank
     private String apiKey;
+    /**
+     * Secret key from binance.com account
+     */
     @NotBlank
     private String secretKey;
 }

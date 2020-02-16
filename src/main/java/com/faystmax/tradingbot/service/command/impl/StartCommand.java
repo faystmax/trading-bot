@@ -35,10 +35,13 @@ import java.util.Map;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+/**
+ * Displays all available bot commands
+ */
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class StartCommand implements Command {
-    public static final String START_CODE = "start";
+    private static final String START_CODE = "start";
     private static final String START_DESCRIPTION = "start.description";
     private static final String START_AVAILABLE_COMMANDS = "start.available.commands";
 
@@ -46,8 +49,8 @@ public class StartCommand implements Command {
     private Map<String, Command> commandsMap;
 
     @Autowired
-    public void init(List<Command> executors) {
-        commandsMap = executors.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
+    public void init(List<Command> commands) {
+        commandsMap = commands.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
     }
 
     @Override

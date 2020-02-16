@@ -22,11 +22,12 @@
 
 package com.faystmax.tradingbot.service.command.impl;
 
+import com.binance.api.client.domain.account.AssetBalance;
 import com.faystmax.tradingbot.component.MessageSource;
-import com.faystmax.tradingbot.config.BinanceConfig;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,34 +35,51 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
- * Displays current price of selected symbol
+ * Displays current balance of selected symbol
  *
  * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
  */
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CurrentPriceCommand implements Command {
-    private final static String CURRENT_PRICE_CODE = "currentPrice";
-    private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";
-    private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
+public class BalanceCommand implements Command {
+    private final static String BALANCE_CODE = "balance";
+    private final static String BALANCE_DESCRIPTION = "balance.description";
 
     private final MessageSource messageSource;
-    private final BinanceConfig binanceConfig;
     private final BinanceService binanceService;
 
     @Override
     public String getCode() {
-        return CURRENT_PRICE_CODE;
+        return BALANCE_CODE;
     }
 
     @Override
     public String getDescription() {
-        return messageSource.getMsg(CURRENT_PRICE_DESCRIPTION, binanceConfig.getSymbol());
+        return messageSource.getMsg(BALANCE_DESCRIPTION);
     }
 
     @Override
     public String execute(Collection<String> args) {
-        BigDecimal lastPrice = new BigDecimal(binanceService.getLastPrice());
-        return messageSource.getMsg(CURRENT_PRICE_ANSWER, binanceConfig.getSymbol(), lastPrice.toPlainString());
+        Pair<AssetBalance, AssetBalance> balancePair = binanceService.getCurrentBalance();
+        var builder = new StringBuilder();
+        appendBalance(builder, balancePair.getLeft());
+        builder.append("\n");
+        appendBalance(builder, balancePair.getRight());
+        return builder.toString();
+    }
+
+    /**
+     * Appends balance data to builder
+     *
+     * @param builder - builder where data will be appended
+     * @param balance - balance data to append
+     */
+    private void appendBalance(final StringBuilder builder, final AssetBalance balance) {
+        BigDecimal free = new BigDecimal(balance.getFree());
+        BigDecimal locked = new BigDecimal(balance.getLocked());
+        builder.append(balance.getAsset()).append(":").append("\n")
+            .append("    Free = <b>").append(free.toPlainString()).append("</b>\n")
+            .append("    Locked = <b>").append(locked.toPlainString()).append("</b>\n")
+            .append("    All = <b>").append(free.add(locked).toPlainString()).append("</b>\n");
     }
 }

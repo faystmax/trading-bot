@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -48,16 +47,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramConfig config;
     private final MessageSource messageSource;
     private final CommandExecutor commandExecutor;
+    private final TelegramMessageFactory messageFactory;
 
     @Autowired
     public TelegramBot(DefaultBotOptions options,
                        TelegramConfig config,
                        MessageSource messageSource,
-                       CommandExecutor commandExecutor) {
+                       CommandExecutor commandExecutor,
+                       TelegramMessageFactory messageFactory) {
         super(options);
         this.config = config;
         this.messageSource = messageSource;
         this.commandExecutor = commandExecutor;
+        this.messageFactory = messageFactory;
     }
 
     @Override
@@ -73,13 +75,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void sendMsg(final long chatId, final String text) {
         log.info(messageSource.getMsg(SEND_MESSAGE, text, chatId));
-        this.sendApiMethod(new SendMessage(chatId, text));
+        this.sendApiMethod(messageFactory.createMsg(chatId, text));
     }
 
     @SneakyThrows
     public void sendMsgToOwner(final String text) {
         log.info(messageSource.getMsg(SEND_MESSAGE_TO_OWNER, text));
-        this.sendApiMethod(new SendMessage(config.getChatId(), text));
+        this.sendApiMethod(messageFactory.createMsg(config.getChatId(), text));
     }
 
     @Override
@@ -96,6 +98,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info(messageSource.getMsg(MESSAGE_FROM_OWNER, msg.getText()));
 
         // Execute command and send command to Owner
-        sendMsgToOwner(commandExecutor.parseAndExecute(msg.getText()));
+        sendMsgToOwner(commandExecutor.execute(msg.getText()));
     }
 }

@@ -25,9 +25,12 @@ package com.faystmax.tradingbot.service.binance.impl;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
+import com.binance.api.client.domain.account.AssetBalance;
+import com.binance.api.client.domain.general.SymbolInfo;
 import com.faystmax.tradingbot.config.BinanceConfig;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,12 +53,16 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public Account account() {
-        return client.getAccount();
+    public String getLastPrice() {
+        return client.get24HrPriceStatistics(config.getSymbol()).getLastPrice();
     }
 
     @Override
-    public String getLastPrice() {
-        return client.get24HrPriceStatistics(config.getSymbol()).getLastPrice();
+    public Pair<AssetBalance, AssetBalance> getCurrentBalance() {
+        Account account = client.getAccount();
+        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
+        AssetBalance baseBalance = account.getAssetBalance(symbolInfo.getBaseAsset());
+        AssetBalance quoteBalance = account.getAssetBalance(symbolInfo.getQuoteAsset());
+        return Pair.of(baseBalance, quoteBalance);
     }
 }

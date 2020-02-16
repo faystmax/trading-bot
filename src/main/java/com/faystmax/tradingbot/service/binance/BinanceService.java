@@ -22,12 +22,29 @@
 
 package com.faystmax.tradingbot.service.binance;
 
-import com.binance.api.client.domain.account.Account;
+import com.binance.api.client.domain.account.AssetBalance;
+import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * Service for interaction with binance
+ */
 public interface BinanceService {
+    /**
+     * Test connection to binance
+     */
     void ping();
 
-    Account account();
-
+    /**
+     * @return last price of selected symbol
+     * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
+     */
     String getLastPrice();
+
+    /**
+     * Return Base and qoute balance
+     * (for symbol = "ETHUSDT" it will be "ETH" and "USDT" balances)
+     *
+     * @return base and quote balances
+     */
+    Pair<AssetBalance, AssetBalance> getCurrentBalance();
 }

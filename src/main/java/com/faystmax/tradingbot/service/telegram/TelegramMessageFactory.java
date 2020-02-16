@@ -20,17 +20,16 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.service.command;
+package com.faystmax.tradingbot.service.telegram;
 
-/**
- * Parsing and executing commands
- */
-public interface CommandExecutor {
-    /**
-     * Parsing and executing command
-     *
-     * @param commandText - text of the command to parse and execute
-     * @return result of the command
-     */
-    String execute(String commandText);
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
+@Component
+public class TelegramMessageFactory {
+    public SendMessage createMsg(final long chatId, final String text) {
+        SendMessage message = new SendMessage(chatId, text);
+        message.enableHtml(true);
+        return message;
+    }
 }

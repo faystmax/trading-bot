@@ -54,15 +54,15 @@ public class TelegramCommandExecutor implements CommandExecutor {
     @Autowired
     public TelegramCommandExecutor(MessageSource messageSource,
                                    TelegramCommandParser telegramCommandParser,
-                                   List<Command> executors) {
+                                   List<Command> commands) {
         this.messageSource = messageSource;
         this.telegramCommandParser = telegramCommandParser;
-        this.commandsMap = executors.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
+        this.commandsMap = commands.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
     }
 
 
     @Override
-    public String parseAndExecute(final String commandText) {
+    public String execute(final String commandText) {
         try {
             final Pair<String, Collection<String>> codeAndArgs = telegramCommandParser.parse(commandText);
             if (!commandsMap.containsKey(codeAndArgs.getKey())) {

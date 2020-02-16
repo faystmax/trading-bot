@@ -22,12 +22,10 @@
 
 package com.faystmax.tradingbot.impl;
 
+import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
-import com.faystmax.tradingbot.BaseTest;
-import com.faystmax.tradingbot.service.binance.BinanceService;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -36,24 +34,12 @@ import static org.junit.Assert.assertNotNull;
  * Just methods for checking binance Api
  */
 @Ignore
-public class BinanceServiceTest extends BaseTest {
-    @Autowired
-    private BinanceService binanceService;
-
-    @Test
-    public void ping() {
-        binanceService.ping();
-    }
+public class BinanceServiceTest {
+    private BinanceApiRestClient restClient;
 
     @Test
     public void account() {
-        Account account = binanceService.account();
+        Account account = restClient.getAccount();
         assertNotNull(account);
-    }
-
-    @Test
-    public void getLastPrice() {
-        String lastPrice = binanceService.getLastPrice();
-        assertNotNull(lastPrice);
     }
 }
