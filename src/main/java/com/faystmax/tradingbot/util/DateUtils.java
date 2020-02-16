@@ -20,39 +20,20 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.service.binance;
+package com.faystmax.tradingbot.util;
 
-import com.binance.api.client.domain.account.AssetBalance;
-import com.binance.api.client.domain.account.Trade;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.util.List;
+import java.util.Date;
 
-/**
- * Service for interaction with binance
- */
-public interface BinanceService {
-    /**
-     * Test connection to binance
-     */
-    void ping();
+public class DateUtils {
+    private static final String DEFAULT_PATTERN = "dd.MM.yyyy HH:mm:ss";
 
-    /**
-     * @return last price of selected symbol
-     * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
-     */
-    String getLastPrice();
+    public static String format(long mils) {
+        return format(new Date(mils));
+    }
 
-    /**
-     * @return last trades of selected symbol
-     */
-    List<Trade> getMyTrades();
-
-    /**
-     * Return Base and qoute balance
-     * (for symbol = "ETHUSDT" it will be "ETH" and "USDT" balances)
-     *
-     * @return base and quote balances
-     */
-    Pair<AssetBalance, AssetBalance> getCurrentBalance();
+    public static String format(Date date) {
+        return DateFormatUtils.format(date, DEFAULT_PATTERN);
+    }
 }
