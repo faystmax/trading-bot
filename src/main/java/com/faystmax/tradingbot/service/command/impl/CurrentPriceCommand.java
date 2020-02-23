@@ -61,7 +61,7 @@ public class CurrentPriceCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        BigDecimal lastPrice = new BigDecimal(binanceService.getLastPrice());
+        BigDecimal lastPrice = binanceService.getLastPrice();
         return messageSource.getMsg(CURRENT_PRICE_ANSWER, binanceConfig.getSymbol(), lastPrice.toPlainString());
     }
 }

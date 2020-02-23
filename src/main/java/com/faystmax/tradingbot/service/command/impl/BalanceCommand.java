@@ -22,8 +22,8 @@
 
 package com.faystmax.tradingbot.service.command.impl;
 
-import com.binance.api.client.domain.account.AssetBalance;
 import com.faystmax.tradingbot.component.MessageSource;
+import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,7 @@ public class BalanceCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        Pair<AssetBalance, AssetBalance> balancePair = binanceService.getCurrentBalance();
+        Pair<Balance, Balance> balancePair = binanceService.getCurrentBalance();
         var builder = new StringBuilder();
         appendBalance(builder, balancePair.getLeft());
         builder.append("\n");
@@ -74,12 +73,10 @@ public class BalanceCommand implements Command {
      * @param builder - builder where data will be appended
      * @param balance - balance data to append
      */
-    private void appendBalance(final StringBuilder builder, final AssetBalance balance) {
-        BigDecimal free = new BigDecimal(balance.getFree());
-        BigDecimal locked = new BigDecimal(balance.getLocked());
+    private void appendBalance(final StringBuilder builder, final Balance balance) {
         builder.append(balance.getAsset()).append(":").append("\n")
-            .append("    Free = <b>").append(free.toPlainString()).append("</b>\n")
-            .append("    Locked = <b>").append(locked.toPlainString()).append("</b>\n")
-            .append("    All = <b>").append(free.add(locked).toPlainString()).append("</b>\n");
+            .append("    Free = <b>").append(balance.getFree().toPlainString()).append("</b>\n")
+            .append("    Locked = <b>").append(balance.getLocked().toPlainString()).append("</b>\n")
+            .append("    All = <b>").append(balance.getAll().toPlainString()).append("</b>\n");
     }
 }

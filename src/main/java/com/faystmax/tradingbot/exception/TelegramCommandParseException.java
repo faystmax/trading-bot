@@ -23,7 +23,7 @@
 package com.faystmax.tradingbot.exception;
 
 /**
- * Signals a Telegram command parse error
+ * Signals about Telegram command parse error
  */
 public class TelegramCommandParseException extends ServiceException {
     public TelegramCommandParseException(String message) {

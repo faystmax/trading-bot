@@ -1,6 +1,17 @@
 spring:
   profiles:
     active: develop
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:file:~/trading-bot/db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: pass
+  flyway:
+    user: sa
+    password: pass
 
 logging:
   level:
