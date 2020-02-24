@@ -23,43 +23,55 @@
 package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.component.MessageSource;
-import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.db.entity.Order;
+import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.service.command.Command;
+import com.faystmax.tradingbot.util.DateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
-/**
- * Displays current price of selected symbol
- *
- * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
- */
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CurrentPriceCommand implements Command {
-    private final static String CURRENT_PRICE_CODE = "currentPrice";
-    private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";
-    private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
+public class MyOrdersCommand implements Command {
+    private static final String MY_ORDERS_CODE = "myOrders";
+    private static final String MY_ORDERS_DESCRIPTION = "myOrders.description";
+    private static final String MY_ORDERS_EMPTY = "myOrders.empty";
 
+    private final OrderRepo orderRepo;
     private final MessageSource messageSource;
-    private final BinanceService binanceService;
 
     @Override
     public String getCode() {
-        return CURRENT_PRICE_CODE;
+        return MY_ORDERS_CODE;
     }
 
     @Override
     public String getDescription() {
-        return messageSource.getMsg(CURRENT_PRICE_DESCRIPTION, binanceService.getTradingSymbol());
+        return messageSource.getMsg(MY_ORDERS_DESCRIPTION);
     }
 
     @Override
     public String execute(Collection<String> args) {
-        BigDecimal lastPrice = binanceService.getLastPrice();
-        return messageSource.getMsg(CURRENT_PRICE_ANSWER, binanceService.getTradingSymbol(), lastPrice.toPlainString());
+        List<Order> orders = orderRepo.findAllByOrderByDateAddAsc();
+        if (orders.isEmpty()) {
+            return messageSource.getMsg(MY_ORDERS_EMPTY);
+        }
+
+        var builder = new StringBuilder();
+        builder.append("My orders \"").append("\":\n");
+        orders.forEach(order -> {
+            builder.append("Id = <b>").append(order.getId()).append("</b>\n");
+            builder.append("ExchangeId = <b>").append(order.getExchangeId()).append("</b>\n");
+            builder.append("Price = <b>").append(order.getPrice()).append("</b>\n");
+            builder.append("OriginQty = <b>").append(order.getOrigQty()).append("</b>\n");
+            builder.append("ExecutedQty = <b>").append(order.getExecutedQty()).append("</b>\n");
+            builder.append("Time = <b>").append(DateUtils.format(order.getDateAdd())).append("</b>\n");
+            builder.append("--------------------------------------------------\n");
+        });
+        return builder.toString();
     }
 }

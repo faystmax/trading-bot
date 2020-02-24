@@ -20,15 +20,23 @@
  * THE SOFTWARE.
  */
 
-package com.faystmax.tradingbot.db.repo;
+package com.faystmax.tradingbot.service.trade;
 
-import com.faystmax.tradingbot.db.entity.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.faystmax.tradingbot.db.entity.Trade;
 
 import java.util.List;
 
-@Repository
-public interface OrderRepo extends JpaRepository<Order, Long> {
-    List<Order> findAllByOrderByDateAddAsc();
+/**
+ * Main Trade service
+ */
+public interface TradeService {
+    /**
+     * Get orders from Exchange and add it to DB
+     */
+    void updateDatabaseOrdersFromExchange();
+
+    /**
+     * @return all trades
+     */
+    List<Trade> getAllTrades();
 }

@@ -57,9 +57,16 @@ public interface BinanceService {
     List<Trade> getMyTrades();
 
     /**
-     * @return all account orders
+     * @return all last account orders (in last 3 months)
      */
     List<Order> getAllMyOrders();
+
+    /**
+     * @param startTime Timestamp in ms
+     * @param endTime   Timestamp in ms
+     * @return all account orders between startTime and endTime
+     */
+    List<Order> getAllMyOrders(Long startTime, Long endTime);
 
     /**
      * Return Base and Quote balance

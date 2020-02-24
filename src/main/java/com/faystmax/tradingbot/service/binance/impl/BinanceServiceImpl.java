@@ -28,7 +28,6 @@ import com.binance.api.client.domain.account.*;
 import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.general.SymbolInfo;
 import com.faystmax.tradingbot.config.BinanceConfig;
-import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,7 @@ public class BinanceServiceImpl implements BinanceService {
     private final BinanceApiRestClient client;
 
     @Autowired
-    public BinanceServiceImpl(OrderRepo orderRepo, BinanceConfig config) {
+    public BinanceServiceImpl(BinanceConfig config) {
         var factory = BinanceApiClientFactory.newInstance(config.getApiKey(), config.getSecretKey());
         this.client = factory.newRestClient();
         this.config = config;
@@ -77,6 +76,12 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public List<Order> getAllMyOrders() {
         return client.getAllOrders(new AllOrdersRequest(config.getSymbol()));
+    }
+
+    @Override
+    public List<Order> getAllMyOrders(Long startTime, Long endTime) {
+        var request = new AllOrdersRequest(config.getSymbol()).startTime(startTime).endTime(endTime);
+        return client.getAllOrders(request);
     }
 
     @Override

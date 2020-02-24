@@ -44,7 +44,7 @@ public class Trade implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    private String exchangeOrderId;
+    private String exchangeTradeId;
 
     @JoinColumn(name = "orderRef", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -23,43 +23,37 @@
 package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.component.MessageSource;
-import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
+import com.faystmax.tradingbot.service.trade.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
-/**
- * Displays current price of selected symbol
- *
- * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
- */
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CurrentPriceCommand implements Command {
-    private final static String CURRENT_PRICE_CODE = "currentPrice";
-    private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";
-    private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
+public class RefreshDatabaseCommand implements Command {
+    private static final String REFRESH_DATABASE_CODE = "refreshDatabase";
+    private static final String REFRESH_DATABASE_DESCRIPTION = "refreshDatabase.description";
+    private static final String REFRESH_DATABASE_COMPLETE = "refreshDatabase.complete";
 
+    private final TradeService tradeService;
     private final MessageSource messageSource;
-    private final BinanceService binanceService;
 
     @Override
     public String getCode() {
-        return CURRENT_PRICE_CODE;
+        return REFRESH_DATABASE_CODE;
     }
 
     @Override
     public String getDescription() {
-        return messageSource.getMsg(CURRENT_PRICE_DESCRIPTION, binanceService.getTradingSymbol());
+        return messageSource.getMsg(REFRESH_DATABASE_DESCRIPTION);
     }
 
     @Override
     public String execute(Collection<String> args) {
-        BigDecimal lastPrice = binanceService.getLastPrice();
-        return messageSource.getMsg(CURRENT_PRICE_ANSWER, binanceService.getTradingSymbol(), lastPrice.toPlainString());
+        tradeService.updateDatabaseOrdersFromExchange();
+        return messageSource.getMsg(REFRESH_DATABASE_COMPLETE);
     }
 }
