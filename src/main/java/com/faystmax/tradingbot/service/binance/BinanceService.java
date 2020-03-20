@@ -3,6 +3,7 @@ package com.faystmax.tradingbot.service.binance;
 import com.binance.api.client.domain.account.NewOrderResponse;
 import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
+import com.binance.api.client.domain.general.SymbolInfo;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigDecimal;
@@ -60,4 +61,6 @@ public interface BinanceService {
      * @return order response
      */
     NewOrderResponse marketBuy(BigDecimal quantity);
+
+    SymbolInfo getSymbolInfo();
 }

@@ -2,11 +2,10 @@ package com.faystmax.tradingbot.service.command.impl;
 
 import com.binance.api.client.domain.account.NewOrderResponse;
 import com.faystmax.tradingbot.component.MessageSource;
-import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
+import com.faystmax.tradingbot.service.trade.TradeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +18,7 @@ public class BuyMarketCommand implements Command {
     private static final String BUY_MARKET_DESCRIPTION = "buyMarket.description";
 
     private final MessageSource messageSource;
+    private final TradeService tradeService;
     private final BinanceService binanceService;
 
     @Override
@@ -33,9 +33,7 @@ public class BuyMarketCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        Pair<Balance, Balance> currentBalance = binanceService.getCurrentBalance();
-        NewOrderResponse orderResponse = binanceService.marketBuy(currentBalance.getLeft().getFree());
-        // TODO: 22.02.2020
-        return "Order = " + orderResponse.toString();
+        NewOrderResponse response = tradeService.marketBuyAll();
+        return "Order = " + response.toString();
     }
 }
