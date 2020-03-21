@@ -1,7 +1,6 @@
 package com.faystmax.tradingbot.service.trade.impl;
 
 import com.binance.api.client.domain.account.Order;
-import com.faystmax.tradingbot.db.entity.Trade;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.repo.OrderRepoService;
 import com.faystmax.tradingbot.service.trade.TradeService;
@@ -17,11 +16,6 @@ import java.util.List;
 public class TradeServiceImpl implements TradeService {
     private final BinanceService binanceService;
     private final OrderRepoService orderRepoService;
-
-    @Override
-    public List<Trade> getAllTrades() {
-        return null;
-    }
 
     @Override
     @Transactional
