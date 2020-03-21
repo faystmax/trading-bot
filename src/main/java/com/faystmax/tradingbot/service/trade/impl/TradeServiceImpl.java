@@ -17,8 +17,8 @@ public class TradeServiceImpl implements TradeService {
     private final BinanceService binanceService;
     private final OrderRepoService orderRepoService;
 
-    @Override
     @Transactional
+    @Override
     public com.faystmax.tradingbot.db.entity.Order marketBuyAll() {
         Order order = binanceService.marketBuyAll();
         return orderRepoService.createOrder(order);
