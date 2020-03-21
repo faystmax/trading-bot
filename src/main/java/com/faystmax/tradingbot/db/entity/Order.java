@@ -45,7 +45,7 @@ public class Order implements Serializable {
 
     private BigDecimal icebergQty;
 
-    private BigDecimal cummulativeQuoteQty;
+    private BigDecimal cumulativeQuoteQty;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

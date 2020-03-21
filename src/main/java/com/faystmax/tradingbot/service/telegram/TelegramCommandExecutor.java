@@ -35,7 +35,6 @@ public class TelegramCommandExecutor implements CommandExecutor {
         this.commandsMap = commands.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
     }
 
-
     @Override
     public String execute(final String commandText) {
         try {

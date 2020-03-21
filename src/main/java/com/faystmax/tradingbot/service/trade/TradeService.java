@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.trade;
 
-import com.binance.api.client.domain.account.NewOrderResponse;
+import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.db.entity.Trade;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface TradeService {
     /**
      * Buy on market price
      *
-     * @return response
+     * @return created Order
      */
-    NewOrderResponse marketBuyAll();
+    Order marketBuyAll();
 }

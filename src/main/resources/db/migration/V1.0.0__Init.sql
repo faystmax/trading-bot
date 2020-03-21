@@ -1,19 +1,19 @@
 CREATE TABLE orders
 (
-    id                    IDENTITY                 NOT NULL PRIMARY KEY,
-    exchange_id           VARCHAR(256) UNIQUE,
-    date_add              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    price                 DECIMAL                  NOT NULL,
-    stop_price            DECIMAL,
-    orig_qty              DECIMAL                  NOT NULL,
-    executed_qty          DECIMAL                  NOT NULL,
-    iceberg_qty           DECIMAL,
-    cummulative_quote_qty DECIMAL,
-    status                VARCHAR(64)              NOT NULL,
-    time_in_force         VARCHAR(64)              NOT NULL,
-    type                  VARCHAR(64)              NOT NULL,
-    side                  VARCHAR(64)              NOT NULL,
-    transact_time         LONG
+    id                   IDENTITY                 NOT NULL PRIMARY KEY,
+    exchange_id          VARCHAR(256) UNIQUE,
+    date_add             TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    price                DECIMAL                  NOT NULL,
+    stop_price           DECIMAL,
+    orig_qty             DECIMAL                  NOT NULL,
+    executed_qty         DECIMAL                  NOT NULL,
+    iceberg_qty          DECIMAL,
+    cumulative_quote_qty DECIMAL,
+    status               VARCHAR(64)              NOT NULL,
+    time_in_force        VARCHAR(64)              NOT NULL,
+    type                 VARCHAR(64)              NOT NULL,
+    side                 VARCHAR(64)              NOT NULL,
+    transact_time        LONG
 );
 
 CREATE TABLE trade

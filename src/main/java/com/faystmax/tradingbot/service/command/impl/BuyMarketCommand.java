@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.service.command.impl;
 
-import com.binance.api.client.domain.account.NewOrderResponse;
 import com.faystmax.tradingbot.config.message.MessageSource;
+import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.service.trade.TradeService;
@@ -33,7 +33,7 @@ public class BuyMarketCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        NewOrderResponse response = tradeService.marketBuyAll();
-        return "Order = " + response.toString();
+        Order order = tradeService.marketBuyAll();
+        return "Order = " + order;
     }
 }
