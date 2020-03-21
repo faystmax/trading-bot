@@ -12,7 +12,7 @@ import java.util.Collection;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class RefreshDatabaseCommand implements Command {
-    private static final String REFRESH_DATABASE_CODE = "refreshDatabase";
+    private static final String REFRESH_DATABASE_CODE = "RefreshDB";
     private static final String REFRESH_DATABASE_DESCRIPTION = "refreshDatabase.description";
     private static final String REFRESH_DATABASE_COMPLETE = "refreshDatabase.complete";
 

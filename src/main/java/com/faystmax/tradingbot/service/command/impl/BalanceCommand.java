@@ -19,7 +19,7 @@ import java.util.Collection;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BalanceCommand implements Command {
-    private final static String BALANCE_CODE = "balance";
+    private final static String BALANCE_CODE = "MyBalance";
     private final static String BALANCE_DESCRIPTION = "balance.description";
 
     private final MessageSource messageSource;

@@ -14,7 +14,7 @@ import java.util.Collection;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BuyMarketCommand implements Command {
-    private static final String BUY_MARKET_CODE = "buyMarket";
+    private static final String BUY_MARKET_CODE = "BuyMarket";
     private static final String BUY_MARKET_DESCRIPTION = "buyMarket.description";
 
     private final MessageSource messageSource;

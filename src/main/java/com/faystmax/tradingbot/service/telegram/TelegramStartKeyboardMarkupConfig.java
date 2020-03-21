@@ -28,7 +28,7 @@ public class TelegramStartKeyboardMarkupConfig {
 
     private KeyboardRow createRow(final List<Command> commands) {
         var row = new KeyboardRow();
-        commands.forEach(command -> row.add(new KeyboardButton("/" + command.getCode())));
+        commands.forEach(command -> row.add(new KeyboardButton(command.getCode())));
         return row;
     }
 }

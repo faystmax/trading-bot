@@ -15,25 +15,23 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TelegramCommandParser implements CommandParser {
-    public static final String PARSER_PARSE_ERROR = "parser.parse.error";
+    public static final String PARSE_ERROR = "parser.parse.error";
 
     private final MessageSource messageSource;
 
-    public Pair<String, Collection<String>> parse(String command) {
+    public Pair<String, Collection<String>> parse(final String command) {
         try {
-            command = command.trim();
-            if (command.isBlank() || !command.startsWith("/")) {
-                throw new TelegramCommandParseException(messageSource.getMsg(PARSER_PARSE_ERROR, command));
+            if (command.isBlank()) {
+                throw new TelegramCommandParseException(messageSource.getMsg(PARSE_ERROR, command));
             }
 
-            command = command.substring(1);
             List<String> parts = Lists.newArrayList(command.split("\\s+"));
             String commandCode = parts.remove(0);
             return Pair.of(commandCode, parts);
         } catch (TelegramCommandParseException ex) {
             throw ex;
         } catch (Exception ex) {
-            throw new TelegramCommandParseException(messageSource.getMsg(PARSER_PARSE_ERROR, command), ex);
+            throw new TelegramCommandParseException(messageSource.getMsg(PARSE_ERROR, command), ex);
         }
     }
 }

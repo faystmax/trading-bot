@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MyOrdersCommand implements Command {
-    private static final String MY_ORDERS_CODE = "myOrders";
+    private static final String MY_ORDERS_CODE = "MyOrders";
     private static final String MY_ORDERS_DESCRIPTION = "myOrders.description";
     private static final String MY_ORDERS_EMPTY = "myOrders.empty";
 

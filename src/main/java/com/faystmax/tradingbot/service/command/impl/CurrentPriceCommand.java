@@ -18,7 +18,7 @@ import java.util.Collection;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CurrentPriceCommand implements Command {
-    private final static String CURRENT_PRICE_CODE = "currentPrice";
+    private final static String CURRENT_PRICE_CODE = "CurrentPrice";
     private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";
     private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
 
