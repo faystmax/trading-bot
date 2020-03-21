@@ -47,7 +47,7 @@ public class TelegramCommandExecutor implements CommandExecutor {
             // Executing command
             return commandsMap.get(codeAndArgs.getKey()).execute(codeAndArgs.getValue());
         } catch (Exception ex) {
-            String msg = messageSource.getMsg(COMMAND_PROCESSING_ERROR, commandText);
+            String msg = messageSource.getMsg(COMMAND_PROCESSING_ERROR, commandText, ex.getMessage());
             log.error(msg, ex);
             return msg;
         }
