@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.telegram;
 
-import com.faystmax.tradingbot.component.MessageSource;
+import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.exception.CommandNotFoundException;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
@@ -16,9 +16,6 @@ import java.util.Map;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
-/**
- * Parsing and executing telegram commands
- */
 @Slf4j
 @Component
 public class TelegramCommandExecutor implements CommandExecutor {

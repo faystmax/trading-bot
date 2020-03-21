@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.telegram;
 
-import com.faystmax.tradingbot.component.MessageSource;
+import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.exception.TelegramCommandParseException;
 import com.faystmax.tradingbot.service.command.CommandParser;
 import com.google.common.collect.Lists;

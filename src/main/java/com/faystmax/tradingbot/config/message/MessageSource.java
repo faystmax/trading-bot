@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.component;
+package com.faystmax.tradingbot.config.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
