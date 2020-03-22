@@ -88,4 +88,27 @@ public class BinanceServiceImpl implements BinanceService {
         var orderStatusRequest = new OrderStatusRequest(config.getSymbol(), newOrderResponse.getOrderId());
         return client.getOrderStatus(orderStatusRequest);
     }
+
+    @Override
+    public Order marketSellAll() {
+        Pair<Balance, Balance> balance = getCurrentBalance();
+        BigDecimal free = balance.getLeft().getFree();
+        return marketSell(free);
+    }
+
+    @Override
+    public Order marketSell(final BigDecimal quantity) {
+        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
+        SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
+        BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
+        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize));
+
+        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity.toPlainString());
+        log.info("Creating order = {}", newOrder);
+
+        NewOrderResponse newOrderResponse = client.newOrder(newOrder);
+        log.info("Order created = {}", newOrderResponse);
+        var orderStatusRequest = new OrderStatusRequest(config.getSymbol(), newOrderResponse.getOrderId());
+        return client.getOrderStatus(orderStatusRequest);
+    }
 }

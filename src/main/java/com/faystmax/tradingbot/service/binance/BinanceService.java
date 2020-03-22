@@ -50,9 +50,25 @@ public interface BinanceService {
     Order marketBuyAll();
 
     /**
-     * Buy on market price
+     * Buy at market price
      *
-     * @return order response
+     * @param quantity amount you want to buy
+     * @return created order
      */
     Order marketBuy(BigDecimal quantity);
+
+    /**
+     * Sell at market price on all free balance
+     *
+     * @return created order
+     */
+    Order marketSellAll();
+
+    /**
+     * Sell at market price
+     *
+     * @param quantity amount you want to sell
+     * @return created order
+     */
+    Order marketSell(BigDecimal quantity);
 }
