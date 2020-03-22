@@ -26,8 +26,16 @@ public class TradeServiceImpl implements TradeService {
 
     @Transactional
     @Override
+    public com.faystmax.tradingbot.db.entity.Order marketSellAll() {
+        Order order = binanceService.marketSellAll();
+        return orderRepoService.createOrder(order);
+    }
+
+    @Transactional
+    @Override
     public void updateDatabaseOrdersFromExchange() {
         List<Order> binanceOrders = binanceService.getAllMyOrders();
+        orderRepoService.deleteAll();
         binanceOrders.forEach(orderRepoService::createOrder);
     }
 }

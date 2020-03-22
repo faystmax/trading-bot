@@ -12,9 +12,16 @@ public interface TradeService {
     void updateDatabaseOrdersFromExchange();
 
     /**
-     * Buy on market price
+     * Buy at market price
      *
      * @return created Order
      */
     Order marketBuyAll();
+
+    /**
+     * Sell at market price
+     *
+     * @return created Order
+     */
+    Order marketSellAll();
 }

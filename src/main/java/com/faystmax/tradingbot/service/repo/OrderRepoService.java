@@ -16,6 +16,11 @@ public class OrderRepoService {
     private final OrderRepo repo;
 
     @Transactional
+    public void deleteAll() {
+        repo.deleteAll();
+    }
+
+    @Transactional
     public Order createOrder(com.binance.api.client.domain.account.Order binanceOrder) {
         var myOrder = new com.faystmax.tradingbot.db.entity.Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());

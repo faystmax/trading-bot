@@ -13,9 +13,9 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class BuyMarketCommand implements Command {
-    private static final String BUY_MARKET_CODE = "BuyMarket";
-    private static final String BUY_MARKET_DESCRIPTION = "buyMarket.description";
+public class SellMarketCommand implements Command {
+    private static final String SELL_MARKET_CODE = "SellMarket";
+    private static final String SELL_MARKET_DESCRIPTION = "sellMarket.description";
 
     private final MessageSource messageSource;
     private final TradeService tradeService;
@@ -23,17 +23,17 @@ public class BuyMarketCommand implements Command {
 
     @Override
     public String getCode() {
-        return BUY_MARKET_CODE;
+        return SELL_MARKET_CODE;
     }
 
     @Override
     public String getDescription() {
-        return messageSource.getMsg(BUY_MARKET_DESCRIPTION, binanceService.getTradingSymbol());
+        return messageSource.getMsg(SELL_MARKET_DESCRIPTION, binanceService.getTradingSymbol());
     }
 
     @Override
     public String execute(Collection<String> args) {
-        Order order = tradeService.marketBuyAll();
+        Order order = tradeService.marketSellAll();
         return "Order successfully completed! id = " + order.getId();
     }
 }

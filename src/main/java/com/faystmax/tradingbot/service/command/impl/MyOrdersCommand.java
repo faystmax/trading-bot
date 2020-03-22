@@ -40,13 +40,14 @@ public class MyOrdersCommand implements Command {
         }
 
         var builder = new StringBuilder();
-        builder.append("My orders \"").append("\":\n");
+        builder.append("My orders ").append(":\n");
         orders.forEach(order -> {
             builder.append("Id = <b>").append(order.getId()).append("</b>\n");
             builder.append("ExchangeId = <b>").append(order.getExchangeId()).append("</b>\n");
-            builder.append("Price = <b>").append(order.getPrice()).append("</b>\n");
-            builder.append("OriginQty = <b>").append(order.getOrigQty()).append("</b>\n");
-            builder.append("ExecutedQty = <b>").append(order.getExecutedQty()).append("</b>\n");
+            builder.append("Type = <b>").append(order.getType()).append("</b>\n");
+            builder.append("Price = <b>").append(order.getPrice().toPlainString()).append("</b>\n");
+            builder.append("OriginQty = <b>").append(order.getOrigQty().toPlainString()).append("</b>\n");
+            builder.append("ExecutedQty = <b>").append(order.getExecutedQty().toPlainString()).append("</b>\n");
             builder.append("Time = <b>").append(DateUtils.format(order.getDateAdd())).append("</b>\n");
             builder.append("--------------------------------------------------\n");
         });
