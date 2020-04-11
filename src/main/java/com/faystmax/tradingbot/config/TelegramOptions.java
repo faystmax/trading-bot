@@ -10,6 +10,8 @@ import org.telegram.telegrambots.bots.DefaultBotOptions.ProxyType;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 @Configuration
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TelegramOptions {
@@ -20,24 +22,26 @@ public class TelegramOptions {
         DefaultBotOptions options = new DefaultBotOptions();
 
         // Configuring proxy
-        if (config.getProxy() != null) {
-            configureAuthenticator(config);
-            options.setProxyHost(config.getProxy().getHost());
-            options.setProxyPort(config.getProxy().getPort());
-            options.setProxyType(ProxyType.valueOf(config.getProxy().getType()));
+        var proxy = config.getProxy();
+        if (proxy != null) {
+            configureAuthenticator(proxy.getUser(), proxy.getPassword());
+            options.setProxyHost(proxy.getHost());
+            options.setProxyPort(proxy.getPort());
+            options.setProxyType(ProxyType.valueOf(proxy.getType()));
         }
         return options;
     }
 
-    private void configureAuthenticator(TelegramConfig config) {
-        Authenticator.setDefault(new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                    config.getProxy().getUser(),
-                    config.getProxy().getPassword().toCharArray()
-                );
-            }
-        });
+    private void configureAuthenticator(String user, String password) {
+        if (isNotBlank(user) && isNotBlank(password))
+            Authenticator.setDefault(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(
+                        config.getProxy().getUser(),
+                        config.getProxy().getPassword().toCharArray()
+                    );
+                }
+            });
     }
 }

@@ -11,7 +11,7 @@ public interface CommandParser {
     /**
      * Parse a command
      *
-     * @return pair of code and its args
+     * @return a pair of code and its args
      */
     Pair<String, Collection<String>> parse(String command);
 }
