@@ -23,8 +23,6 @@ logging:
 
 telegram:
   proxy:
-    port: 999
-    host: grsst.s5.opennetwork.cc
+    port: 1080
+    host: 51.83.2.136
     type: SOCKS5
-    user: 202081219
-    password: iVKCVOnj
