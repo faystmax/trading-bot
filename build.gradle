@@ -1,90 +1,26 @@
 plugins {
-    id 'java-library'
+    id 'base'
     id "org.hidetake.ssh" version "2.10.1"
-    id 'org.springframework.boot' version '2.2.4.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
 apply from: "build-${profile}.gradle"
-
-group = mainGroup
-version = mainVersion + (ext.snapshot ? '-SNAPSHOT' : '')
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 
 wrapper {
     gradleVersion = '6.1.1'
 }
 
-springBoot {
-    buildInfo()
-}
+allprojects {
+    group = mainGroup
+    version = mainVersion + (snapshot ? '-SNAPSHOT' : '')
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.telegram:telegrambots-spring-boot-starter:4.7'
-    implementation 'com.github.faystmax:binance-java-api:master-SNAPSHOT'
-
-    implementation 'org.apache.commons:commons-lang3:3.9'
-    implementation 'org.apache.commons:commons-collections4:4.4'
-
-    runtimeOnly 'com.h2database:h2'
-    implementation 'org.flywaydb:flyway-core'
-
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-// Docker configuration
-def dockerPath ="docker.pkg.github.com/faystmax/trading-bot/${rootProject.name}:${rootProject.version}"
-task buildDocker {
-    doLast {
-        copy {
-            from jar.archiveFile
-            into './docker/app/'
-        }
-        exec { commandLine "docker", "build", "--pull", "-t", "${dockerPath}", "./docker" }
-        exec { commandLine "docker", "push", "${dockerPath}" }
-    }
-}
-buildDocker.dependsOn build
-
-// Deployment configuration
-remotes {
-    server {
-        host = "${remoteHost}"
-        port = remotePort
-        user = "${remoteUser}"
-        password = "${remotePassword}"
-        knownHosts = allowAnyHosts
-    }
-}
-
-task deploy {
-    doLast {
-        ssh.run {
-            session(remotes.server) {
-                put from: jar.archiveFile.get().asFile.absolutePath , into: "./"
-                executeSudo "service trading-bot stop", pty: true
-                executeSudo "cp ./${jar.archiveFileName.get()} /srv/trading-bot/", pty: true
-                executeSudo "rm -f /srv/trading-bot/application.jar", pty: true
-                executeSudo "ln -s /srv/trading-bot/${jar.archiveFileName.get()} /srv/trading-bot/application.jar", pty: true
-                executeSudo "service trading-bot start", pty: true
-            }
+    // Deployment configuration
+    remotes {
+        server {
+            host = "${remoteHost}"
+            port = remotePort
+            user = "${remoteUser}"
+            password = "${remotePassword}"
+            knownHosts = allowAnyHosts
         }
     }
 }
-deploy.dependsOn build
