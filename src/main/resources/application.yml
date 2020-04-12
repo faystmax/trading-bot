@@ -6,6 +6,11 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: validate
+  jackson:
+    time-zone: Europe/Moscow
+    date-format: dd.MM.yyyy HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: true
   datasource:
     url: jdbc:h2:file:~/trading-bot/db
     driverClassName: org.h2.Driver
@@ -14,6 +19,11 @@ spring:
   flyway:
     user: sa
     password: pass
+
+server:
+  port: 8090
+  servlet:
+    context-path: /api
 
 logging:
   level:
