@@ -1,4 +1,5 @@
 plugins {
+    id 'idea'
     id 'base'
     id "com.moowork.node" version "1.3.1"
 }
@@ -27,7 +28,7 @@ task test(type: NpmTask) {
     inputs.file 'package.json'
     inputs.file 'package-lock.json'
 }
-build.dependsOn test
+check.dependsOn test
 
 task deploy {
     doLast {
