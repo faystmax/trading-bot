@@ -1,7 +1,11 @@
 {
   "name": "trading-bot-ui-r",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/faystmax/trading-bot"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -30,5 +34,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "prettier": "2.0.4"
   }
 }
