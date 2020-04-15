@@ -34,5 +34,5 @@ logging:
 telegram:
   proxy:
     port: 1080
-    host: 51.83.2.136
+    host: 96.113.176.101
     type: SOCKS5
