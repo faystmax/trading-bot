@@ -55,7 +55,6 @@ function SignInPage() {
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
-              className={classes.formItem}
               required
               fullWidth
               id="login-input"
@@ -69,7 +68,6 @@ function SignInPage() {
             <TextField
               required
               fullWidth
-              className={classes.formItem}
               variant="outlined"
               margin="normal"
               id="password-input"
