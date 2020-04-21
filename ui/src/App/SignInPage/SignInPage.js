@@ -7,10 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import useStyles from './styles';
+import styles from './styles';
 
 function SignInPage() {
-  const classes = useStyles();
+  const classes = styles();
 
   return (
     <div>
