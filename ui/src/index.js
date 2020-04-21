@@ -4,7 +4,6 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App/App';
 import * as serviceWorker from './serviceWorker';
-import './index.css';
 import 'typeface-roboto';
 import theme from './theme';
 
