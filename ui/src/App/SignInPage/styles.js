@@ -1,7 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../../assets/background.jpg';
+import mainTheme from '../../theme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   background: {
     backgroundImage: `url(${BackgroundImage})`,
     backgroundPosition: 'center',
@@ -22,16 +23,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing(7),
+    marginTop: mainTheme.spacing(7),
+  },
+  avatar: {
+    margin: mainTheme.spacing(1),
+    backgroundColor: mainTheme.palette.secondary.main,
   },
   label: {
-    margin: theme.spacing(3),
+    margin: mainTheme.spacing(1),
   },
   form: {
-    margin: theme.spacing(0, 3, 3),
+    margin: mainTheme.spacing(0, 3, 3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: mainTheme.spacing(3, 0, 2),
   },
 }));
 

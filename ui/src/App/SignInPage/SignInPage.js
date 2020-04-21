@@ -5,6 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useStyles from './styles';
 
 function SignInPage() {
@@ -15,6 +17,9 @@ function SignInPage() {
       <Paper elevation={0} className={classes.background} />
       <Container component="main" maxWidth="xs">
         <Paper className={classes.signIn}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
           <Typography className={classes.label} component="h1" variant="h5">
             Trading Bot
           </Typography>
