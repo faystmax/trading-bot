@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.List;
+import java.util.stream.Collector;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,8 +28,12 @@ public class TelegramStartKeyboardMarkupConfig {
     }
 
     private KeyboardRow createRow(final List<Command> commands) {
-        var row = new KeyboardRow();
-        commands.forEach(command -> row.add(new KeyboardButton(command.getCode())));
-        return row;
+        return commands.stream()
+            .map(Command::getCode)
+            .map(KeyboardButton::new)
+            .collect(Collector.of(KeyboardRow::new, KeyboardRow::add, (left, right) -> {
+                left.addAll(right);
+                return left;
+            }));
     }
 }
