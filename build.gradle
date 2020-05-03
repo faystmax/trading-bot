@@ -15,6 +15,10 @@ allprojects {
     group = mainGroup
     version = mainVersion + (snapshot ? '-SNAPSHOT' : '')
 
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
     // Deployment configuration
     remotes {
         server {
