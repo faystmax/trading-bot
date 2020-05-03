@@ -27,7 +27,7 @@ class ExchangeServiceImplTest {
 
     @Test
     @DisplayName("Check convert from Usd to Rub")
-    void convertFromUsdToRubSuccess() {
+    private void convertFromUsdToRubSuccess() {
         var ratesInfo = new ExRatesInfo();
         ratesInfo.setBase(RateBase.USD);
         ratesInfo.setDate(new Date());
@@ -40,7 +40,7 @@ class ExchangeServiceImplTest {
 
     @Test
     @DisplayName("Check convert from Usd to Rub")
-    void convertFromRubToUsdSuccess() {
+    private void convertFromRubToUsdSuccess() {
         var ratesInfo = new ExRatesInfo();
         ratesInfo.setBase(RateBase.RUB);
         ratesInfo.setDate(new Date());

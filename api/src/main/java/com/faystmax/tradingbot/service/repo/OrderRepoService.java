@@ -22,7 +22,7 @@ public class OrderRepoService {
 
     @Transactional
     public Order createOrder(com.binance.api.client.domain.account.Order binanceOrder) {
-        var myOrder = new com.faystmax.tradingbot.db.entity.Order();
+        var myOrder = new Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());
         myOrder.setDateAdd(new Date(binanceOrder.getTime()));
         myOrder.setPrice(new BigDecimal(binanceOrder.getPrice()));

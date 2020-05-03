@@ -16,8 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 
 import java.util.Objects;
 
-import static com.faystmax.tradingbot.service.telegram.TelegramMessageFactory.createMsg;
-
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
@@ -31,6 +29,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramConfig config;
     private final MessageSource messageSource;
     private final CommandExecutor commandExecutor;
+    private final TelegramMessageFactory messageFactory;
     private final ReplyKeyboardMarkup startKeyboardMarkup;
 
     @Autowired
@@ -38,11 +37,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                        TelegramConfig config,
                        MessageSource messageSource,
                        CommandExecutor commandExecutor,
+                       TelegramMessageFactory messageFactory,
                        @Qualifier("startKeyboardMarkup") ReplyKeyboardMarkup startKeyboardMarkup) {
         super(options);
         this.config = config;
         this.messageSource = messageSource;
         this.commandExecutor = commandExecutor;
+        this.messageFactory = messageFactory;
         this.startKeyboardMarkup = startKeyboardMarkup;
     }
 
@@ -59,7 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void sendMsg(final long chatId, final String text) {
         log.info(messageSource.getMsg(SEND_MESSAGE, text, chatId));
-        this.sendApiMethod(createMsg(chatId, text));
+        this.sendApiMethod(messageFactory.createMsg(chatId, text));
     }
 
     public void sendMsgToOwner(final String text) {
@@ -69,7 +70,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void sendMsgToOwner(final String text, final ReplyKeyboardMarkup keyboardMarkup) {
         log.info(messageSource.getMsg(SEND_MESSAGE_TO_OWNER, text));
-        this.sendApiMethod(createMsg(config.getChatId(), text, keyboardMarkup));
+        this.sendApiMethod(messageFactory.createMsg(config.getChatId(), text, keyboardMarkup));
     }
 
     @Override
