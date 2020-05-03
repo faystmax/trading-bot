@@ -15,9 +15,14 @@ public class ExchangeServiceImpl implements ExchangeService {
     private final ExRatesApiClient apiClient;
 
     @Override
+    public BigDecimal convertUsdToRub(final BigDecimal quantity) {
+        return convert(RateBase.USD, RateBase.RUB, quantity);
+    }
+
+    @Override
     public BigDecimal convert(final RateBase formRate, final RateBase toRate, final BigDecimal quantity) {
         ExRatesInfo latestRates = apiClient.getLatestRates(formRate);
-        BigDecimal price = latestRates.getRates().get(toRate);
-        return price.multiply(quantity);
+        BigDecimal rate = latestRates.getRates().get(toRate);
+        return rate.multiply(quantity);
     }
 }
