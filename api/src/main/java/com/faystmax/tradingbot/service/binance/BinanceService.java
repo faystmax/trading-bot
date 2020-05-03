@@ -2,7 +2,6 @@ package com.faystmax.tradingbot.service.binance;
 
 import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,7 +39,7 @@ public interface BinanceService {
      *
      * @return base and quote balances
      */
-    Pair<Balance, Balance> getCurrentBalance();
+    FullBalance getCurrentBalance();
 
     /**
      * Buy at market price on all free balance

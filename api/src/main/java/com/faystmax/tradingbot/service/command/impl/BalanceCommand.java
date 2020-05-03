@@ -3,9 +3,9 @@ package com.faystmax.tradingbot.service.command.impl;
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.FullBalance;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,19 +37,18 @@ public class BalanceCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        Pair<Balance, Balance> balancePair = binanceService.getCurrentBalance();
+        FullBalance balance = binanceService.getCurrentBalance();
         var builder = new StringBuilder();
-        appendBalance(builder, balancePair.getLeft());
-        builder.append("\n");
-        appendBalance(builder, balancePair.getRight());
+        appendBalance(builder, balance.getBase());
+        appendBalance(builder, balance.getQuote());
         return builder.toString();
     }
 
     /**
      * Appends balance data to builder
      *
-     * @param builder - builder where data will be appended
-     * @param balance - balance data to append
+     * @param builder builder where data will be appended
+     * @param balance balance data to append
      */
     private void appendBalance(final StringBuilder builder, final Balance balance) {
         builder.append(balance.getAsset()).append(":").append("\n")

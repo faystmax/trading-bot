@@ -11,8 +11,8 @@ import com.binance.api.client.domain.general.SymbolInfo;
 import com.faystmax.tradingbot.config.BinanceConfig;
 import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.FullBalance;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,18 +55,18 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public Pair<Balance, Balance> getCurrentBalance() {
+    public FullBalance getCurrentBalance() {
         Account account = client.getAccount();
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         AssetBalance baseBalance = account.getAssetBalance(symbolInfo.getBaseAsset());
         AssetBalance quoteBalance = account.getAssetBalance(symbolInfo.getQuoteAsset());
-        return Pair.of(Balance.valueOf(baseBalance), Balance.valueOf(quoteBalance));
+        return new FullBalance(Balance.valueOf(baseBalance), Balance.valueOf(quoteBalance));
     }
 
     @Override
     public Order marketBuyAll() {
-        Pair<Balance, Balance> balance = getCurrentBalance();
-        BigDecimal free = balance.getRight().getFree();
+        FullBalance balance = getCurrentBalance();
+        BigDecimal free = balance.getQuote().getFree();
         BigDecimal lastPrice = getLastPrice();
         BigDecimal availableBuyQuantity = free.divide(lastPrice, 8, RoundingMode.DOWN);
 
@@ -91,8 +91,8 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public Order marketSellAll() {
-        Pair<Balance, Balance> balance = getCurrentBalance();
-        BigDecimal free = balance.getLeft().getFree();
+        FullBalance balance = getCurrentBalance();
+        BigDecimal free = balance.getBase().getFree();
         return marketSell(free);
     }
 
