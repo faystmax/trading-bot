@@ -20,9 +20,9 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public BigDecimal convert(final RateBase formRate, final RateBase toRate, final BigDecimal quantity) {
-        ExRatesInfo latestRates = apiClient.getLatestRates(formRate);
-        BigDecimal rate = latestRates.getRates().get(toRate);
+    public BigDecimal convert(final RateBase form, final RateBase to, final BigDecimal quantity) {
+        ExRatesInfo latestRates = apiClient.getLatestRates(form);
+        BigDecimal rate = latestRates.getRates().get(to);
         return rate.multiply(quantity);
     }
 }
