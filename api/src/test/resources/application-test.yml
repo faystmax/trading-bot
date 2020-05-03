@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: test
+
+logging:
+  level:
+    org.springframework: warn
+    com.faystmax: info
+    root: warn
+
+telegram:
+  botName: test
+  chat-id: 123
+  token: test
+  proxy:
+    port: 1080
+    host: 96.113.176.101
+    type: SOCKS5
+
+binance:
+  api-key: test
+  secret-key: test
+  symbol: ETHUSDT

@@ -45,6 +45,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
+test {
+    useJUnitPlatform()
+}
+
 task deploy {
     doLast {
         ssh.run {
