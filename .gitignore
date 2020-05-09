@@ -8,7 +8,7 @@ build/
 *.iml
 *.ipr
 *.log
-/logs
+logs
 out/
 /docker/app/*
 node_modules/
