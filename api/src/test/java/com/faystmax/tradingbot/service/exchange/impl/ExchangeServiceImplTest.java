@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.service.exchange.impl;
 
-import com.faystmax.exchangerates.api.client.domain.ExRatesInfo;
-import com.faystmax.exchangerates.api.client.domain.RateBase;
+import com.faystmax.exchangerates.api.client.domain.Currency;
+import com.faystmax.exchangerates.api.client.domain.ExchangeRates;
 import com.faystmax.exchangerates.api.client.impl.ExRatesApiClientImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,26 +28,26 @@ class ExchangeServiceImplTest {
     @Test
     @DisplayName("Check convert from Usd to Rub")
     public void convertFromUsdToRubSuccess() {
-        var ratesInfo = new ExRatesInfo();
-        ratesInfo.setBase(RateBase.USD);
-        ratesInfo.setDate(new Date());
-        ratesInfo.setRates(Collections.singletonMap(RateBase.RUB, new BigDecimal(70)));
-        when(apiClient.getLatestRates(any())).thenReturn(ratesInfo);
+        var rates = new ExchangeRates();
+        rates.setBase(Currency.USD);
+        rates.setDate(new Date());
+        rates.setRates(Collections.singletonMap(Currency.RUB, new BigDecimal(70)));
+        when(apiClient.getLatestRates(any())).thenReturn(rates);
 
-        var res = service.convert(RateBase.USD, RateBase.RUB, new BigDecimal(1));
+        var res = service.convert(Currency.USD, Currency.RUB, new BigDecimal(1));
         assertEquals(res, new BigDecimal(70));
     }
 
     @Test
     @DisplayName("Check convert from Usd to Rub")
     public void convertFromRubToUsdSuccess() {
-        var ratesInfo = new ExRatesInfo();
-        ratesInfo.setBase(RateBase.RUB);
-        ratesInfo.setDate(new Date());
-        ratesInfo.setRates(Collections.singletonMap(RateBase.USD, new BigDecimal(1)));
-        when(apiClient.getLatestRates(any())).thenReturn(ratesInfo);
+        var rates = new ExchangeRates();
+        rates.setBase(Currency.RUB);
+        rates.setDate(new Date());
+        rates.setRates(Collections.singletonMap(Currency.USD, new BigDecimal(1)));
+        when(apiClient.getLatestRates(any())).thenReturn(rates);
 
-        var res = service.convert(RateBase.RUB, RateBase.USD, new BigDecimal(70));
+        var res = service.convert(Currency.RUB, Currency.USD, new BigDecimal(70));
         assertEquals(res, new BigDecimal(70));
     }
 }
