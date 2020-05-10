@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'org.apache.commons:commons-collections4:4.4'
 
-    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2:1.4.199'
     implementation 'org.flywaydb:flyway-core'
 
     compileOnly 'org.projectlombok:lombok'
