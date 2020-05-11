@@ -37,10 +37,7 @@ public class TelegramOptions {
             Authenticator.setDefault(new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(
-                        config.getProxy().getUser(),
-                        config.getProxy().getPassword().toCharArray()
-                    );
+                    return new PasswordAuthentication(user, password.toCharArray());
                 }
             });
     }
