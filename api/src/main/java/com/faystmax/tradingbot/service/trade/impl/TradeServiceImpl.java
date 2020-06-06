@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TradeServiceImpl implements TradeService {
@@ -29,13 +27,5 @@ public class TradeServiceImpl implements TradeService {
     public com.faystmax.tradingbot.db.entity.Order marketSellAll() {
         Order order = binanceService.marketSellAll();
         return orderRepoService.createOrder(order);
-    }
-
-    @Transactional
-    @Override
-    public void updateDatabaseOrdersFromExchange() {
-        List<Order> binanceOrders = binanceService.getAllMyOrders();
-        orderRepoService.deleteAll();
-        binanceOrders.forEach(orderRepoService::createOrder);
     }
 }

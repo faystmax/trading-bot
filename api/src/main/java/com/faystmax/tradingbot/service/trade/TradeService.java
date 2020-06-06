@@ -7,11 +7,6 @@ import com.faystmax.tradingbot.db.entity.Order;
  */
 public interface TradeService {
     /**
-     * Get orders from Exchange and add it to DB
-     */
-    void updateDatabaseOrdersFromExchange();
-
-    /**
      * Buy at market price
      *
      * @return created Order
