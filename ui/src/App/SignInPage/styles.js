@@ -8,7 +8,6 @@ const styles = makeStyles(() => ({
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    filter: 'blur(4px)',
     height: '100%',
     width: '100%',
     position: 'absolute',
