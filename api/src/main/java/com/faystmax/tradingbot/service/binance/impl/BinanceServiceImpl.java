@@ -83,7 +83,7 @@ public class BinanceServiceImpl implements BinanceService {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
-        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize));
+        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
         NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity.toPlainString());
         newOrder.newOrderRespType(NewOrderResponseType.FULL);
@@ -106,7 +106,7 @@ public class BinanceServiceImpl implements BinanceService {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
-        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize));
+        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
         NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity.toPlainString());
         newOrder.newOrderRespType(NewOrderResponseType.FULL);
