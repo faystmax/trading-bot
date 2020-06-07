@@ -1,5 +1,6 @@
 package com.faystmax.tradingbot.service.binance;
 
+import com.binance.api.client.domain.account.NewOrderResponse;
 import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
 
@@ -46,28 +47,28 @@ public interface BinanceService {
      *
      * @return order response
      */
-    Order marketBuyAll();
+    NewOrderResponse marketBuyAll();
 
     /**
      * Buy at market price
      *
      * @param quantity amount you want to buy
-     * @return created order
+     * @return order response
      */
-    Order marketBuy(BigDecimal quantity);
+    NewOrderResponse marketBuy(BigDecimal quantity);
 
     /**
      * Sell at market price on all free balance
      *
-     * @return created order
+     * @return order response
      */
-    Order marketSellAll();
+    NewOrderResponse marketSellAll();
 
     /**
      * Sell at market price
      *
      * @param quantity amount you want to sell
-     * @return created order
+     * @return order response
      */
-    Order marketSell(BigDecimal quantity);
+    NewOrderResponse marketSell(BigDecimal quantity);
 }

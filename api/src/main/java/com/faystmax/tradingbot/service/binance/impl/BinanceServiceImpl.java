@@ -6,10 +6,10 @@ import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.account.AssetBalance;
 import com.binance.api.client.domain.account.NewOrder;
 import com.binance.api.client.domain.account.NewOrderResponse;
+import com.binance.api.client.domain.account.NewOrderResponseType;
 import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
 import com.binance.api.client.domain.account.request.AllOrdersRequest;
-import com.binance.api.client.domain.account.request.OrderStatusRequest;
 import com.binance.api.client.domain.general.FilterType;
 import com.binance.api.client.domain.general.SymbolFilter;
 import com.binance.api.client.domain.general.SymbolInfo;
@@ -69,7 +69,7 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public Order marketBuyAll() {
+    public NewOrderResponse marketBuyAll() {
         FullBalance balance = getCurrentBalance();
         BigDecimal free = balance.getQuote().getFree();
         BigDecimal lastPrice = getLastPrice();
@@ -79,41 +79,41 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public Order marketBuy(final BigDecimal quantity) {
+    public NewOrderResponse marketBuy(final BigDecimal quantity) {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize));
 
         NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity.toPlainString());
+        newOrder.newOrderRespType(NewOrderResponseType.FULL);
         log.info("Creating order = {}", newOrder);
 
         NewOrderResponse newOrderResponse = client.newOrder(newOrder);
         log.info("Order created = {}", newOrderResponse);
-        var orderStatusRequest = new OrderStatusRequest(config.getSymbol(), newOrderResponse.getOrderId());
-        return client.getOrderStatus(orderStatusRequest);
+        return newOrderResponse;
     }
 
     @Override
-    public Order marketSellAll() {
+    public NewOrderResponse marketSellAll() {
         FullBalance balance = getCurrentBalance();
         BigDecimal free = balance.getBase().getFree();
         return marketSell(free);
     }
 
     @Override
-    public Order marketSell(final BigDecimal quantity) {
+    public NewOrderResponse marketSell(final BigDecimal quantity) {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize));
 
         NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity.toPlainString());
+        newOrder.newOrderRespType(NewOrderResponseType.FULL);
         log.info("Creating order = {}", newOrder);
 
         NewOrderResponse newOrderResponse = client.newOrder(newOrder);
         log.info("Order created = {}", newOrderResponse);
-        var orderStatusRequest = new OrderStatusRequest(config.getSymbol(), newOrderResponse.getOrderId());
-        return client.getOrderStatus(orderStatusRequest);
+        return newOrderResponse;
     }
 }

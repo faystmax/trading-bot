@@ -1,5 +1,6 @@
 package com.faystmax.tradingbot.service.repo;
 
+import com.binance.api.client.domain.account.NewOrderResponse;
 import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,22 @@ public class OrderRepoService {
         myOrder.setTimeInForce(binanceOrder.getTimeInForce());
         myOrder.setType(binanceOrder.getType());
         myOrder.setSide(binanceOrder.getSide());
+        repo.save(myOrder);
+        return myOrder;
+    }
+
+    @Transactional
+    public Order createOrder(NewOrderResponse orderResponse) {
+        var myOrder = new Order();
+        myOrder.setExchangeId(orderResponse.getOrderId().toString());
+        myOrder.setDateAdd(new Date());
+        myOrder.setPrice(new BigDecimal(orderResponse.getPrice()));
+        myOrder.setOrigQty(new BigDecimal(orderResponse.getOrigQty()));
+        myOrder.setExecutedQty(new BigDecimal(orderResponse.getExecutedQty()));
+        myOrder.setStatus(orderResponse.getStatus());
+        myOrder.setTimeInForce(orderResponse.getTimeInForce());
+        myOrder.setType(orderResponse.getType());
+        myOrder.setSide(orderResponse.getSide());
         repo.save(myOrder);
         return myOrder;
     }
