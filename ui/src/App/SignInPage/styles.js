@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../../assets/background.jpg';
 import mainTheme from '../../theme';
 
-const styles = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   background: {
     backgroundImage: `url(${BackgroundImage})`,
     backgroundPosition: 'center',
@@ -39,4 +39,4 @@ const styles = makeStyles(() => ({
   },
 }));
 
-export default styles;
+export default useStyles;

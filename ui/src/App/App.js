@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Route, Router, Switch } from 'react-router-dom';
-import SignInPage from './SignInPage/SignInPage';
+import SignInPage from './SignInPage';
+import HomePage from './HomePage';
 
 const hist = createBrowserHistory();
 
@@ -10,7 +11,8 @@ function App() {
     <Router history={hist}>
       <Switch>
         {/* <Route path="/admin" component={Admin} /> */}
-        <Route path="/" component={SignInPage} />
+        <Route path="/signIn" component={SignInPage} />
+        <Route path="/" component={HomePage} />
       </Switch>
     </Router>
   );
