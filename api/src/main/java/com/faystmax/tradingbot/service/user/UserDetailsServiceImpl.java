@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -29,6 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user.getEmail(),
             user.getPassword(),
             user.getEnabled(),
-            singleton(new SimpleGrantedAuthority(user.getRole().name())));
+            singletonList(new SimpleGrantedAuthority(user.getRole().name())));
     }
 }

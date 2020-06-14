@@ -1,12 +1,12 @@
 package com.faystmax.tradingbot.exception;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Base exception
  */
+@NoArgsConstructor
 public class ServiceException extends RuntimeException {
-    public ServiceException() {
-    }
-
     public ServiceException(String message) {
         super(message);
     }
