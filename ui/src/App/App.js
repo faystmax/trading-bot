@@ -11,8 +11,8 @@ function App() {
     <Router history={hist}>
       <Switch>
         {/* <Route path="/admin" component={Admin} /> */}
-        <Route path="/signIn" component={SignInPage} />
-        <Route path="/" component={HomePage} />
+        <Route path="/" component={SignInPage} />
+        <Route path="/admin" component={HomePage} />
       </Switch>
     </Router>
   );
