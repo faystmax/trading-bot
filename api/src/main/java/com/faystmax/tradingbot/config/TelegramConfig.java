@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,21 +18,15 @@ public class TelegramConfig {
     @NotBlank
     private String botName;
     @NotNull
-    private Proxy proxy;
-    @NotNull
     private Long chatId;
+    private Proxy proxy;
 
     @Data
     public static class Proxy {
-        @NotBlank
         private String host;
-        @NotNull
         private Integer port;
-        @NotBlank
         private String type;
-        @Nullable
         private String user;
-        @Nullable
         private String password;
     }
 }

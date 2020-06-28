@@ -29,12 +29,6 @@ logging:
     com.faystmax: info
     root: warn
 
-telegram:
-  proxy:
-    port: 30588
-    host: 104.248.63.17
-    type: SOCKS5
-
 jwt:
   secret: client_secret
   expiration: 86400000
