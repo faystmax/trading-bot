@@ -3,7 +3,6 @@ package com.faystmax.tradingbot.service.user;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.db.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static java.util.Collections.singletonList;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepo userRepo;
 

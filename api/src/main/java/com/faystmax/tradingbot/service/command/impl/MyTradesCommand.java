@@ -6,14 +6,13 @@ import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.util.DateUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class MyTradesCommand implements Command {
     private static final String MY_TRADES_CODE = "MyTrades";
     private static final String MY_TRADES_DESCRIPTION = "myTrades.description";

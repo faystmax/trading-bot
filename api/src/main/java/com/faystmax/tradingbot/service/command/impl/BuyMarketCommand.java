@@ -6,13 +6,12 @@ import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.service.trade.TradeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class BuyMarketCommand implements Command {
     private static final String BUY_MARKET_CODE = "BuyMarket";
     private static final String BUY_MARKET_DESCRIPTION = "buyMarket.description";

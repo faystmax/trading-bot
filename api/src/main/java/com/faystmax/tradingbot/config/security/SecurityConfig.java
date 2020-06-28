@@ -4,7 +4,6 @@ import com.faystmax.tradingbot.config.security.jwt.AuthEntryPointJwt;
 import com.faystmax.tradingbot.config.security.jwt.AuthTokenFilter;
 import com.faystmax.tradingbot.service.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthTokenFilter authTokenFilter;
     private final AuthEntryPointJwt unauthorizedHandler;

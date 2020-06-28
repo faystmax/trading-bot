@@ -6,7 +6,6 @@ import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.binance.FullBalance;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -17,7 +16,7 @@ import java.util.Collection;
  * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class BalanceCommand implements Command {
     private final static String BALANCE_CODE = "MyBalance";
     private final static String BALANCE_DESCRIPTION = "balance.description";

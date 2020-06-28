@@ -5,7 +5,6 @@ import com.faystmax.tradingbot.dto.auth.SignInResponse;
 import com.faystmax.tradingbot.service.auth.SignInService;
 import com.faystmax.tradingbot.service.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import static java.util.stream.Collectors.toList;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class SignInServiceImpl implements SignInService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;

@@ -6,14 +6,13 @@ import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.util.DateUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class MyOrdersCommand implements Command {
     private static final String MY_ORDERS_CODE = "MyOrders";
     private static final String MY_ORDERS_DESCRIPTION = "myOrders.description";

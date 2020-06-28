@@ -9,7 +9,6 @@ import com.faystmax.tradingbot.service.auth.SignInService;
 import com.faystmax.tradingbot.service.auth.SignUpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class AuthController {
     private final SignInService signInService;
     private final SignUpService signUpService;

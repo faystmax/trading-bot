@@ -1,7 +1,6 @@
 package com.faystmax.tradingbot.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -13,7 +12,7 @@ import java.net.PasswordAuthentication;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Configuration
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class TelegramOptions {
     private final TelegramConfig config;
 

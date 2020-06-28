@@ -4,7 +4,6 @@ import com.binance.api.client.domain.account.NewOrderResponse;
 import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class OrderRepoService {
     private final OrderRepo repo;
 

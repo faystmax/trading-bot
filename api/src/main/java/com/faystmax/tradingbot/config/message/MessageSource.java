@@ -1,7 +1,6 @@
 package com.faystmax.tradingbot.config.message;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Wrapper above default spring messageSource
  */
 @Component("messageSourceWrapper")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class MessageSource {
     private final org.springframework.context.MessageSource messageSource;
 

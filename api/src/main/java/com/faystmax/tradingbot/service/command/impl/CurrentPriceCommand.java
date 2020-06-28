@@ -4,7 +4,6 @@ import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ import java.util.Collection;
  * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class CurrentPriceCommand implements Command {
     private final static String CURRENT_PRICE_CODE = "CurrentPrice";
     private final static String CURRENT_PRICE_ANSWER = "currentPrice.answer";

@@ -5,7 +5,6 @@ import com.faystmax.tradingbot.db.repo.UserRepo;
 import com.faystmax.tradingbot.exception.SignUpException;
 import com.faystmax.tradingbot.service.auth.SignUpService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ import static java.lang.Boolean.TRUE;
 import static java.text.MessageFormat.format;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class SignUpServiceImpl implements SignUpService {
     private final UserRepo userRepo;
     private final PasswordEncoder encoder;
