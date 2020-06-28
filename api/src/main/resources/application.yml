@@ -19,6 +19,8 @@ spring:
   flyway:
     user: sa
     password: pass
+  mvc:
+    locale: en_US
 
 server:
   port: 8090
