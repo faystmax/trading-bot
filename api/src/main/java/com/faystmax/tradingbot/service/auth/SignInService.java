@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.service.auth;
 
-import com.faystmax.tradingbot.dto.JwtDto;
+import com.faystmax.tradingbot.dto.auth.SignInResponse;
 
 public interface SignInService {
-    JwtDto signIn(String email, String password);
+    SignInResponse signIn(String email, String password);
 }
