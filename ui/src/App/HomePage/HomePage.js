@@ -9,10 +9,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Button from '@material-ui/core/Button';
+import { useAuth } from '../../utils/auth';
 import useStyles from './styles';
 
 function HomePage() {
   const classes = useStyles();
+  const { setAuth } = useAuth();
+
+  function logOut() {
+    setAuth(null);
+  }
 
   return (
     <div className={classes.root}>
@@ -48,6 +55,9 @@ function HomePage() {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
+        <Button variant="contained" color="primary" onClick={logOut}>
+          Log out
+        </Button>
       </main>
     </div>
   );
