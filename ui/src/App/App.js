@@ -21,7 +21,7 @@ function App() {
     <AuthContext.Provider value={{ auth, setAuth: setAuthInfo }}>
       <Router history={hist}>
         <Route exact path="/signIn" component={SignInPage} />
-        <PrivateRoute exact path="/" component={HomePage} />
+        <PrivateRoute path="/" component={HomePage} />
       </Router>
     </AuthContext.Provider>
   );
