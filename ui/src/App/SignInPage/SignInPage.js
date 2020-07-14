@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Avatar from '@material-ui/core/Avatar';
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Box from '@material-ui/core/Box';
 import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import api from '../../utils/api';
 import Copyright from '../../components/Copyright';
-import { useAuth } from '../../utils/auth';
 import useStyles from './styles';
 
 function SignInPage(props) {

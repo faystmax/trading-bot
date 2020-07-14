@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+} from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import { AuthContext } from '../utils/auth';
 import SignInPage from './SignInPage';
@@ -20,11 +25,14 @@ function App() {
   return (
     <AuthContext.Provider value={{ auth, setAuth: setAuthInfo }}>
       <Router history={hist}>
-        <Route exact path="/signIn" component={SignInPage} />
-        <PrivateRoute path="/" component={HomePage} />
+        <Switch>
+          <Route path="/signIn" component={SignInPage} />
+          <PrivateRoute exact path="/" component={HomePage} />
+          <Redirect to="/" />
+        </Switch>
       </Router>
     </AuthContext.Provider>
   );
-}
+};
 
 export default App;
