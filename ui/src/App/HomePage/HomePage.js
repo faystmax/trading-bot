@@ -1,16 +1,17 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import Button from '@material-ui/core/Button';
-import { useAuth } from '../../utils/auth';
+import {
+  AppBar,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
+import { InboxIcon, MailIcon } from '@material-ui/icons';
+import { useAuth } from 'utils/auth';
 import useStyles from './styles';
 
 const HomePage = () => {

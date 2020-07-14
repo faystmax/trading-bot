@@ -11,12 +11,11 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Alert from '@material-ui/lab/Alert';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import api from '../../utils/api';
-import Copyright from '../../components/Copyright';
+import { LockOutlinedIcon } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
+import { useAuth } from 'utils/auth';
+import api from 'utils/api';
+import Copyright from 'components/Copyright';
 import useStyles from './styles';
 
 const SignInPage = (props) => {
@@ -26,7 +25,7 @@ const SignInPage = (props) => {
   const [password, setPassword] = useState('');
   const { auth, setAuth } = useAuth();
 
-  function loginRequest() {
+  const loginRequest = () => {
     api({
       method: 'post',
       url: 'auth/signIn',
@@ -45,7 +44,7 @@ const SignInPage = (props) => {
       .catch(() => {
         setIsError(true);
       });
-  }
+  };
 
   if (auth) {
     return <Redirect to={props.location.state?.referer || '/'} />;
@@ -129,6 +128,6 @@ const SignInPage = (props) => {
       </Container>
     </div>
   );
-}
+};
 
 export default SignInPage;
