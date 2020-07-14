@@ -17,13 +17,18 @@ function App() {
   const existingAuth = JSON.parse(localStorage.getItem('auth'));
   const [auth, setAuth] = useState(existingAuth);
 
-  const setAuthInfo = (data) => {
+  const setAuthInfo = useCallback((data) => {
     localStorage.setItem('auth', JSON.stringify(data));
     setAuth(data);
-  };
+  }, []);
+
+  const authContextValue = useMemo(() => ({ auth, setAuth: setAuthInfo }), [
+    auth,
+    setAuthInfo,
+  ]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth: setAuthInfo }}>
+    <AuthContext.Provider value={authContextValue}>
       <Router history={hist}>
         <Switch>
           <Route path="/signIn" component={SignInPage} />
