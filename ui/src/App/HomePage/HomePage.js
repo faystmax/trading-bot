@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { InboxIcon, MailIcon } from '@material-ui/icons';
+import { MoveToInbox as InboxIcon, Mail as MailIcon } from '@material-ui/icons';
 import { useAuth } from 'utils/auth';
 import useStyles from './styles';
 

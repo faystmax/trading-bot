@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { LockOutlinedIcon } from '@material-ui/icons';
+import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import { useAuth } from 'utils/auth';
 import api from 'utils/api';
