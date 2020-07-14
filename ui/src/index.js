@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App/App';
-import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
 import theme from './theme';
 
@@ -16,5 +15,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root'),
 );
-
-serviceWorker.register();
