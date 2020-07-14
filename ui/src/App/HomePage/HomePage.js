@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { useAuth } from '../../utils/auth';
 import useStyles from './styles';
 
-function HomePage() {
+const HomePage = () => {
   const classes = useStyles();
   const { setAuth } = useAuth();
 
@@ -61,6 +61,6 @@ function HomePage() {
       </main>
     </div>
   );
-}
+};
 
 export default HomePage;

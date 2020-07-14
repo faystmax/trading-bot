@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 
-function PrivateRoute({ component: Component, ...rest }) {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   const { auth } = useAuth();
 
   return (
@@ -19,6 +19,6 @@ function PrivateRoute({ component: Component, ...rest }) {
       }
     />
   );
-}
+};
 
 export default PrivateRoute;

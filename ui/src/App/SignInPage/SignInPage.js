@@ -19,7 +19,7 @@ import api from '../../utils/api';
 import Copyright from '../../components/Copyright';
 import useStyles from './styles';
 
-function SignInPage(props) {
+const SignInPage = (props) => {
   const classes = useStyles();
   const [isError, setIsError] = useState(false);
   const [email, setEmail] = useState('');

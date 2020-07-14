@@ -13,7 +13,7 @@ import HomePage from './HomePage';
 
 const hist = createBrowserHistory();
 
-function App() {
+const App = () => {
   const existingAuth = JSON.parse(localStorage.getItem('auth'));
   const [auth, setAuth] = useState(existingAuth);
 
