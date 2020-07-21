@@ -20,6 +20,9 @@ const useStyles = makeStyles(() => ({
   drawerContainer: {
     overflow: 'auto',
   },
+  title: {
+    flexGrow: 1,
+  },
   content: {
     flexGrow: 1,
     padding: mainTheme.spacing(3),

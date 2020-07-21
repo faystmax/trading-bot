@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   AppBar,
-  Button,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -10,7 +10,11 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { MoveToInbox as InboxIcon, Mail as MailIcon } from '@material-ui/icons';
+import {
+  ExitToApp as ExitToAppIcon,
+  MoveToInbox as InboxIcon,
+  Mail as MailIcon,
+} from '@material-ui/icons';
 import { useAuth } from 'utils/auth';
 import useStyles from './styles';
 
@@ -26,9 +30,12 @@ const HomePage = () => {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             Dashboard
           </Typography>
+          <IconButton onClick={logOut} color="inherit">
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -56,9 +63,6 @@ const HomePage = () => {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <Button variant="contained" color="primary" onClick={logOut}>
-          Log out
-        </Button>
       </main>
     </div>
   );
