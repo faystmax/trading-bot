@@ -24,6 +24,13 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     marginTop: mainTheme.spacing(7),
   },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
   avatar: {
     margin: mainTheme.spacing(1),
     backgroundColor: mainTheme.palette.secondary.main,

@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Container,
   Grid,
   Link,
@@ -21,11 +22,13 @@ import useStyles from './styles';
 const SignInPage = (props) => {
   const classes = useStyles();
   const [isError, setIsError] = useState(false);
+  const [isPerforming, setIsPerforming] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { auth, setAuth } = useAuth();
 
   const loginRequest = () => {
+    setIsPerforming(true);
     api({
       method: 'post',
       url: 'auth/signIn',
@@ -40,9 +43,11 @@ const SignInPage = (props) => {
         } else {
           setIsError(true);
         }
+        setIsPerforming(false);
       })
       .catch(() => {
         setIsError(true);
+        setIsPerforming(false);
       });
   };
 
@@ -102,9 +107,16 @@ const SignInPage = (props) => {
               variant="contained"
               color="primary"
               fullWidth
+              disabled={isPerforming}
               onClick={loginRequest}
             >
               Sign In
+              {isPerforming && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
             </Button>
             <Grid container>
               <Grid item xs>
