@@ -21,3 +21,9 @@ binance:
   api-key: test
   secret-key: test
   symbol: ETHUSDT
+
+mail:
+  host: imap.gmail.com:993
+  username: test
+  password: test
+  folder: INBOX
