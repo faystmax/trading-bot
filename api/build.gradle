@@ -24,13 +24,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.integration:spring-integration-mail'
     implementation 'org.telegram:telegrambots-spring-boot-starter:4.7'
     implementation 'com.github.binance-exchange:binance-java-api:master-SNAPSHOT'
     implementation 'com.github.faystmax:exchange-rates-api-client:1.1.0'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'javax.mail:mail:1.4.7'
 
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-email:1.5'
 
     runtimeOnly 'com.h2database:h2:1.4.199'
     implementation 'org.flywaydb:flyway-core'
