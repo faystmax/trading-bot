@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.telegram;
 
-import com.faystmax.tradingbot.config.TelegramConfig;
+import com.faystmax.tradingbot.config.telegram.TelegramProperties;
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
 import lombok.SneakyThrows;
@@ -26,21 +26,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String MESSAGE_FROM_OWNER = "telegramBot.message.from.owner";
     private static final String MESSAGE_FROM_STRANGER = "telegramBot.message.from.stranger";
 
-    private final TelegramConfig config;
     private final MessageSource messageSource;
     private final CommandExecutor commandExecutor;
+    private final TelegramProperties telegramProperties;
     private final TelegramMessageFactory messageFactory;
     private final ReplyKeyboardMarkup startKeyboardMarkup;
 
     @Autowired
     public TelegramBot(DefaultBotOptions options,
-                       TelegramConfig config,
+                       TelegramProperties telegramProperties,
                        MessageSource messageSource,
                        CommandExecutor commandExecutor,
                        TelegramMessageFactory messageFactory,
                        @Qualifier("startKeyboardMarkup") ReplyKeyboardMarkup startKeyboardMarkup) {
         super(options);
-        this.config = config;
+        this.telegramProperties = telegramProperties;
         this.messageSource = messageSource;
         this.commandExecutor = commandExecutor;
         this.messageFactory = messageFactory;
@@ -49,12 +49,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return config.getBotName();
+        return telegramProperties.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return config.getToken();
+        return telegramProperties.getToken();
     }
 
     @SneakyThrows
@@ -70,13 +70,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void sendMsgToOwner(final String text, final ReplyKeyboardMarkup keyboardMarkup) {
         log.info(messageSource.getMsg(SEND_MESSAGE_TO_OWNER, text));
-        this.sendApiMethod(messageFactory.createMsg(config.getChatId(), text, keyboardMarkup));
+        this.sendApiMethod(messageFactory.createMsg(telegramProperties.getChatId(), text, keyboardMarkup));
     }
 
     @Override
     public void onUpdateReceived(final Update update) {
         final Message msg = update.getMessage();
-        if (!Objects.equals(msg.getChatId(), config.getChatId())) {
+        if (!Objects.equals(msg.getChatId(), telegramProperties.getChatId())) {
             sendMsg(msg.getChatId(), messageSource.getMsg(MESSAGE_FROM_STRANGER, msg.getText(), msg.getChatId()));
             return;
         }

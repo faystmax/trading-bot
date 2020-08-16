@@ -1,6 +1,5 @@
-package com.faystmax.tradingbot.config;
+package com.faystmax.tradingbot.config.telegram;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -12,16 +11,13 @@ import java.net.PasswordAuthentication;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Configuration
-@RequiredArgsConstructor
-public class TelegramOptions {
-    private final TelegramConfig config;
-
+public class TelegramConfig {
     @Bean
-    public DefaultBotOptions botOptions() {
+    public DefaultBotOptions botOptions(TelegramProperties properties) {
         DefaultBotOptions options = new DefaultBotOptions();
 
         // Configuring proxy
-        var proxy = config.getProxy();
+        var proxy = properties.getProxy();
         if (proxy != null) {
             configureAuthenticator(proxy.getUser(), proxy.getPassword());
             options.setProxyHost(proxy.getHost());

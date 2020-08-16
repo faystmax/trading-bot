@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.config;
+package com.faystmax.tradingbot.config.telegram;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @Configuration
 @ConfigurationProperties(prefix = "telegram")
-public class TelegramConfig {
+public class TelegramProperties {
     @NotBlank
     private String token;
     @NotBlank
