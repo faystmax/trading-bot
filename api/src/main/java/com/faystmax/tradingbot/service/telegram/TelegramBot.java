@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.service.telegram;
 
-import com.faystmax.tradingbot.config.telegram.TelegramProperties;
 import com.faystmax.tradingbot.config.message.MessageSource;
+import com.faystmax.tradingbot.config.telegram.TelegramProperties;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
