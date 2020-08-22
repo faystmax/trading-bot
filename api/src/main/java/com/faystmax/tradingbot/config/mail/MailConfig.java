@@ -47,6 +47,7 @@ public class MailConfig {
 
         var channelAdapter = new ImapIdleChannelAdapter(mailReceiver);
         channelAdapter.setAutoStartup(true);
+        channelAdapter.setReconnectDelay(5000);
         channelAdapter.setShouldReconnectAutomatically(true);
         channelAdapter.setTaskScheduler(threadPoolTaskScheduler);
         channelAdapter.setOutputChannel(directChannel);
