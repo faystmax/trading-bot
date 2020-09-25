@@ -27,9 +27,19 @@ public class MailMessageHandler implements MessageHandler {
     @SneakyThrows
     public void handleMessage(Message<?> message) throws MessagingException {
         if (message.getPayload() instanceof MimeMessage) {
-            String plainContent = new MimeMessageParser(((MimeMessage) message.getPayload())).parse().getPlainContent();
-            log.info("Message: " + plainContent);
-            String main = StringUtils.substringBetween(plainContent, "START", "END");
+            log.info("Received message: " + message.toString());
+            MimeMessageParser parse = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
+
+            String content = null;
+            if (parse.getPlainContent() != null) {
+                content = parse.getPlainContent();
+                log.info("Message plain: " + content);
+            } else {
+                content = parse.getHtmlContent();
+                log.info("Message html: " + content);
+            }
+
+            String main = StringUtils.substringBetween(content, "START", "END");
             if (StringUtils.isNoneBlank(main)) {
                 telegramBot.sendMsgToOwner(main);
                 // TODO: 22.08.2020 refactor this
