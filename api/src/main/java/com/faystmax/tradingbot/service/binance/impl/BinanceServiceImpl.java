@@ -81,7 +81,7 @@ public class BinanceServiceImpl implements BinanceService {
     public NewOrderResponse marketBuy(final BigDecimal quantity) {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
-        BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
+        BigDecimal stepSize = symbolFilter.getStepSize();
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
         NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity);
@@ -95,8 +95,7 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public NewOrderResponse marketBuyQuoteQty(BigDecimal quoteQuantity) {
-        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), null);
-        newOrder.setQuoteOrderQty(quoteQuantity);
+        NewOrder newOrder = NewOrder.marketBuyQuoteQty(config.getSymbol(), quoteQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         log.info("Creating order = {}", newOrder);
 
@@ -116,7 +115,7 @@ public class BinanceServiceImpl implements BinanceService {
     public NewOrderResponse marketSell(final BigDecimal quantity) {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
-        BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
+        BigDecimal stepSize = symbolFilter.getStepSize();
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
         NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity);
