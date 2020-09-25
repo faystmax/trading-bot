@@ -1,8 +1,8 @@
 package com.faystmax.tradingbot.service.binance;
 
-import com.binance.api.client.domain.account.NewOrderResponse;
-import com.binance.api.client.domain.account.Order;
-import com.binance.api.client.domain.account.Trade;
+import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
+import com.faystmax.binance.api.client.domain.trade.Order;
+import com.faystmax.binance.api.client.domain.trade.Trade;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,6 +56,14 @@ public interface BinanceService {
      * @return order response
      */
     NewOrderResponse marketBuy(BigDecimal quantity);
+
+    /**
+     * Buy at market price by quoteQuantity
+     *
+     * @param quoteQuantity specifies the amount you want to spend
+     * @return order response
+     */
+    NewOrderResponse marketBuyQuoteQty(BigDecimal quoteQuantity);
 
     /**
      * Sell at market price on all free balance

@@ -1,9 +1,9 @@
 package com.faystmax.tradingbot.db.entity;
 
-import com.binance.api.client.domain.OrderSide;
-import com.binance.api.client.domain.OrderStatus;
-import com.binance.api.client.domain.OrderType;
-import com.binance.api.client.domain.TimeInForce;
+import com.faystmax.binance.api.client.domain.enums.OrderType;
+import com.faystmax.binance.api.client.domain.trade.OrderSide;
+import com.faystmax.binance.api.client.domain.trade.OrderStatus;
+import com.faystmax.binance.api.client.domain.trade.TimeInForce;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

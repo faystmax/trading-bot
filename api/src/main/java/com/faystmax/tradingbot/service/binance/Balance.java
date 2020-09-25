@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.binance;
 
-import com.binance.api.client.domain.account.AssetBalance;
+import com.faystmax.binance.api.client.domain.account.AssetBalance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,8 +34,8 @@ public class Balance {
     public static Balance valueOf(final AssetBalance assetBalance) {
         Balance balance = new Balance();
         balance.setAsset(assetBalance.getAsset());
-        balance.setFree(new BigDecimal(assetBalance.getFree()));
-        balance.setLocked(new BigDecimal(assetBalance.getLocked()));
+        balance.setFree(assetBalance.getFree());
+        balance.setLocked(assetBalance.getLocked());
         return balance;
     }
 }

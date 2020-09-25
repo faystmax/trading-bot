@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.trade.impl;
 
-import com.binance.api.client.domain.account.NewOrderResponse;
+import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.repo.OrderRepoService;
 import com.faystmax.tradingbot.service.trade.TradeService;

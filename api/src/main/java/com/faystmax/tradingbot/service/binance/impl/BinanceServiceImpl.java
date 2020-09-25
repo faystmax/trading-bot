@@ -1,18 +1,18 @@
 package com.faystmax.tradingbot.service.binance.impl;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.domain.account.Account;
-import com.binance.api.client.domain.account.AssetBalance;
-import com.binance.api.client.domain.account.NewOrder;
-import com.binance.api.client.domain.account.NewOrderResponse;
-import com.binance.api.client.domain.account.NewOrderResponseType;
-import com.binance.api.client.domain.account.Order;
-import com.binance.api.client.domain.account.Trade;
-import com.binance.api.client.domain.account.request.AllOrdersRequest;
-import com.binance.api.client.domain.general.FilterType;
-import com.binance.api.client.domain.general.SymbolFilter;
-import com.binance.api.client.domain.general.SymbolInfo;
+import com.faystmax.binance.api.client.BinanceApiClient;
+import com.faystmax.binance.api.client.BinanceApiClientFactory;
+import com.faystmax.binance.api.client.domain.SymbolFilter;
+import com.faystmax.binance.api.client.domain.SymbolInfo;
+import com.faystmax.binance.api.client.domain.account.Account;
+import com.faystmax.binance.api.client.domain.account.AssetBalance;
+import com.faystmax.binance.api.client.domain.enums.FilterType;
+import com.faystmax.binance.api.client.domain.request.AllOrdersRequest;
+import com.faystmax.binance.api.client.domain.trade.NewOrder;
+import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
+import com.faystmax.binance.api.client.domain.trade.NewOrderResponseType;
+import com.faystmax.binance.api.client.domain.trade.Order;
+import com.faystmax.binance.api.client.domain.trade.Trade;
 import com.faystmax.tradingbot.config.BinanceConfig;
 import com.faystmax.tradingbot.service.binance.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
@@ -29,12 +29,11 @@ import java.util.List;
 @Service
 public class BinanceServiceImpl implements BinanceService {
     private final BinanceConfig config;
-    private final BinanceApiRestClient client;
+    private final BinanceApiClient client;
 
     @Autowired
     public BinanceServiceImpl(BinanceConfig config) {
-        var factory = BinanceApiClientFactory.newInstance(config.getApiKey(), config.getSecretKey());
-        this.client = factory.newRestClient();
+        this.client = BinanceApiClientFactory.create(config.getApiKey(), config.getSecretKey());
         this.config = config;
     }
 
@@ -45,7 +44,7 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public BigDecimal getLastPrice() {
-        return new BigDecimal(client.get24HrPriceStatistics(config.getSymbol()).getLastPrice());
+        return client.getLatestPrice(config.getSymbol()).getPrice();
     }
 
     @Override
@@ -75,7 +74,7 @@ public class BinanceServiceImpl implements BinanceService {
         BigDecimal lastPrice = getLastPrice();
         BigDecimal availableBuyQuantity = free.divide(lastPrice, 8, RoundingMode.DOWN);
 
-        return marketBuy(availableBuyQuantity);
+        return marketBuyQuoteQty(availableBuyQuantity);
     }
 
     @Override
@@ -85,8 +84,20 @@ public class BinanceServiceImpl implements BinanceService {
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
-        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity.toPlainString());
-        newOrder.newOrderRespType(NewOrderResponseType.FULL);
+        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity);
+        newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
+        log.info("Creating order = {}", newOrder);
+
+        NewOrderResponse newOrderResponse = client.newOrder(newOrder);
+        log.info("Order created = {}", newOrderResponse);
+        return newOrderResponse;
+    }
+
+    @Override
+    public NewOrderResponse marketBuyQuoteQty(BigDecimal quoteQuantity) {
+        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), null);
+        newOrder.setQuoteOrderQty(quoteQuantity);
+        newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         log.info("Creating order = {}", newOrder);
 
         NewOrderResponse newOrderResponse = client.newOrder(newOrder);
@@ -108,8 +119,8 @@ public class BinanceServiceImpl implements BinanceService {
         BigDecimal stepSize = new BigDecimal(symbolFilter.getStepSize());
         BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
 
-        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity.toPlainString());
-        newOrder.newOrderRespType(NewOrderResponseType.FULL);
+        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity);
+        newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         log.info("Creating order = {}", newOrder);
 
         NewOrderResponse newOrderResponse = client.newOrder(newOrder);

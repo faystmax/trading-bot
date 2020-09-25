@@ -1,13 +1,12 @@
 package com.faystmax.tradingbot.service.repo;
 
-import com.binance.api.client.domain.account.NewOrderResponse;
+import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -16,15 +15,15 @@ public class OrderRepoService {
     private final OrderRepo repo;
 
     @Transactional
-    public Order createOrder(com.binance.api.client.domain.account.Order binanceOrder) {
+    public Order createOrder(com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
         var myOrder = new Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());
         myOrder.setDateAdd(new Date(binanceOrder.getTime()));
-        myOrder.setPrice(new BigDecimal(binanceOrder.getPrice()));
-        myOrder.setStopPrice(new BigDecimal(binanceOrder.getStopPrice()));
-        myOrder.setOrigQty(new BigDecimal(binanceOrder.getOrigQty()));
-        myOrder.setExecutedQty(new BigDecimal(binanceOrder.getExecutedQty()));
-        myOrder.setIcebergQty(new BigDecimal(binanceOrder.getIcebergQty()));
+        myOrder.setPrice(binanceOrder.getPrice());
+        myOrder.setStopPrice(binanceOrder.getStopPrice());
+        myOrder.setOrigQty(binanceOrder.getOrigQty());
+        myOrder.setExecutedQty(binanceOrder.getExecutedQty());
+        myOrder.setIcebergQty(binanceOrder.getIcebergQty());
         myOrder.setStatus(binanceOrder.getStatus());
         myOrder.setTimeInForce(binanceOrder.getTimeInForce());
         myOrder.setType(binanceOrder.getType());
@@ -38,9 +37,9 @@ public class OrderRepoService {
         var myOrder = new Order();
         myOrder.setExchangeId(orderResponse.getOrderId().toString());
         myOrder.setDateAdd(new Date());
-        myOrder.setPrice(new BigDecimal(orderResponse.getPrice()));
-        myOrder.setOrigQty(new BigDecimal(orderResponse.getOrigQty()));
-        myOrder.setExecutedQty(new BigDecimal(orderResponse.getExecutedQty()));
+        myOrder.setPrice(orderResponse.getPrice());
+        myOrder.setOrigQty(orderResponse.getOrigQty());
+        myOrder.setExecutedQty(orderResponse.getExecutedQty());
         myOrder.setStatus(orderResponse.getStatus());
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
