@@ -33,7 +33,7 @@ public class MyOrdersCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        List<Order> orders = orderRepo.findAllByOrderByDateAddAsc();
+        List<Order> orders = orderRepo.findFirst3ByOrderByDateAddAsc();
         if (orders.isEmpty()) {
             return messageSource.getMsg(MY_ORDERS_EMPTY);
         }

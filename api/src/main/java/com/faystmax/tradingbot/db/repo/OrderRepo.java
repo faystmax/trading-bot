@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
-    List<Order> findAllByOrderByDateAddAsc();
+    List<Order> findFirst3ByOrderByDateAddAsc();
 }
