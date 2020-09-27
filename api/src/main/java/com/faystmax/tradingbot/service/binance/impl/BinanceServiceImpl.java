@@ -48,8 +48,8 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public List<Trade> getMyTrades() {
-        return client.getMyTrades(config.getSymbol());
+    public List<Trade> getMyTrades(Integer limit) {
+        return client.getMyTrades(config.getSymbol(),limit);
     }
 
     @Override

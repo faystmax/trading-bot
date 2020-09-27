@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class MyTradesCommand implements Command {
+    private static final Integer ORDERS_LIMIT = 3;
     private static final String MY_TRADES_CODE = "MyTrades";
     private static final String MY_TRADES_DESCRIPTION = "myTrades.description";
     private static final String MY_TRADES_EMPTY = "myTrades.empty";
@@ -33,7 +34,7 @@ public class MyTradesCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        List<Trade> trades = binanceService.getMyTrades();
+        List<Trade> trades = binanceService.getMyTrades(ORDERS_LIMIT);
         if (trades.isEmpty()) {
             return messageSource.getMsg(MY_TRADES_EMPTY);
         }

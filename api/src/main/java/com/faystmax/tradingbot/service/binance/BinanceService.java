@@ -24,10 +24,11 @@ public interface BinanceService {
     BigDecimal getLastPrice();
 
     /**
+     * @param limit maximum amount of returned trades
      * @return last trades of selected symbol
      * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
      */
-    List<Trade> getMyTrades();
+    List<Trade> getMyTrades(Integer limit);
 
     /**
      * @return all last account orders (in last 3 months)
