@@ -3,6 +3,7 @@ package com.faystmax.tradingbot.service.binance;
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.binance.api.client.domain.trade.Order;
 import com.faystmax.binance.api.client.domain.trade.Trade;
+import com.faystmax.tradingbot.service.binance.model.FullBalance;
 
 import java.math.BigDecimal;
 import java.util.List;

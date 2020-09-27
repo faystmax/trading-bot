@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.service.binance;
+package com.faystmax.tradingbot.service.binance.model;
 
 import com.faystmax.binance.api.client.domain.account.AssetBalance;
 import lombok.Getter;

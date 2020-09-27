@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.service.binance;
+package com.faystmax.tradingbot.service.binance.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
