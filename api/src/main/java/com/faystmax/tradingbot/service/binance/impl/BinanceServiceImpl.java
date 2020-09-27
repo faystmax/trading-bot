@@ -14,8 +14,8 @@ import com.faystmax.binance.api.client.domain.trade.NewOrderResponseType;
 import com.faystmax.binance.api.client.domain.trade.Order;
 import com.faystmax.binance.api.client.domain.trade.Trade;
 import com.faystmax.tradingbot.config.BinanceConfig;
-import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public List<Trade> getMyTrades(Integer limit) {
-        return client.getMyTrades(config.getSymbol(),limit);
+        return client.getMyTrades(config.getSymbol(), limit);
     }
 
     @Override
@@ -79,29 +79,17 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public NewOrderResponse marketBuy(final BigDecimal quantity) {
-        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
-        SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
-        BigDecimal stepSize = symbolFilter.getStepSize();
-        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
-
-        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), finalQuantity);
+        BigDecimal correctQuantity = cutQuantity(quantity);
+        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), correctQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
-        log.info("Creating order = {}", newOrder);
-
-        NewOrderResponse newOrderResponse = client.newOrder(newOrder);
-        log.info("Order created = {}", newOrderResponse);
-        return newOrderResponse;
+        return createOrder(newOrder);
     }
 
     @Override
     public NewOrderResponse marketBuyQuoteQty(BigDecimal quoteQuantity) {
         NewOrder newOrder = NewOrder.marketBuyQuoteQty(config.getSymbol(), quoteQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
-        log.info("Creating order = {}", newOrder);
-
-        NewOrderResponse newOrderResponse = client.newOrder(newOrder);
-        log.info("Order created = {}", newOrderResponse);
-        return newOrderResponse;
+        return createOrder(newOrder);
     }
 
     @Override
@@ -113,15 +101,33 @@ public class BinanceServiceImpl implements BinanceService {
 
     @Override
     public NewOrderResponse marketSell(final BigDecimal quantity) {
+        BigDecimal correctQuantity = cutQuantity(quantity);
+        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), correctQuantity);
+        newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
+        return createOrder(newOrder);
+    }
+
+    /**
+     * Cut quantity with stepSize
+     *
+     * @param quantity value to cut
+     * @return return cutted quantity
+     */
+    private BigDecimal cutQuantity(final BigDecimal quantity) {
         SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = symbolFilter.getStepSize();
-        BigDecimal finalQuantity = quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(3))));
+        return quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(2))));
+    }
 
-        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), finalQuantity);
-        newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
+    /**
+     * Create new order in Binance
+     *
+     * @param newOrder order to create
+     * @return order response
+     */
+    private NewOrderResponse createOrder(final NewOrder newOrder) {
         log.info("Creating order = {}", newOrder);
-
         NewOrderResponse newOrderResponse = client.newOrder(newOrder);
         log.info("Order created = {}", newOrderResponse);
         return newOrderResponse;
