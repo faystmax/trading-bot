@@ -33,13 +33,13 @@ public class MyOrdersCommand implements Command {
 
     @Override
     public String execute(Collection<String> args) {
-        List<Order> orders = orderRepo.findFirst3ByOrderByDateAddAsc();
+        List<Order> orders = orderRepo.findFirst3ByOrderByDateAddDesc();
         if (orders.isEmpty()) {
             return messageSource.getMsg(MY_ORDERS_EMPTY);
         }
 
         var builder = new StringBuilder();
-        builder.append("My orders ").append(":\n");
+        builder.append("My last 3 orders ").append(":\n");
         orders.forEach(order -> {
             builder.append("Id = <b>").append(order.getId()).append("</b>\n");
             builder.append("ExchangeId = <b>").append(order.getExchangeId()).append("</b>\n");
