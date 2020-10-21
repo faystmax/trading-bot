@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 @Slf4j
@@ -70,11 +69,8 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public NewOrderResponse marketBuyAll() {
         FullBalance balance = getCurrentBalance();
-        BigDecimal free = balance.getQuote().getFree();
-        BigDecimal lastPrice = getLastPrice();
-        BigDecimal availableBuyQuantity = free.divide(lastPrice, 8, RoundingMode.DOWN);
-
-        return marketBuyQuoteQty(availableBuyQuantity);
+        BigDecimal quoteFreeQuantity = balance.getQuote().getFree();
+        return marketBuyQuoteQty(quoteFreeQuantity);
     }
 
     @Override
@@ -95,8 +91,8 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public NewOrderResponse marketSellAll() {
         FullBalance balance = getCurrentBalance();
-        BigDecimal free = balance.getBase().getFree();
-        return marketSell(free);
+        BigDecimal baseFreeQuantity = balance.getBase().getFree();
+        return marketSell(baseFreeQuantity);
     }
 
     @Override
