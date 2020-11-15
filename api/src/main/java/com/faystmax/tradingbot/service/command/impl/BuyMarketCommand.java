@@ -33,6 +33,6 @@ public class BuyMarketCommand implements Command {
     @Override
     public String execute(Collection<String> args) {
         Order order = tradeService.marketBuyAll();
-        return "Order successfully completed! id = " + order.getId();
+        return "Order successfully completed! id = " + order.getId() + ", price = " + order.getPrice().toPlainString();
     }
 }

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @Service
@@ -44,6 +46,14 @@ public class OrderRepoService {
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
         myOrder.setSide(orderResponse.getSide());
+
+        // if order has zero price, then calculate average price by orders fills
+        if (myOrder.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+            orderResponse.getFills().stream().map(trade -> {
+                BigDecimal part = trade.getQty().divide(orderResponse.getExecutedQty(), RoundingMode.HALF_DOWN);
+                return part.multiply(trade.getPrice());
+            }).reduce(BigDecimal::add).ifPresent(myOrder::setPrice);
+        }
         repo.save(myOrder);
         return myOrder;
     }

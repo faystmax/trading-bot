@@ -33,6 +33,6 @@ public class SellMarketCommand implements Command {
     @Override
     public String execute(Collection<String> args) {
         Order order = tradeService.marketSellAll();
-        return "Order successfully completed! id = " + order.getId();
+        return "Order successfully completed! id = " + order.getId() + ", price = " + order.getPrice().toPlainString();
     }
 }
