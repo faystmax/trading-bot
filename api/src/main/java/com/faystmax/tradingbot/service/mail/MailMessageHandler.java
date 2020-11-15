@@ -1,5 +1,6 @@
 package com.faystmax.tradingbot.service.mail;
 
+import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.service.telegram.TelegramBot;
 import com.faystmax.tradingbot.service.trade.TradeService;
 import com.faystmax.tradingbot.util.DateUtils;
@@ -30,7 +31,7 @@ public class MailMessageHandler implements MessageHandler {
             log.info("Received message: " + message.toString());
             MimeMessageParser parse = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
 
-            String content = null;
+            String content;
             if (parse.getPlainContent() != null) {
                 content = parse.getPlainContent();
                 log.info("Message plain: " + content);
@@ -39,29 +40,29 @@ public class MailMessageHandler implements MessageHandler {
                 log.info("Message html: " + content);
             }
 
-            String main = StringUtils.substringBetween(content, "START", "END");
-            if (StringUtils.isNoneBlank(main)) {
-                telegramBot.sendMsgToOwner(main);
-                // TODO: 22.08.2020 refactor this
-                if (main.contains("buy")) {
-                    try {
-                        tradeService.marketBuyAll();
-                        telegramBot.sendMsgToOwner("Buy completed " + DateUtils.format(new Date()));
-                    } catch (Exception ex) {
-                        telegramBot.sendMsgToOwner("Error " + ex.getMessage());
-                        log.error("Error ", ex);
-                    }
-                }
-                if (main.contains("sell")) {
-                    try {
-                        tradeService.marketSellAll();
-                        telegramBot.sendMsgToOwner("Sell completed" + DateUtils.format(new Date()));
-                    } catch (Exception ex) {
-                        telegramBot.sendMsgToOwner("Error " + ex.getMessage());
-                        log.error("Error ", ex);
-                    }
+            String mainCommand = StringUtils.substringBetween(content, "START", "END");
+            if (StringUtils.isNotBlank(mainCommand)) {
+                telegramBot.sendMsgToOwner(mainCommand);
+                try {
+                    Order order = makeOrder(mainCommand);
+                    telegramBot.sendMsgToOwner(order.getSide() + " completed! " +
+                        "price = " + order.getPrice().toPlainString() +
+                        ", date = " + DateUtils.format(new Date()));
+                } catch (Exception ex) {
+                    telegramBot.sendMsgToOwner("Error " + ex.getMessage());
+                    log.error("Error ", ex);
                 }
             }
+        }
+    }
+
+    private Order makeOrder(String mainCommand) {
+        if (mainCommand.contains("buy")) {
+            return tradeService.marketBuyAll();
+        } else if (mainCommand.contains("sell")) {
+            return tradeService.marketSellAll();
+        } else {
+            throw new RuntimeException("Wrong command! main = " + mainCommand);
         }
     }
 }
