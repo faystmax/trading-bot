@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.trade.impl;
 
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
+import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.repo.OrderRepoService;
 import com.faystmax.tradingbot.service.trade.TradeService;
@@ -16,14 +17,14 @@ public class TradeServiceImpl implements TradeService {
 
     @Transactional
     @Override
-    public com.faystmax.tradingbot.db.entity.Order marketBuyAll() {
+    public Order marketBuyAll() {
         NewOrderResponse response = binanceService.marketBuyAll();
         return orderRepoService.createOrder(response);
     }
 
     @Transactional
     @Override
-    public com.faystmax.tradingbot.db.entity.Order marketSellAll() {
+    public Order marketSellAll() {
         NewOrderResponse response = binanceService.marketSellAll();
         return orderRepoService.createOrder(response);
     }

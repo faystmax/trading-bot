@@ -1,8 +1,8 @@
 package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
-import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
