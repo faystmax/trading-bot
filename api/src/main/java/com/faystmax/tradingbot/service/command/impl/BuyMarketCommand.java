@@ -4,6 +4,7 @@ import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.command.Command;
+import com.faystmax.tradingbot.service.command.CommandHelper;
 import com.faystmax.tradingbot.service.trade.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.Collection;
 @Component
 @RequiredArgsConstructor
 public class BuyMarketCommand implements Command {
-    private static final String BUY_MARKET_CODE = "BuyMarket";
+    public static final String BUY_MARKET_CODE = "BuyMarket";
     private static final String BUY_MARKET_DESCRIPTION = "buyMarket.description";
 
     private final MessageSource messageSource;
@@ -33,6 +34,6 @@ public class BuyMarketCommand implements Command {
     @Override
     public String execute(Collection<String> args) {
         Order order = tradeService.marketBuyAll();
-        return "Order successfully completed! id = " + order.getId() + ", price = " + order.getPrice().toPlainString();
+        return CommandHelper.getOrderCompletedMsg(order);
     }
 }

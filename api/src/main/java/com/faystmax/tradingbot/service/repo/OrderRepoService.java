@@ -49,12 +49,16 @@ public class OrderRepoService {
 
         // if order has zero price, then calculate average price by orders fills
         if (myOrder.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-            orderResponse.getFills().stream().map(trade -> {
-                BigDecimal part = trade.getQty().divide(orderResponse.getExecutedQty(), RoundingMode.HALF_DOWN);
-                return part.multiply(trade.getPrice());
-            }).reduce(BigDecimal::add).ifPresent(myOrder::setPrice);
+            setAveragePriceByFills(orderResponse, myOrder);
         }
         repo.save(myOrder);
         return myOrder;
+    }
+
+    private void setAveragePriceByFills(NewOrderResponse response, Order order) {
+        response.getFills().stream().map(trade -> {
+            BigDecimal part = trade.getQty().divide(response.getExecutedQty(), RoundingMode.HALF_DOWN);
+            return part.multiply(trade.getPrice());
+        }).reduce(BigDecimal::add).ifPresent(order::setPrice);
     }
 }
