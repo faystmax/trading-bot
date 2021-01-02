@@ -6,7 +6,7 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://trading-bot.com/">
+      <Link color="inherit" href="https://faystmax.pro/">
         Trading Bot
       </Link>{' '}
       {new Date().getFullYear()}
