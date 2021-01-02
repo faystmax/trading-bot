@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.config.mail;
 
-import com.faystmax.tradingbot.service.mail.MailMessageHandler;
+import com.faystmax.tradingbot.service.mail.MimeMessageHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +56,7 @@ public class MailConfig {
     }
 
     @Bean
-    public DirectChannel directChannel(MailMessageHandler messageHandler) {
+    public DirectChannel directChannel(MimeMessageHandler messageHandler) {
         DirectChannel directChannel = new DirectChannel();
         directChannel.subscribe(messageHandler);
         return directChannel;

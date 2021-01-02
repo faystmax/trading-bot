@@ -20,7 +20,7 @@ import java.util.Date;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MailMessageHandler implements MessageHandler {
+public class MimeMessageHandler implements MessageHandler {
     private final TradeService tradeService;
     private final TelegramBot telegramBot;
 
