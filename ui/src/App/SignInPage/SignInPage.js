@@ -6,8 +6,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  Grid,
-  Link,
   Paper,
   TextField,
   Typography,
@@ -118,20 +116,6 @@ const SignInPage = (props) => {
                 />
               )}
             </Button>
-            <Grid container>
-              <Grid item xs>
-                {/* TODO */}
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                {/* TODO */}
-                <Link href="#" variant="body2">
-                  First time here? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </Paper>
         <Box mt={5}>

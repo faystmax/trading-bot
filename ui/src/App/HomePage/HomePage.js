@@ -10,11 +10,8 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import {
-  ExitToApp as ExitToAppIcon,
-  MoveToInbox as InboxIcon,
-  Mail as MailIcon,
-} from '@material-ui/icons';
+import { ExitToApp as ExitToAppIcon } from '@material-ui/icons';
+import BookIcon from '@material-ui/icons/Book';
 import { useAuth } from 'utils/auth';
 import useStyles from './styles';
 
@@ -48,16 +45,12 @@ const HomePage = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            {['Dashboard', 'Starred', 'Send email', 'Drafts'].map(
-              (text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ),
-            )}
+            <ListItem button key="MyOrders">
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText primary="MyOrders" />
+            </ListItem>
           </List>
         </div>
       </Drawer>
