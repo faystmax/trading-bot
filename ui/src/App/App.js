@@ -1,11 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-} from 'react-router-dom';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import { AuthContext } from '../utils/auth';
 import SignInPage from './SignInPage';
