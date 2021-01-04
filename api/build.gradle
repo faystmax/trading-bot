@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.github.faystmax:binance-api-client:1.0.2'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'javax.mail:mail:1.4.7'
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
 
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'org.apache.commons:commons-collections4:4.4'
@@ -40,6 +41,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
