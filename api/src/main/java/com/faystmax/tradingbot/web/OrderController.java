@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Collection;
 
 @RestController
@@ -16,7 +17,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @GetMapping("/orders")
-    public Collection<OrderDto> getAllOrders() {
-        return orderMapper.mapAll(orderService.findAllOrders());
+    public Collection<OrderDto> getAllUserOrders(Principal principal) {
+        return orderMapper.mapAll(orderService.findOrdersByUserEmail(principal.getName()));
     }
 }

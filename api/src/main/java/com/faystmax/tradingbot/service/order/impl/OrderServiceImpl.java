@@ -1,20 +1,29 @@
 package com.faystmax.tradingbot.service.order.impl;
 
 import com.faystmax.tradingbot.db.entity.Order;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.service.order.OrderService;
+import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepo orderRepo;
+    private final UserService userService;
 
     @Override
-    public Collection<Order> findAllOrders() {
+    public List<Order> findAllOrders() {
         return orderRepo.findAllByOrderByDateAddDesc();
+    }
+
+    @Override
+    public List<Order> findOrdersByUserEmail(String userEmail) {
+        User user = userService.findUserByEmail(userEmail);
+        return orderRepo.findAllByUserAndOrderByDateAddDesc(user);
     }
 }
