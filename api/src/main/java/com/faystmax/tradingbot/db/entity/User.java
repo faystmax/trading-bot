@@ -62,4 +62,16 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    /* Move to attributes */
+    private Long telegramChatId;
+
+    @Size(max = 20)
+    private String tradingSymbol;
+
+    @Size(max = 200)
+    private String binanceApiKey;
+
+    @Size(max = 200)
+    private String binanceSecretKey;
 }

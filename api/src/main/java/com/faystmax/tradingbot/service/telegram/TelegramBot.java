@@ -2,7 +2,9 @@ package com.faystmax.tradingbot.service.telegram;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.config.telegram.TelegramProperties;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
+import com.faystmax.tradingbot.service.user.UserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
-import java.util.Objects;
-
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
@@ -26,6 +26,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String MESSAGE_FROM_OWNER = "telegramBot.message.from.owner";
     private static final String MESSAGE_FROM_STRANGER = "telegramBot.message.from.stranger";
 
+    private final UserService userService;
     private final MessageSource messageSource;
     private final CommandExecutor commandExecutor;
     private final TelegramProperties telegramProperties;
@@ -33,13 +34,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final ReplyKeyboardMarkup startKeyboardMarkup;
 
     @Autowired
-    public TelegramBot(DefaultBotOptions options,
+    public TelegramBot(UserService userService,
+                       DefaultBotOptions options,
                        TelegramProperties telegramProperties,
                        MessageSource messageSource,
                        CommandExecutor commandExecutor,
                        TelegramMessageFactory messageFactory,
                        @Qualifier("startKeyboardMarkup") ReplyKeyboardMarkup startKeyboardMarkup) {
         super(options);
+        this.userService = userService;
         this.telegramProperties = telegramProperties;
         this.messageSource = messageSource;
         this.commandExecutor = commandExecutor;
@@ -76,7 +79,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(final Update update) {
         final Message msg = update.getMessage();
-        if (!Objects.equals(msg.getChatId(), telegramProperties.getChatId())) {
+        User user = userService.findUserByChatId(msg.getChatId());
+        if (user == null) {
             sendMsg(msg.getChatId(), messageSource.getMsg(MESSAGE_FROM_STRANGER, msg.getText(), msg.getChatId()));
             return;
         }
@@ -89,6 +93,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
         log.info(messageSource.getMsg(MESSAGE_FROM_OWNER, msg.getText()));
-        this.sendMsgToOwner(commandExecutor.execute(msg.getText()));
+        this.sendMsg(msg.getChatId(), commandExecutor.execute(user, msg.getText()));
     }
 }

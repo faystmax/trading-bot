@@ -1,5 +1,7 @@
 package com.faystmax.tradingbot.service.command;
 
+import com.faystmax.tradingbot.db.entity.User;
+
 import java.util.Collection;
 
 /**
@@ -19,8 +21,9 @@ public interface Command {
     /**
      * Executing main command logic
      *
+     * @param user пользователь, у которого запускаем данную команду
      * @param args - args for executing command
      * @return result of the command
      */
-    String execute(Collection<String> args);
+    String execute(User user, Collection<String> args);
 }

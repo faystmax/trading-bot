@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.telegram;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.exception.CommandNotFoundException;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
@@ -36,7 +37,7 @@ public class TelegramCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public String execute(final String commandText) {
+    public String execute(final User user, final String commandText) {
         try {
             final Pair<String, Collection<String>> codeAndArgs = telegramCommandParser.parse(commandText);
             if (!commandsMap.containsKey(codeAndArgs.getKey())) {
@@ -45,7 +46,7 @@ public class TelegramCommandExecutor implements CommandExecutor {
 
             // Executing command
             Command command = commandsMap.get(codeAndArgs.getKey());
-            return command.execute(codeAndArgs.getValue());
+            return command.execute(user, codeAndArgs.getValue());
         } catch (Exception ex) {
             String msg = messageSource.getMsg(COMMAND_PROCESSING_ERROR, commandText, ex.getMessage());
             log.error(msg, ex);

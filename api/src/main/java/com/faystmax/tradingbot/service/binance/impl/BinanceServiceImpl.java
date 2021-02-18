@@ -13,54 +13,45 @@ import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponseType;
 import com.faystmax.binance.api.client.domain.trade.Order;
 import com.faystmax.binance.api.client.domain.trade.Trade;
-import com.faystmax.tradingbot.config.BinanceConfig;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
-@Service
 public class BinanceServiceImpl implements BinanceService {
-    private final BinanceConfig config;
     private final BinanceApiClient client;
+    private final String tradingSymbol;
 
-    @Autowired
-    public BinanceServiceImpl(BinanceConfig config) {
-        this.client = BinanceApiClientFactory.create(config.getApiKey(), config.getSecretKey());
-        this.config = config;
-    }
-
-    @Override
-    public String getTradingSymbol() {
-        return config.getSymbol();
+    public BinanceServiceImpl(User user) {
+        this.client = BinanceApiClientFactory.create(user.getBinanceApiKey(), user.getBinanceSecretKey());
+        this.tradingSymbol = user.getTradingSymbol();
     }
 
     @Override
     public BigDecimal getLastPrice() {
-        return client.getLatestPrice(config.getSymbol()).getPrice();
+        return client.getLatestPrice(tradingSymbol).getPrice();
     }
 
     @Override
     public List<Trade> getMyTrades(Integer limit) {
-        return client.getMyTrades(config.getSymbol(), limit);
+        return client.getMyTrades(tradingSymbol, limit);
     }
 
     @Override
     public List<Order> getAllMyOrders() {
-        var request = new AllOrdersRequest(config.getSymbol());
+        var request = new AllOrdersRequest(tradingSymbol);
         return client.getAllOrders(request);
     }
 
     @Override
     public FullBalance getCurrentBalance() {
         Account account = client.getAccount();
-        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
+        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(tradingSymbol);
         AssetBalance baseBalance = account.getAssetBalance(symbolInfo.getBaseAsset());
         AssetBalance quoteBalance = account.getAssetBalance(symbolInfo.getQuoteAsset());
         return new FullBalance(Balance.valueOf(baseBalance), Balance.valueOf(quoteBalance));
@@ -76,14 +67,14 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public NewOrderResponse marketBuy(final BigDecimal quantity) {
         BigDecimal correctQuantity = cutQuantity(quantity);
-        NewOrder newOrder = NewOrder.marketBuy(config.getSymbol(), correctQuantity);
+        NewOrder newOrder = NewOrder.marketBuy(tradingSymbol, correctQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         return createOrder(newOrder);
     }
 
     @Override
     public NewOrderResponse marketBuyQuoteQty(BigDecimal quoteQuantity) {
-        NewOrder newOrder = NewOrder.marketBuyQuoteQty(config.getSymbol(), quoteQuantity);
+        NewOrder newOrder = NewOrder.marketBuyQuoteQty(tradingSymbol, quoteQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         return createOrder(newOrder);
     }
@@ -98,7 +89,7 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public NewOrderResponse marketSell(final BigDecimal quantity) {
         BigDecimal correctQuantity = cutQuantity(quantity);
-        NewOrder newOrder = NewOrder.marketSell(config.getSymbol(), correctQuantity);
+        NewOrder newOrder = NewOrder.marketSell(tradingSymbol, correctQuantity);
         newOrder.setNewOrderRespType(NewOrderResponseType.FULL);
         return createOrder(newOrder);
     }
@@ -110,7 +101,7 @@ public class BinanceServiceImpl implements BinanceService {
      * @return return cutted quantity
      */
     private BigDecimal cutQuantity(final BigDecimal quantity) {
-        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(config.getSymbol());
+        SymbolInfo symbolInfo = client.getExchangeInfo().getSymbolInfo(tradingSymbol);
         SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         BigDecimal stepSize = symbolFilter.getStepSize();
         return quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(2))));

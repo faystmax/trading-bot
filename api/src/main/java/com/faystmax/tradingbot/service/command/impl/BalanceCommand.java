@@ -1,7 +1,9 @@
 package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.BinanceServiceFactory;
 import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import com.faystmax.tradingbot.service.command.Command;
@@ -13,7 +15,7 @@ import java.util.Collection;
 /**
  * Displays current balance of selected symbol
  *
- * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
+ * @see User#getTradingSymbol()
  */
 @Component
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class BalanceCommand implements Command {
     private final static String BALANCE_DESCRIPTION = "balance.description";
 
     private final MessageSource messageSource;
-    private final BinanceService binanceService;
+    private final BinanceServiceFactory binanceServiceFactory;
 
     @Override
     public String getCode() {
@@ -35,7 +37,8 @@ public class BalanceCommand implements Command {
     }
 
     @Override
-    public String execute(Collection<String> args) {
+    public String execute(User user, Collection<String> args) {
+        BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
         FullBalance balance = binanceService.getCurrentBalance();
         var builder = new StringBuilder();
         appendBalance(builder, balance.getBase());

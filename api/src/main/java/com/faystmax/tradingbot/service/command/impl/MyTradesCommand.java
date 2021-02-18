@@ -2,7 +2,9 @@ package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.binance.api.client.domain.trade.Trade;
 import com.faystmax.tradingbot.config.message.MessageSource;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.binance.BinanceServiceFactory;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.util.DateUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class MyTradesCommand implements Command {
 
     private final MessageSource messageSource;
     private final BinanceService binanceService;
+    private final BinanceServiceFactory binanceServiceFactory;
 
     @Override
     public String getCode() {
@@ -33,14 +36,15 @@ public class MyTradesCommand implements Command {
     }
 
     @Override
-    public String execute(Collection<String> args) {
+    public String execute(User user, Collection<String> args) {
+        BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
         List<Trade> trades = binanceService.getMyTrades(ORDERS_LIMIT);
         if (trades.isEmpty()) {
             return messageSource.getMsg(MY_TRADES_EMPTY);
         }
 
         var builder = new StringBuilder();
-        builder.append("My last trades of \"").append(binanceService.getTradingSymbol()).append("\":\n");
+        builder.append("My last trades of \"").append(user.getTradingSymbol()).append("\":\n");
         trades.forEach(trade -> {
             builder.append("OrderId = <b>").append(trade.getOrderId()).append("</b>\n");
             builder.append("Price = <b>").append(trade.getPrice()).append("</b>\n");

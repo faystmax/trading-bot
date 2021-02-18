@@ -11,10 +11,10 @@ import java.util.List;
 
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
-    List<Order> findFirst3ByOrderByDateAddDesc();
+    List<Order> findFirst3ByUserOrderByDateAddDesc(User user);
 
     List<Order> findAllByOrderByDateAddDesc();
 
     @Query("select o from Order o  where o.user = :user order by o.dateAdd desc ")
-    List<Order> findAllByUserAndOrderByDateAddDesc(@Param("user") User user);
+    List<Order> findAllByUserOrderByDateAddDesc(@Param("user") User user);
 }

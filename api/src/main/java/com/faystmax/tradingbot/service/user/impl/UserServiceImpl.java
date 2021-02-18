@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -16,5 +18,11 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String userEmail) {
         return userRepo.findByEmail(userEmail)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
+    }
+
+    @Nullable
+    @Override
+    public User findUserByChatId(Long chatId) {
+        return userRepo.findByTelegramChatId(chatId).orElse(null);
     }
 }

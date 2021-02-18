@@ -2,7 +2,7 @@ package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.db.entity.Order;
-import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.service.command.CommandHelper;
 import com.faystmax.tradingbot.service.trade.TradeService;
@@ -19,7 +19,6 @@ public class SellMarketCommand implements Command {
 
     private final MessageSource messageSource;
     private final TradeService tradeService;
-    private final BinanceService binanceService;
 
     @Override
     public String getCode() {
@@ -28,12 +27,12 @@ public class SellMarketCommand implements Command {
 
     @Override
     public String getDescription() {
-        return messageSource.getMsg(SELL_MARKET_DESCRIPTION, binanceService.getTradingSymbol());
+        return messageSource.getMsg(SELL_MARKET_DESCRIPTION);
     }
 
     @Override
-    public String execute(Collection<String> args) {
-        Order order = tradeService.marketSellAll();
+    public String execute(User user, Collection<String> args) {
+        Order order = tradeService.marketSellAll(user);
         return CommandHelper.getOrderCompletedMsg(order);
     }
 }

@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.trade;
 
 import com.faystmax.tradingbot.db.entity.Order;
+import com.faystmax.tradingbot.db.entity.User;
 
 /**
  * Main Trade service
@@ -9,14 +10,16 @@ public interface TradeService {
     /**
      * Buy at market price
      *
+     * @param user
      * @return created Order
      */
-    Order marketBuyAll();
+    Order marketBuyAll(User user);
 
     /**
      * Sell at market price
      *
+     * @param user
      * @return created Order
      */
-    Order marketSellAll();
+    Order marketSellAll(User user);
 }

@@ -37,7 +37,8 @@ public class MimeMessageHandler implements MessageHandler {
 
             String mainText = substringBetween(content, "START", "END");
             if (isNotBlank(mainText)) {
-                String result = commandExecutor.execute(translateToCommandCode(mainText));
+                // TODO: 18.02.2021
+                String result = commandExecutor.execute(null, translateToCommandCode(mainText));
                 messageService.sentMessageToOwner(result);
             }
         }

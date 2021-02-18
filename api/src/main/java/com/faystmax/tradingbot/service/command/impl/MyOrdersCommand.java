@@ -2,6 +2,7 @@ package com.faystmax.tradingbot.service.command.impl;
 
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.db.entity.Order;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.service.command.Command;
 import com.faystmax.tradingbot.util.DateUtils;
@@ -32,8 +33,8 @@ public class MyOrdersCommand implements Command {
     }
 
     @Override
-    public String execute(Collection<String> args) {
-        List<Order> orders = orderRepo.findFirst3ByOrderByDateAddDesc();
+    public String execute(User user, Collection<String> args) {
+        List<Order> orders = orderRepo.findFirst3ByUserOrderByDateAddDesc(user);
         if (orders.isEmpty()) {
             return messageSource.getMsg(MY_ORDERS_EMPTY);
         }

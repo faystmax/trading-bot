@@ -13,21 +13,15 @@ import java.util.List;
  */
 public interface BinanceService {
     /**
-     * @return main trading symbol
-     * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
-     */
-    String getTradingSymbol();
-
-    /**
      * @return last price of selected symbol
-     * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
+     * @see BinanceConfig#getSymbol()
      */
     BigDecimal getLastPrice();
 
     /**
      * @param limit maximum amount of returned trades
      * @return last trades of selected symbol
-     * @see com.faystmax.tradingbot.config.BinanceConfig#getSymbol()
+     * @see BinanceConfig#getSymbol()
      */
     List<Trade> getMyTrades(Integer limit);
 

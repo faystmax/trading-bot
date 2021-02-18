@@ -24,6 +24,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findOrdersByUserEmail(String userEmail) {
         User user = userService.findUserByEmail(userEmail);
-        return orderRepo.findAllByUserAndOrderByDateAddDesc(user);
+        return orderRepo.findAllByUserOrderByDateAddDesc(user);
     }
 }

@@ -10,4 +10,12 @@ public interface UserService {
      * @throws UsernameNotFoundException when can't find user in db
      */
     User findUserByEmail(String userEmail);
+
+    /**
+     * Поиск пользователя ао идентификатору чата
+     *
+     * @param chatId идентификатор чата
+     * @return соответствующего пользователя или null
+     */
+    User findUserByChatId(Long chatId);
 }
