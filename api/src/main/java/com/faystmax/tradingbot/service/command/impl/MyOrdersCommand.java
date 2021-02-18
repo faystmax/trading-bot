@@ -44,7 +44,7 @@ public class MyOrdersCommand implements Command {
         orders.forEach(order -> {
             builder.append("Id = <b>").append(order.getId()).append("</b>\n");
             builder.append("ExchangeId = <b>").append(order.getExchangeId()).append("</b>\n");
-            builder.append("Type = <b>").append(order.getType()).append("</b>\n");
+            builder.append("Side = <b>").append(order.getSide()).append("</b>\n");
             builder.append("Price = <b>").append(order.getPrice().toPlainString()).append("</b>\n");
             builder.append("OriginQty = <b>").append(order.getOrigQty().toPlainString()).append("</b>\n");
             builder.append("ExecutedQty = <b>").append(order.getExecutedQty().toPlainString()).append("</b>\n");
