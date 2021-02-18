@@ -22,7 +22,6 @@ public class MyTradesCommand implements Command {
     private static final String MY_TRADES_EMPTY = "myTrades.empty";
 
     private final MessageSource messageSource;
-    private final BinanceService binanceService;
     private final BinanceServiceFactory binanceServiceFactory;
 
     @Override

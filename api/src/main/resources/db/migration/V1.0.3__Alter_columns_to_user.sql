@@ -1,11 +1,11 @@
 ALTER TABLE USER
-    ADD COLUMN telegramChatId LONG;
+    ADD COLUMN telegram_chat_id LONG;
 
 ALTER TABLE USER
-    ADD COLUMN tradingSymbol VARCHAR(20);
+    ADD COLUMN trading_symbol VARCHAR(20);
 
 ALTER TABLE USER
-    ADD COLUMN binanceApiKey VARCHAR(200);
+    ADD COLUMN binance_api_key VARCHAR(200);
 
 ALTER TABLE USER
-    ADD COLUMN binanceSecretKey VARCHAR(200);
+    ADD COLUMN binance_secret_key VARCHAR(200);
