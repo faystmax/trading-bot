@@ -3,6 +3,7 @@ package com.faystmax.tradingbot.service.binance;
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.binance.api.client.domain.trade.Order;
 import com.faystmax.binance.api.client.domain.trade.Trade;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 
 import java.math.BigDecimal;
@@ -13,15 +14,15 @@ import java.util.List;
  */
 public interface BinanceService {
     /**
-     * @return last price of selected symbol
-     * @see BinanceConfig#getSymbol()
+     * @return last price of selected user symbol
+     * @see User#getTradingSymbol() ()
      */
     BigDecimal getLastPrice();
 
     /**
      * @param limit maximum amount of returned trades
-     * @return last trades of selected symbol
-     * @see BinanceConfig#getSymbol()
+     * @return last trades of selected user symbol
+     * @see User#getTradingSymbol() ()
      */
     List<Trade> getMyTrades(Integer limit);
 
