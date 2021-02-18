@@ -19,7 +19,7 @@ public class TelegramProperties {
     @NotBlank
     private String botName;
     @NotNull
-    private Long chatId;
+    private Long ownerChatId;
     @Nullable
     private Proxy proxy;
 

@@ -73,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     public void sendMsgToOwner(final String text, final ReplyKeyboardMarkup keyboardMarkup) {
         log.info(messageSource.getMsg(SEND_MESSAGE_TO_OWNER, text));
-        this.sendApiMethod(messageFactory.createMsg(telegramProperties.getChatId(), text, keyboardMarkup));
+        this.sendApiMethod(messageFactory.createMsg(telegramProperties.getOwnerChatId(), text, keyboardMarkup));
     }
 
     @Override
