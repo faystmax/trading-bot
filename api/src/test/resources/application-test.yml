@@ -10,20 +10,9 @@ logging:
 
 telegram:
   botName: test
-  chat-id: 123
+  owner-chat-id: 123
   token: test
   proxy:
     port: 1080
     host: 96.113.176.101
     type: SOCKS5
-
-binance:
-  api-key: test
-  secret-key: test
-  symbol: ETHUSDT
-
-mail:
-  host: imap.gmail.com:993
-  username: test
-  password: test
-  folder: INBOX
