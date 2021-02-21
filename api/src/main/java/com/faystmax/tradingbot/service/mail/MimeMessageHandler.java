@@ -1,5 +1,6 @@
 package com.faystmax.tradingbot.service.mail;
 
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
 import com.faystmax.tradingbot.service.command.impl.BuyMarketCommand;
 import com.faystmax.tradingbot.service.command.impl.SellMarketCommand;
@@ -12,16 +13,15 @@ import org.apache.commons.mail.util.MimeMessageParser;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
-import org.springframework.stereotype.Component;
 
 import javax.mail.internet.MimeMessage;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class MimeMessageHandler implements MessageHandler {
+    private final User user;
     private final MessageService messageService;
     private final CommandExecutor commandExecutor;
 
@@ -35,11 +35,10 @@ public class MimeMessageHandler implements MessageHandler {
             String content = getMainContent(parser);
             log.info("Message content: " + content);
 
-            String mainText = substringBetween(content, "START", "END");
+            String mainText = substringBetween(content, "!START!", "!END!");
             if (isNotBlank(mainText)) {
-                // TODO: 18.02.2021
-                String result = commandExecutor.execute(null, translateToCommandCode(mainText));
-                messageService.sentMessageToOwner(result);
+                String result = commandExecutor.execute(user, translateToCommandCode(mainText));
+                messageService.sendMessageToUser(user, result);
             }
         }
     }
