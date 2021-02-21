@@ -21,8 +21,8 @@ public interface Command {
     /**
      * Executing main command logic
      *
-     * @param user пользователь, у которого запускаем данную команду
-     * @param args - args for executing command
+     * @param user user for whom we run this command
+     * @param args arguments for executing command
      * @return result of the command
      */
     String execute(User user, Collection<String> args);

@@ -10,7 +10,7 @@ public interface TradeService {
     /**
      * Buy at market price
      *
-     * @param user
+     * @param user user
      * @return created Order
      */
     Order marketBuyAll(User user);
@@ -18,7 +18,7 @@ public interface TradeService {
     /**
      * Sell at market price
      *
-     * @param user
+     * @param user user
      * @return created Order
      */
     Order marketSellAll(User user);

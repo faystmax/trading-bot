@@ -6,10 +6,11 @@ import com.faystmax.tradingbot.util.DateUtils;
 import java.util.Date;
 
 public final class CommandHelper {
-
     /**
-     * @param order заказ
-     * @return сообщение о выполнении order-а
+     * Return order completed message
+     *
+     * @param order user order
+     * @return order completed message
      */
     public static String getOrderCompletedMsg(Order order) {
         return order.getSide() + " completed!" +

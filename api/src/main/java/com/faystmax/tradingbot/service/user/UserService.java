@@ -5,17 +5,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
     /**
+     * Return user by email
+     *
      * @param userEmail user email
      * @return corresponding user with the transferred userEmail
-     * @throws UsernameNotFoundException when can't find user in db
+     * @throws UsernameNotFoundException when can't find user
      */
     User findUserByEmail(String userEmail);
 
     /**
-     * Поиск пользователя ао идентификатору чата
+     * Return user by chat id
      *
-     * @param chatId идентификатор чата
-     * @return соответствующего пользователя или null
+     * @param chatId chat id
+     * @return user or null
      */
     User findUserByChatId(Long chatId);
 }

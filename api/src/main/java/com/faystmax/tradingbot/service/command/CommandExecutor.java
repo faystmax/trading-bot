@@ -9,7 +9,7 @@ public interface CommandExecutor {
     /**
      * Parsing and executing command
      *
-     * @param user пользователь, у которого запускаем данную команду
+     * @param user user for whom we run this command
      * @param commandText text of the command to parse and execute
      * @return result of the command
      */
