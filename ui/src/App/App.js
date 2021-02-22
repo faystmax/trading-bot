@@ -5,6 +5,7 @@ import PrivateRoute from '../components/PrivateRoute';
 import { AuthContext } from '../utils/auth';
 import SignInPage from './SignInPage';
 import HomePage from './HomePage';
+import SignUpPage from './SignUpPage';
 
 const hist = createBrowserHistory();
 
@@ -27,6 +28,7 @@ const App = () => {
       <Router history={hist}>
         <Switch>
           <Route path="/signIn" component={SignInPage} />
+          <Route path="/signUp" component={SignUpPage} />
           <PrivateRoute exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>

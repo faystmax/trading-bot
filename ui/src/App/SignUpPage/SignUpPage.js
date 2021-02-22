@@ -19,19 +19,30 @@ import api from 'utils/api';
 import Copyright from 'components/Copyright';
 import useStyles from './styles';
 
-const SignInPage = (props) => {
+const SignUpPage = (props) => {
   const classes = useStyles();
   const [isError, setIsError] = useState(false);
   const [isPerforming, setIsPerforming] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const { auth, setAuth } = useAuth();
 
-  const loginRequest = () => {
+  const signUpRequest = () => {
     setIsPerforming(true);
+    if (password !== repeatPassword) {
+      setIsError(true);
+      setErrorMessage('Passwords are not equals!');
+      setIsPerforming(false);
+      return;
+    }
+    setIsError(false);
+    setErrorMessage('');
+
     api({
       method: 'post',
-      url: 'auth/signIn',
+      url: 'auth/signUp',
       data: {
         email,
         password,
@@ -41,8 +52,9 @@ const SignInPage = (props) => {
         setAuth(result.data);
         setIsPerforming(false);
       })
-      .catch(() => {
+      .catch((error) => {
         setIsError(true);
+        setErrorMessage(error.response.data.message);
         setIsPerforming(false);
       });
   };
@@ -60,13 +72,9 @@ const SignInPage = (props) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography className={classes.label} component="h1" variant="h5">
-            Trading Bot
+            Sign up in Trading Bot
           </Typography>
-          {isError && (
-            <Alert severity="error">
-              The username or password provided were incorrect!
-            </Alert>
-          )}
+          {isError && <Alert severity="error">{errorMessage}</Alert>}
           <form className={classes.form} noValidate>
             <TextField
               required
@@ -92,10 +100,22 @@ const SignInPage = (props) => {
               id="password-input"
               type="password"
               label="Password"
-              autoComplete="current-password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
+              }}
+            />
+            <TextField
+              required
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              id="password-input-repeat"
+              type="password"
+              label="Repeat Password"
+              value={repeatPassword}
+              onChange={(e) => {
+                setRepeatPassword(e.target.value);
               }}
             />
             <Button
@@ -104,9 +124,9 @@ const SignInPage = (props) => {
               color="primary"
               fullWidth
               disabled={isPerforming}
-              onClick={loginRequest}
+              onClick={signUpRequest}
             >
-              Sign In
+              Sign up new user
               {isPerforming && (
                 <CircularProgress
                   size={24}
@@ -116,8 +136,8 @@ const SignInPage = (props) => {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/signUp" variant="body2">
-                  First time here? Sign Up
+                <Link href="/signIn" variant="body2">
+                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
@@ -131,4 +151,4 @@ const SignInPage = (props) => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;

@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.service.auth;
 
-import com.faystmax.tradingbot.dto.auth.SignInResponse;
+import com.faystmax.tradingbot.dto.auth.UserAuthResponse;
 
 public interface SignInService {
     /**
@@ -10,5 +10,5 @@ public interface SignInService {
      * @param password user password
      * @return SignInResponse
      */
-    SignInResponse signIn(String email, String password);
+    UserAuthResponse signIn(String email, String password);
 }

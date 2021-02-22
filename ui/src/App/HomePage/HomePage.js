@@ -94,6 +94,9 @@ const HomePage = () => {
           <Typography variant="h6" noWrap className={classes.title}>
             Trading-bot
           </Typography>
+          <Typography variant="body1" noWrap>
+            {auth.email}
+          </Typography>
           <IconButton onClick={logOut} color="inherit">
             <ExitToAppIcon />
           </IconButton>

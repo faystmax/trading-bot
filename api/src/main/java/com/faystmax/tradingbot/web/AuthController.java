@@ -2,7 +2,7 @@ package com.faystmax.tradingbot.web;
 
 import com.faystmax.tradingbot.dto.MessageResponse;
 import com.faystmax.tradingbot.dto.auth.SignInRequest;
-import com.faystmax.tradingbot.dto.auth.SignInResponse;
+import com.faystmax.tradingbot.dto.auth.UserAuthResponse;
 import com.faystmax.tradingbot.dto.auth.SignUpRequest;
 import com.faystmax.tradingbot.exception.SignUpException;
 import com.faystmax.tradingbot.service.auth.SignInService;
@@ -29,16 +29,16 @@ public class AuthController {
 
     @ResponseBody
     @PostMapping("/auth/signIn")
-    public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest request) {
+    public ResponseEntity<UserAuthResponse> signIn(@Valid @RequestBody SignInRequest request) {
         return ok(signInService.signIn(request.getEmail(), request.getPassword()));
     }
 
     @ResponseBody
     @PostMapping("/auth/signUp")
-    public ResponseEntity<MessageResponse> signUp(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest request) {
         try {
             signUpService.signUp(request.getEmail(), request.getPassword());
-            return ok(new MessageResponse("User registered successfully!"));
+            return ok(signInService.signIn(request.getEmail(), request.getPassword()));
         } catch (SignUpException ex) {
             log.error("SignUp error!", ex);
             return badRequest().body(new MessageResponse(ex.getMessage()));

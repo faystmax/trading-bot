@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignInResponse {
+public class UserAuthResponse {
     private final String type = "Bearer";
     private String token;
     private Long id;
