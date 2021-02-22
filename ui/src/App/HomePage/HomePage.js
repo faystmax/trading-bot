@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AppBar,
   Drawer,
@@ -20,13 +20,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 import { useAuth } from 'utils/auth';
+import { alertActions } from '../../components/Alertbar';
 import api from '../../utils/api';
 import useStyles from './styles';
 
 function currencyFormat(num) {
   return `$${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 }
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#b3b8ca',
@@ -47,8 +50,13 @@ const StyledTableRow = withStyles((theme) => ({
 
 const HomePage = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { auth, setAuth } = useAuth();
   const [orders, setOrders] = useState([]);
+
+  const logOut = useCallback(() => {
+    setAuth(null);
+  }, [setAuth]);
 
   useEffect(() => {
     const headers = {
@@ -63,16 +71,21 @@ const HomePage = () => {
       headers,
     })
       .then((result) => {
-        if (result.status === 200) {
-          setOrders(result.data);
-        }
+        setOrders(result.data);
       })
-      .catch(() => {});
-  }, [auth]);
-
-  function logOut() {
-    setAuth(null);
-  }
+      .catch((error) => {
+        if (error.response.status === 401) {
+          logOut();
+        } else {
+          dispatch(
+            alertActions.createAlert({
+              message: `Request error! ${error.response.status} ${error.response.data.error}`,
+              type: 'error',
+            }),
+          );
+        }
+      });
+  }, [auth, logOut, dispatch]);
 
   return (
     <div className={classes.root}>

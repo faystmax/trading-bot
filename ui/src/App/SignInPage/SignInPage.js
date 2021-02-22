@@ -36,11 +36,7 @@ const SignInPage = (props) => {
       },
     })
       .then((result) => {
-        if (result.status === 200) {
-          setAuth(result.data);
-        } else {
-          setIsError(true);
-        }
+        setAuth(result.data);
         setIsPerforming(false);
       })
       .catch(() => {
