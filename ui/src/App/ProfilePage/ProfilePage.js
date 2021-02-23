@@ -7,7 +7,7 @@ import { useAuth } from 'utils/auth';
 import BasePage from 'App/BasePage';
 import { alertActions } from 'components/Alertbar';
 import api from 'utils/api';
-import { useStyles } from './styles';
+import useStyles from './styles';
 
 const ProfilePage = () => {
   const classes = useStyles();

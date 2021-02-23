@@ -8,15 +8,17 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { ExitToApp as ExitToAppIcon } from '@material-ui/icons';
 import BookIcon from '@material-ui/icons/Book';
 import PersonIcon from '@material-ui/icons/Person';
 import { useHistory } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useAuth } from 'utils/auth';
 import useStyles from './styles';
 
@@ -25,6 +27,7 @@ const BasePage = ({ children }) => {
   const history = useHistory();
   const { auth, setAuth } = useAuth();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const logOut = useCallback(() => {
     setAuth(null);
@@ -35,6 +38,14 @@ const BasePage = ({ children }) => {
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const openMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeMenu = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -62,9 +73,28 @@ const BasePage = ({ children }) => {
           <Typography variant="body1" noWrap>
             {auth.email}
           </Typography>
-          <IconButton onClick={logOut} color="inherit">
-            <ExitToAppIcon />
+          <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={openMenu}
+            color="inherit"
+            size="medium"
+          >
+            <MoreVertIcon />
           </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={closeMenu}
+          >
+            <MenuItem onClick={() => history.push('/password')}>
+              Change password
+            </MenuItem>
+            <MenuItem onClick={logOut}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer
