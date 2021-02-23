@@ -7,9 +7,9 @@ import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

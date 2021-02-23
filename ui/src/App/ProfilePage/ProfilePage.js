@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { Grid, TextField } from '@material-ui/core';
+import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 import { useAuth } from 'utils/auth';
 import BasePage from 'components/BasePage';
 import { alertActions } from 'components/Alertbar';
@@ -13,18 +14,19 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const { auth, setAuth } = useAuth();
   const [user, setUser] = useState({});
+  const [isPerforming, setIsPerforming] = useState(false);
 
   const logOut = useCallback(() => {
     setAuth(null);
   }, [setAuth]);
 
-  useEffect(() => {
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-    };
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
+  };
 
+  useEffect(() => {
     api({
       method: 'get',
       url: 'user',
@@ -46,6 +48,39 @@ const ProfilePage = () => {
         }
       });
   }, [auth, logOut, dispatch]);
+
+  const updateUser = () => {
+    setIsPerforming(true);
+    api({
+      method: 'put',
+      url: 'user',
+      data: user,
+      headers,
+    })
+      .then((result) => {
+        setUser(result.data);
+        setIsPerforming(false);
+        dispatch(
+          alertActions.createAlert({
+            message: `User info updated!`,
+            type: 'success',
+          }),
+        );
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          logOut();
+        } else {
+          dispatch(
+            alertActions.createAlert({
+              message: `Request error! ${error.response.status} ${error.response.data.error}`,
+              type: 'error',
+            }),
+          );
+        }
+        setIsPerforming(false);
+      });
+  };
 
   return (
     <BasePage>
@@ -107,6 +142,7 @@ const ProfilePage = () => {
               margin="normal"
               value={user.telegramChatId || ''}
               variant="outlined"
+              helperText="Example: 202081459"
               onChange={(e) => {
                 setUser({ ...user, telegramChatId: e.target.value });
               }}
@@ -122,6 +158,7 @@ const ProfilePage = () => {
               margin="normal"
               value={user.tradingSymbol || ''}
               variant="outlined"
+              helperText="Example: ETHUSDT"
               onChange={(e) => {
                 setUser({ ...user, tradingSymbol: e.target.value.trim() });
               }}
@@ -167,6 +204,7 @@ const ProfilePage = () => {
               margin="normal"
               value={user.emailHost || ''}
               variant="outlined"
+              helperText="Example: imap.gmail.com:993"
               onChange={(e) => {
                 setUser({ ...user, emailHost: e.target.value.trim() });
               }}
@@ -197,10 +235,30 @@ const ProfilePage = () => {
               margin="normal"
               value={user.emailFolder || ''}
               variant="outlined"
+              helperText="Example: INBOX"
               onChange={(e) => {
                 setUser({ ...user, emailFolder: e.target.value.trim() });
               }}
             />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12}>
+            <Button
+              className={classes.submit}
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={isPerforming}
+              onClick={updateUser}
+              startIcon={<SaveIcon />}
+            >
+              Save
+              {isPerforming && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </Button>
           </Grid>
         </Grid>
       </form>

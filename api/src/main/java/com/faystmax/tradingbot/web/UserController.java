@@ -7,6 +7,7 @@ import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public UserDto putUserInfo(UserDto userDto, Principal principal) {
+    public UserDto putUserInfo(@RequestBody UserDto userDto, Principal principal) {
         User updatedUser = userService.updateUser(principal.getName(), userDto);
         return userMapper.map(updatedUser);
     }
