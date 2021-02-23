@@ -10,5 +10,5 @@ import java.util.Collection;
 public interface OrderMapper {
     OrderDto map(Order order);
 
-    Collection<OrderDto> mapAll(Collection<Order> order);
+    Collection<OrderDto> mapAll(Collection<Order> orders);
 }
