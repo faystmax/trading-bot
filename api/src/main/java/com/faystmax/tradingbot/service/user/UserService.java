@@ -30,4 +30,14 @@ public interface UserService {
      * @return updated user
      */
     User updateUser(String email, UserDto userDto);
+
+    /**
+     * Change password for existing user
+     *
+     * @param email user email
+     * @param oldPassword old user password
+     * @param newPassword new user password
+     * @return user with updated password
+     */
+    User changePassword(String email, String oldPassword, String newPassword);
 }
