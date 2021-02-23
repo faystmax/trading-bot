@@ -6,6 +6,7 @@ import { AuthContext } from '../utils/auth';
 import SignInPage from './SignInPage';
 import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
+import ProfilePage from './ProfilePage';
 
 const hist = createBrowserHistory();
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/signIn" component={SignInPage} />
           <Route path="/signUp" component={SignUpPage} />
           <PrivateRoute exact path="/" component={HomePage} />
+          <PrivateRoute exact path="/profile" component={ProfilePage} />
           <Redirect to="/" />
         </Switch>
       </Router>
