@@ -1,32 +1,23 @@
-import { makeStyles } from '@material-ui/core/styles';
-import mainTheme from 'theme';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 
-const drawerWidth = 240;
+export const useStyles = makeStyles(null);
 
-const useStyles = makeStyles(() => ({
+export const StyledTableRow = withStyles((theme) => ({
   root: {
-    display: 'flex',
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
-  appBar: {
-    zIndex: mainTheme.zIndex.drawer + 1,
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: 'auto',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  content: {
-    flexGrow: 1,
-    padding: mainTheme.spacing(3),
-  },
-}));
+}))(TableRow);
 
-export default useStyles;
+export const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#b3b8ca',
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
