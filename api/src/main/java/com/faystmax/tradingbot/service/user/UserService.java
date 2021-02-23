@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.user;
 
 import com.faystmax.tradingbot.db.entity.User;
+import com.faystmax.tradingbot.dto.UserDto;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
@@ -20,4 +21,13 @@ public interface UserService {
      * @return user or null
      */
     User findUserByChatId(Long chatId);
+
+    /**
+     * Updating user fields
+     *
+     * @param email user email
+     * @param userDto dto
+     * @return updated user
+     */
+    User updateUser(String email, UserDto userDto);
 }
