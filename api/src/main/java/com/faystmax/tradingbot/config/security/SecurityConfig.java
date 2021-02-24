@@ -4,6 +4,7 @@ import com.faystmax.tradingbot.config.security.jwt.AuthEntryPointJwt;
 import com.faystmax.tradingbot.config.security.jwt.AuthTokenFilter;
 import com.faystmax.tradingbot.service.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthEntryPointJwt unauthorizedHandler;
     private final UserDetailsServiceImpl userDetailsService;
 
+    @Value("${cors.allowOrigin}")
+    private String corsAllowOrigin;
+
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
@@ -57,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsFilter corsFilter() {
         var config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(singletonList("*"));
+        config.setAllowedOrigins(singletonList(corsAllowOrigin));
         config.setAllowedHeaders(singletonList("*"));
         config.setAllowedMethods(singletonList("*"));
         var source = new UrlBasedCorsConfigurationSource();

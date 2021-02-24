@@ -34,3 +34,6 @@ logging:
 jwt:
   secret: client_secret
   expiration: 86400000
+
+cors:
+  allowOrigin: http://localhost:3000
