@@ -22,7 +22,7 @@ public class TradeServiceImpl implements TradeService {
     public Order marketBuyAll(User user) {
         BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
         NewOrderResponse response = binanceService.marketBuyAll();
-        return orderRepoService.createOrder(response);
+        return orderRepoService.createOrder(user, response);
     }
 
     @Transactional
@@ -30,6 +30,6 @@ public class TradeServiceImpl implements TradeService {
     public Order marketSellAll(User user) {
         BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
         NewOrderResponse response = binanceService.marketSellAll();
-        return orderRepoService.createOrder(response);
+        return orderRepoService.createOrder(user, response);
     }
 }

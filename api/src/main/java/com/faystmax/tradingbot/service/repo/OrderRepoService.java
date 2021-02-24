@@ -2,6 +2,7 @@ package com.faystmax.tradingbot.service.repo;
 
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.tradingbot.db.entity.Order;
+import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class OrderRepoService {
     }
 
     @Transactional
-    public Order createOrder(NewOrderResponse orderResponse) {
+    public Order createOrder(User user, NewOrderResponse orderResponse) {
         var myOrder = new Order();
         myOrder.setExchangeId(orderResponse.getOrderId().toString());
         myOrder.setDateAdd(new Date());
@@ -46,6 +47,7 @@ public class OrderRepoService {
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
         myOrder.setSide(orderResponse.getSide());
+        myOrder.setUser(user);
 
         // if order has zero price, then calculate average price by orders fills
         if (myOrder.getPrice().compareTo(BigDecimal.ZERO) == 0) {
