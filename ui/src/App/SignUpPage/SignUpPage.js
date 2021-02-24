@@ -53,8 +53,12 @@ const SignUpPage = (props) => {
         setIsPerforming(false);
       })
       .catch((error) => {
+        if (!error.response) {
+          setErrorMessage('Network error!');
+        } else {
+          setErrorMessage(error.response.data.message);
+        }
         setIsError(true);
-        setErrorMessage(error.response.data.message);
         setIsPerforming(false);
       });
   };

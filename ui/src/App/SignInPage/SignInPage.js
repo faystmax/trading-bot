@@ -22,6 +22,7 @@ import useStyles from './styles';
 const SignInPage = (props) => {
   const classes = useStyles();
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isPerforming, setIsPerforming] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +42,15 @@ const SignInPage = (props) => {
         setAuth(result.data);
         setIsPerforming(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        if (!error.response) {
+          setErrorMessage('Network error!');
+        } else {
+          setErrorMessage(
+            error.response.data.message ||
+              'The username or password provided were incorrect!',
+          );
+        }
         setIsError(true);
         setIsPerforming(false);
       });
@@ -62,11 +71,7 @@ const SignInPage = (props) => {
           <Typography className={classes.label} component="h1" variant="h5">
             Trading Bot
           </Typography>
-          {isError && (
-            <Alert severity="error">
-              The username or password provided were incorrect!
-            </Alert>
-          )}
+          {isError && <Alert severity="error">{errorMessage}</Alert>}
           <form className={classes.form} noValidate>
             <TextField
               required

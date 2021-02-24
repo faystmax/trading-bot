@@ -36,7 +36,14 @@ const ProfilePage = () => {
         setUser(result.data);
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (!error.response) {
+          dispatch(
+            alertActions.createAlert({
+              message: `Network error!`,
+              type: 'error',
+            }),
+          );
+        } else if (error.response.status === 401) {
           logOut();
         } else {
           dispatch(
