@@ -53,10 +53,10 @@ public class UserServiceImpl implements UserService {
         User user = findUserByEmail(email);
 
         if (encoder.matches(user.getPassword(), oldPassword)) {
-            throw new ServiceException("Current password are incorrect!");
+            throw new ServiceException("Current password is incorrect!");
         }
         if (StringUtils.isBlank(newPassword)) {
-            throw new ServiceException("New password are blank!");
+            throw new ServiceException("New password is blank!");
         }
         user.setPassword(encoder.encode(newPassword));
         return user;
