@@ -19,7 +19,9 @@ import { useHistory } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import { useAuth } from 'utils/auth';
+import MailIdle from '../../components/MailIdle';
 import useStyles from './styles';
 
 const BasePage = ({ children }) => {
@@ -73,8 +75,9 @@ const BasePage = ({ children }) => {
           <Typography variant="body1" noWrap>
             {auth.email}
           </Typography>
+          <MailIdle />
           <IconButton
-            aria-label="more"
+            aria-label="menu"
             aria-controls="long-menu"
             aria-haspopup="true"
             onClick={openMenu}
