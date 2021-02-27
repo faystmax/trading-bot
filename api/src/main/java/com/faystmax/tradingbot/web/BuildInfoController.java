@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.web;
 
 import com.faystmax.tradingbot.util.DateUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class BuildInfoController {
     private final Map<String, String> buildInfo;
 

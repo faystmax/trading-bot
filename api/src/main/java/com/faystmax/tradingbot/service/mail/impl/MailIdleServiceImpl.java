@@ -52,7 +52,7 @@ public class MailIdleServiceImpl implements MailIdleService {
         if (channelByUserMap.containsKey(user)) {
             channelByUserMap.get(user).stop();
         }
-        log.info("Start mail Idle fo user = " + user);
+        log.info("Stop mail Idle fo user = " + user);
     }
 
     @Override
