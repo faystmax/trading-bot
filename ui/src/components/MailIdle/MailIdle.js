@@ -3,6 +3,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import { IconButton } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import SyncIcon from '@material-ui/icons/Sync';
 import api from 'utils/api';
 import { useAuth } from 'utils/auth';
 import { alertActions } from '../Alertbar';
@@ -20,10 +21,10 @@ const MailIdle = () => {
     setAuth(null);
   }, [setAuth]);
 
-  const startMailIdle = () => {
+  const recreateMailIdle = () => {
     api({
       method: 'post',
-      url: 'mailIdle/start',
+      url: 'mailIdle/recreate',
       headers,
     })
       .then((data) => {
@@ -90,11 +91,46 @@ const MailIdle = () => {
       });
   };
 
+  const getStatus = () => {
+    api({
+      method: 'get',
+      url: 'mailIdle/status',
+      headers,
+    })
+      .then((data) => {
+        dispatch(
+          alertActions.createAlert({
+            message: `${data.data}`,
+            type: 'info',
+          }),
+        );
+      })
+      .catch((error) => {
+        if (!error.response) {
+          dispatch(
+            alertActions.createAlert({
+              message: `Network error!`,
+              type: 'error',
+            }),
+          );
+        } else if (error.response.status === 401) {
+          logOut();
+        } else {
+          dispatch(
+            alertActions.createAlert({
+              message: `Request error! ${error.response.status} ${error.response.data.error}`,
+              type: 'error',
+            }),
+          );
+        }
+      });
+  };
+
   return (
     <>
       <IconButton
-        aria-label="Start Mail Idle"
-        onClick={startMailIdle}
+        aria-label="Recreate Mail Idle"
+        onClick={recreateMailIdle}
         color="inherit"
         size="medium"
       >
@@ -107,6 +143,14 @@ const MailIdle = () => {
         size="medium"
       >
         <StopIcon />
+      </IconButton>
+      <IconButton
+        aria-label="Get status"
+        onClick={getStatus}
+        color="inherit"
+        size="medium"
+      >
+        <SyncIcon />
       </IconButton>
     </>
   );
