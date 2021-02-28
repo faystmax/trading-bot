@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.mail;
 
 import com.faystmax.tradingbot.db.entity.User;
+import org.springframework.integration.mail.ImapIdleChannelAdapter;
 
 /**
  * Service for working with mailIdle listeners
@@ -33,4 +34,12 @@ public interface MailIdleService {
      * @param user db user
      */
     void reCreateIdle(User user);
+
+    /**
+     * Return owner of channelAdapter
+     *
+     * @param channelAdapter mail channelAdapter
+     * @return owner of this channelAdapter
+     */
+    User findUserByChannelAdapter(ImapIdleChannelAdapter channelAdapter);
 }
