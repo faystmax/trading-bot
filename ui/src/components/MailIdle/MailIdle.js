@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import { IconButton } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { alertActions } from '../Alertbar';
 
 const MailIdle = () => {
   const { auth, setAuth } = useAuth();
+  const [isPerforming, setIsPerforming] = useState(false);
   const dispatch = useDispatch();
   const headers = {
     Accept: 'application/json',
@@ -22,6 +23,7 @@ const MailIdle = () => {
   }, [setAuth]);
 
   const recreateMailIdle = () => {
+    setIsPerforming(true);
     api({
       method: 'post',
       url: 'mailIdle/recreateAndStart',
@@ -53,10 +55,12 @@ const MailIdle = () => {
             }),
           );
         }
-      });
+      })
+      .finally(() => setIsPerforming(false));
   };
 
   const stopMailIdle = () => {
+    setIsPerforming(true);
     api({
       method: 'post',
       url: 'mailIdle/stop',
@@ -88,10 +92,12 @@ const MailIdle = () => {
             }),
           );
         }
-      });
+      })
+      .finally(() => setIsPerforming(false));
   };
 
   const getStatus = () => {
+    setIsPerforming(true);
     api({
       method: 'get',
       url: 'mailIdle/status',
@@ -123,7 +129,8 @@ const MailIdle = () => {
             }),
           );
         }
-      });
+      })
+      .finally(() => setIsPerforming(false));
   };
 
   return (
@@ -131,6 +138,7 @@ const MailIdle = () => {
       <IconButton
         aria-label="Recreate Mail Idle"
         onClick={recreateMailIdle}
+        disabled={isPerforming}
         color="inherit"
         size="medium"
       >
@@ -139,6 +147,7 @@ const MailIdle = () => {
       <IconButton
         aria-label="Stop Mail Idle"
         onClick={stopMailIdle}
+        disabled={isPerforming}
         color="inherit"
         size="medium"
       >
@@ -147,6 +156,7 @@ const MailIdle = () => {
       <IconButton
         aria-label="Get status"
         onClick={getStatus}
+        disabled={isPerforming}
         color="inherit"
         size="medium"
       >

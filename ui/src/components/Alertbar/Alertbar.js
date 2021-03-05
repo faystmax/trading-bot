@@ -15,7 +15,7 @@ const Alertbar = () => {
       setShow(true);
       setTimeout(() => {
         setShow(false);
-      }, 5000);
+      }, 3000);
     }
   }, [alerts]);
 
@@ -27,7 +27,6 @@ const Alertbar = () => {
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={show}
-      autoHideDuration={6000}
       onClose={onClose}
     >
       <Alert onClose={onClose} severity={`${alert.type || 'error'}`}>

@@ -54,7 +54,7 @@ const ProfilePage = () => {
           );
         }
       });
-  }, [auth, logOut, dispatch]);
+  }, [auth, logOut, dispatch, headers]);
 
   const updateUser = () => {
     setIsPerforming(true);
