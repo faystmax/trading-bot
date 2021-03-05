@@ -2,8 +2,8 @@ package com.faystmax.tradingbot.web;
 
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.dto.MessageResponse;
+import com.faystmax.tradingbot.service.mail.MailIdleErrorStore;
 import com.faystmax.tradingbot.service.mail.MailIdleService;
-import com.faystmax.tradingbot.service.mail.impl.MailIdleErrorListener;
 import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class MailIdleController {
     private final UserService userService;
     private final MailIdleService mailIdleService;
-    private final MailIdleErrorListener mailIdleErrorListener;
+    private final MailIdleErrorStore mailIdleErrorStore;
 
     @PostMapping("/mailIdle/start")
     public ResponseEntity<MessageResponse> startIdle(Principal principal) {
@@ -28,11 +28,10 @@ public class MailIdleController {
         return ok(new MessageResponse("Mail Idle successfully started!"));
     }
 
-    @PostMapping("/mailIdle/recreate")
+    @PostMapping("/mailIdle/recreateAndStart")
     public ResponseEntity<MessageResponse> recreate(Principal principal) {
         User user = userService.findUserByEmail(principal.getName());
-        mailIdleService.reCreateIdle(user);
-        mailIdleErrorListener.clearErrorMap(user);
+        mailIdleService.reCreateAndStartIdle(user);
         return ok(new MessageResponse("Mail Idle successfully recreated!"));
     }
 
@@ -44,6 +43,6 @@ public class MailIdleController {
 
     @GetMapping("/mailIdle/status")
     public ResponseEntity<String> status(Principal principal) {
-        return ok(mailIdleErrorListener.getErrorMessage(userService.findUserByEmail(principal.getName())));
+        return ok(mailIdleErrorStore.getErrorMessage(userService.findUserByEmail(principal.getName())));
     }
 }

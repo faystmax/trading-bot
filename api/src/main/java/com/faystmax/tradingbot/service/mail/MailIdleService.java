@@ -33,7 +33,7 @@ public interface MailIdleService {
      *
      * @param user db user
      */
-    void reCreateIdle(User user);
+    void reCreateAndStartIdle(User user);
 
     /**
      * Return owner of channelAdapter

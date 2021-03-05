@@ -24,7 +24,7 @@ const MailIdle = () => {
   const recreateMailIdle = () => {
     api({
       method: 'post',
-      url: 'mailIdle/recreate',
+      url: 'mailIdle/recreateAndStart',
       headers,
     })
       .then((data) => {

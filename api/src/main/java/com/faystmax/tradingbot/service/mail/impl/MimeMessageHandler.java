@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.service.mail;
+package com.faystmax.tradingbot.service.mail.impl;
 
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.command.CommandExecutor;

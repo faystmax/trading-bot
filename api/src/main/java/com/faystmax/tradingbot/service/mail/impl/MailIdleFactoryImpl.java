@@ -3,7 +3,6 @@ package com.faystmax.tradingbot.service.mail.impl;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
 import com.faystmax.tradingbot.service.mail.MailIdleFactory;
-import com.faystmax.tradingbot.service.mail.MimeMessageHandler;
 import com.faystmax.tradingbot.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;

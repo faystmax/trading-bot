@@ -12,20 +12,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * TODO refactor
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailIdleServiceImpl implements MailIdleService {
     private final MailIdleFactory mailIdleFactory;
     private final ApplicationEventPublisher eventPublisher;
-    private final Map<User, ImapIdleChannelAdapter> channelByUserMap = new HashMap<>();
     private final ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+    private final Map<User, ImapIdleChannelAdapter> channelByUserMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -57,21 +54,22 @@ public class MailIdleServiceImpl implements MailIdleService {
     public void stopIdle(User user) {
         if (channelByUserMap.containsKey(user)) {
             channelByUserMap.get(user).stop();
-            channelByUserMap.remove(user);
         }
         log.info("Stop mail Idle fo user = " + user);
     }
 
     @Override
-    public void reCreateIdle(User user) {
-        if(channelByUserMap.containsKey(user)){
+    public void reCreateAndStartIdle(User user) {
+        if (channelByUserMap.containsKey(user)) {
+            channelByUserMap.get(user).stop();
             channelByUserMap.get(user).destroy();
+            channelByUserMap.remove(user);
         }
         ImapIdleChannelAdapter channelAdapter = mailIdleFactory.createIdleChannelAdapter(user, taskScheduler);
         channelAdapter.setApplicationEventPublisher(eventPublisher);
         channelByUserMap.put(user, channelAdapter);
         channelByUserMap.get(user).start();
-        log.info("Recreate mail Idle fo user = " + user);
+        log.info("Recreate mail Idle for user = " + user);
     }
 
     @Override
@@ -79,6 +77,6 @@ public class MailIdleServiceImpl implements MailIdleService {
         return channelByUserMap.entrySet().stream()
             .filter(e -> e.getValue().equals(channelAdapter))
             .map(Map.Entry::getKey)
-            .findFirst().orElseThrow(() -> new ServiceException("Cant find owner of channel adapter!"));
+            .findFirst().orElseThrow(() -> new ServiceException("Can't find owner of channel adapter!"));
     }
 }
