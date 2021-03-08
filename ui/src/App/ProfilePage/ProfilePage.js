@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
@@ -20,11 +20,14 @@ const ProfilePage = () => {
     setAuth(null);
   }, [setAuth]);
 
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-  };
+  const headers = useMemo(
+    () => ({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
+    }),
+    [auth],
+  );
 
   useEffect(() => {
     api({
