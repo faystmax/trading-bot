@@ -23,7 +23,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String START_AVAILABLE_COMMANDS = "start.available.commands";
     private static final String SEND_MESSAGE = "telegramBot.send.message";
     private static final String SEND_MESSAGE_TO_OWNER = "telegramBot.send.message.to.owner";
-    private static final String MESSAGE_FROM_OWNER = "telegramBot.message.from.owner";
+    private static final String MESSAGE_FROM_USER = "telegramBot.message.from.user";
     private static final String MESSAGE_FROM_STRANGER = "telegramBot.message.from.stranger";
 
     private final UserService userService;
@@ -98,7 +98,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             return;
         }
 
-        log.info(messageSource.getMsg(MESSAGE_FROM_OWNER, msg.getText()));
+        log.info(messageSource.getMsg(MESSAGE_FROM_USER, msg.getText(), user.getEmail()));
         this.sendMsg(msg.getChatId(), commandExecutor.execute(user, msg.getText()));
     }
 }
