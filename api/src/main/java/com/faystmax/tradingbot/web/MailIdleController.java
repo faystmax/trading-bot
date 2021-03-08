@@ -32,6 +32,7 @@ public class MailIdleController {
     public ResponseEntity<MessageResponse> recreate(Principal principal) {
         User user = userService.findUserByEmail(principal.getName());
         mailIdleService.reCreateAndStartIdle(user);
+        mailIdleErrorStore.clear(user);
         return ok(new MessageResponse("Mail Idle successfully recreated!"));
     }
 
