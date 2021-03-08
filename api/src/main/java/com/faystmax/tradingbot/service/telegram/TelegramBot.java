@@ -66,6 +66,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.sendApiMethod(messageFactory.createMsg(chatId, text));
     }
 
+    @SneakyThrows
+    public void sendMsg(final long chatId, final String text, final ReplyKeyboardMarkup keyboardMarkup) {
+        log.info(messageSource.getMsg(SEND_MESSAGE, text, chatId));
+        this.sendApiMethod(messageFactory.createMsg(chatId, text, keyboardMarkup));
+    }
+
     public void sendMsgToOwner(final String text) {
         sendMsgToOwner(text, null);
     }
@@ -88,7 +94,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         // Checking start command
         if (START_COMMAND_CODE.equals(msg.getText())) {
             final String replyText = messageSource.getMsg(START_AVAILABLE_COMMANDS);
-            this.sendMsgToOwner(replyText, startKeyboardMarkup);
+            this.sendMsg(msg.getChatId(), replyText, startKeyboardMarkup);
             return;
         }
 
