@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setBinanceApiKey(userDto.getBinanceApiKey());
         user.setBinanceSecretKey(userDto.getBinanceSecretKey());
         user.setEmailHost(userDto.getEmailHost());
+        user.setEmailUsername(userDto.getEmailUsername());
         user.setEmailPassword(userDto.getEmailPassword());
         user.setEmailFolder(userDto.getEmailFolder());
         return user;

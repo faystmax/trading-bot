@@ -234,6 +234,21 @@ const ProfilePage = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <TextField
+              id="emailUserName"
+              label="Email Username"
+              type="text"
+              required
+              fullWidth
+              margin="normal"
+              value={user.emailUsername || ''}
+              variant="outlined"
+              onChange={(e) => {
+                setUser({ ...user, emailUsername: e.target.value.trim() });
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={6}>
+            <TextField
               id="emailFolder"
               label="Email Folder"
               type="text"
