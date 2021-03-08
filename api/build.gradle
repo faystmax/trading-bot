@@ -1,8 +1,8 @@
 plugins {
     id 'idea'
     id 'java-library'
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.integration:spring-integration-mail'
-    implementation 'org.telegram:telegrambots-spring-boot-starter:4.7'
+    implementation 'org.telegram:telegrambots-spring-boot-starter:5.0.1.1'
     implementation 'com.github.faystmax:exchange-rates-api-client:1.1.0'
     implementation 'com.github.faystmax:binance-api-client:1.0.2'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

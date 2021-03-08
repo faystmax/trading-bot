@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class TelegramMessageFactory {
     public SendMessage createMsg(final long chatId,
                                  final String text) {
-        SendMessage message = new SendMessage(chatId, text);
+        SendMessage message = new SendMessage(String.valueOf(chatId), text);
         message.enableHtml(true);
         return message;
     }
@@ -16,7 +16,7 @@ public class TelegramMessageFactory {
     public SendMessage createMsg(final long chatId,
                                  final String text,
                                  final ReplyKeyboardMarkup replyKeyboardMarkup) {
-        SendMessage message = new SendMessage(chatId, text);
+        SendMessage message = new SendMessage(String.valueOf(chatId), text);
         message.enableHtml(true);
         message.setReplyMarkup(replyKeyboardMarkup);
         return message;
