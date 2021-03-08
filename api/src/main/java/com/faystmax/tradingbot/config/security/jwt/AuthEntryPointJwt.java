@@ -15,9 +15,10 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException {
-        log.error("Unauthorized error: {}", authException.getMessage(), authException);
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException exc) throws IOException {
+        log.error("Unauthorized error = '{}', url = '{}'", exc.getMessage(), request.getRequestURI(), exc);
         response.sendError(SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 }
