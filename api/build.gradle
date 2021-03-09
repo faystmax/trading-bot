@@ -32,6 +32,8 @@ dependencies {
     implementation 'javax.mail:mail:1.4.7'
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-email:1.5'
