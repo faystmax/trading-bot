@@ -7,7 +7,7 @@ plugins {
 apply from: "build-${profile}.gradle"
 
 wrapper {
-    gradleVersion = '6.3'
+    gradleVersion = '6.8.3'
     distributionType = Wrapper.DistributionType.ALL
 }
 
