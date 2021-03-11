@@ -21,7 +21,15 @@ function useProvideAuth() {
     setAuth(data);
   }, []);
 
-  return useMemo(() => ({ auth, setAuth: setAuthInfo }), [auth, setAuthInfo]);
+  const logOut = useCallback(() => {
+    setAuth(null);
+  }, [setAuth]);
+
+  return useMemo(() => ({ auth, setAuth: setAuthInfo, logOut }), [
+    auth,
+    setAuthInfo,
+    logOut,
+  ]);
 }
 
 export function ProvideAuth({ children }) {

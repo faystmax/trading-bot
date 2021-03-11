@@ -12,13 +12,9 @@ import useStyles from './styles';
 const ProfilePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, setAuth } = useAuth();
+  const { auth, logOut } = useAuth();
   const [user, setUser] = useState({});
   const [isPerforming, setIsPerforming] = useState(false);
-
-  const logOut = useCallback(() => {
-    setAuth(null);
-  }, [setAuth]);
 
   const headers = useMemo(
     () => ({

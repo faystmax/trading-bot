@@ -12,15 +12,11 @@ import useStyles from './styles';
 const ChangePasswordPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, setAuth } = useAuth();
+  const { auth, logOut } = useAuth();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newRepeatPassword, setNewRepeatPassword] = useState('');
   const [isPerforming, setIsPerforming] = useState(false);
-
-  const logOut = useCallback(() => {
-    setAuth(null);
-  }, [setAuth]);
 
   const headers = {
     Accept: 'application/json',

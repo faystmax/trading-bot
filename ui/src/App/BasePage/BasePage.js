@@ -27,13 +27,9 @@ import useStyles from './styles';
 const BasePage = ({ children }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { auth, setAuth } = useAuth();
+  const { auth, logOut } = useAuth();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const logOut = useCallback(() => {
-    setAuth(null);
-  }, [setAuth]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

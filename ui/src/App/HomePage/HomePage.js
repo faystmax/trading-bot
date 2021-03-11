@@ -16,12 +16,8 @@ import { StyledTableCell, StyledTableRow, useStyles } from './styles';
 const HomePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, setAuth } = useAuth();
+  const { auth, logOut } = useAuth();
   const [orders, setOrders] = useState([]);
-
-  const logOut = useCallback(() => {
-    setAuth(null);
-  }, [setAuth]);
 
   useEffect(() => {
     const headers = {
