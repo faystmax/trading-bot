@@ -20,7 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { useAuth } from 'utils/auth';
+import { useAuth } from 'hooks/useAuth';
 import MailIdle from '../../components/MailIdle';
 import useStyles from './styles';
 

@@ -5,7 +5,7 @@ import { IconButton } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import SyncIcon from '@material-ui/icons/Sync';
 import api from 'utils/api';
-import { useAuth } from 'utils/auth';
+import { useAuth } from 'hooks/useAuth';
 import { alertActions } from '../Alertbar';
 
 const MailIdle = () => {

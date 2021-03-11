@@ -14,7 +14,7 @@ import {
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import Link from '@material-ui/core/Link';
-import { useAuth } from 'utils/auth';
+import { useAuth } from 'hooks/useAuth';
 import api from 'utils/api';
 import Copyright from 'components/Copyright';
 import useStyles from './styles';

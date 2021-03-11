@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import { useAuth } from 'utils/auth';
+import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
 import { alertActions } from 'components/Alertbar';
 import api from 'utils/api';

@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
-import { useAuth } from 'utils/auth';
+import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
 import { alertActions } from 'components/Alertbar';
 import api from 'utils/api';

@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
-import { AuthContext } from '../utils/auth';
+import { ProvideAuth } from '../hooks';
 import SignInPage from './SignInPage';
 import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
@@ -12,21 +12,8 @@ import ChangePasswordPage from './ChangePasswordPage';
 const hist = createBrowserHistory();
 
 const App = () => {
-  const existingAuth = JSON.parse(localStorage.getItem('auth'));
-  const [auth, setAuth] = useState(existingAuth);
-
-  const setAuthInfo = useCallback((data) => {
-    localStorage.setItem('auth', JSON.stringify(data));
-    setAuth(data);
-  }, []);
-
-  const authContextValue = useMemo(() => ({ auth, setAuth: setAuthInfo }), [
-    auth,
-    setAuthInfo,
-  ]);
-
   return (
-    <AuthContext.Provider value={authContextValue}>
+    <ProvideAuth>
       <Router history={hist}>
         <Switch>
           <Route path="/signIn" component={SignInPage} />
@@ -37,7 +24,7 @@ const App = () => {
           <Redirect to="/" />
         </Switch>
       </Router>
-    </AuthContext.Provider>
+    </ProvideAuth>
   );
 };
 
