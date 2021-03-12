@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import SyncIcon from '@material-ui/icons/Sync';
 import api from 'utils/api';
 import { useAuth } from 'hooks/useAuth';
-import { alertActions } from '../Alertbar';
+import { alertActions } from 'components/Alertbar';
 
 const MailIdle = () => {
   const { auth, setAuth } = useAuth();
