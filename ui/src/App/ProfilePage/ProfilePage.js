@@ -5,7 +5,7 @@ import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
-import { alertActions } from 'components/Alertbar';
+import { createAlert } from 'components/Alertbar';
 import api from 'utils/api';
 import useStyles from './styles';
 
@@ -37,7 +37,7 @@ const ProfilePage = () => {
       .catch((error) => {
         if (!error.response) {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Network error!`,
               type: 'error',
             }),
@@ -46,7 +46,7 @@ const ProfilePage = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),
@@ -67,7 +67,7 @@ const ProfilePage = () => {
         setUser(result.data);
         setIsPerforming(false);
         dispatch(
-          alertActions.createAlert({
+          createAlert({
             message: `User info updated!`,
             type: 'success',
           }),
@@ -78,7 +78,7 @@ const ProfilePage = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),

@@ -1,2 +1,2 @@
 export { default } from './Alertbar';
-export { default as AlertSlice, actions as alertActions } from './AlertSlice';
+export { default as AlertSlice, createAlert } from './AlertSlice';

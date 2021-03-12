@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const AlertSlice = createSlice({
+const AlertSlice = createSlice({
   name: 'alert',
   initialState: {
     alerts: [],
@@ -15,6 +15,6 @@ export const AlertSlice = createSlice({
   },
 });
 
-export const { actions } = AlertSlice;
+export const { createAlert } = AlertSlice.actions;
 
 export default AlertSlice;

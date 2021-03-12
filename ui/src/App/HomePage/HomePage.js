@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
 import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
-import { alertActions } from 'components/Alertbar';
+import { createAlert } from 'components/Alertbar';
 import api from 'utils/api';
 import currencyFormat from 'utils/currency';
 import { StyledTableCell, StyledTableRow, useStyles } from './styles';
@@ -37,7 +37,7 @@ const HomePage = () => {
       .catch((error) => {
         if (!error.response) {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Network error!`,
               type: 'error',
             }),
@@ -46,7 +46,7 @@ const HomePage = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),

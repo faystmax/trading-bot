@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { AlertSlice } from './components/Alertbar';
 
-const reducer = {
-  notifications: AlertSlice.reducer,
-};
-
 const store = configureStore({
-  reducer,
+  reducer: {
+    notifications: AlertSlice.reducer,
+  },
   devTools: process.env.NODE_ENV !== 'production',
 });
 

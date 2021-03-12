@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import SyncIcon from '@material-ui/icons/Sync';
 import api from 'utils/api';
 import { useAuth } from 'hooks/useAuth';
-import { alertActions } from 'components/Alertbar';
+import { createAlert } from 'components/Alertbar';
 
 const MailIdle = () => {
   const { auth, setAuth } = useAuth();
@@ -31,7 +31,7 @@ const MailIdle = () => {
     })
       .then((data) => {
         dispatch(
-          alertActions.createAlert({
+          createAlert({
             message: `${data.data.message}`,
             type: 'success',
           }),
@@ -40,7 +40,7 @@ const MailIdle = () => {
       .catch((error) => {
         if (!error.response) {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Network error!`,
               type: 'error',
             }),
@@ -49,7 +49,7 @@ const MailIdle = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),
@@ -68,7 +68,7 @@ const MailIdle = () => {
     })
       .then((data) => {
         dispatch(
-          alertActions.createAlert({
+          createAlert({
             message: `${data.data.message}`,
             type: 'success',
           }),
@@ -77,7 +77,7 @@ const MailIdle = () => {
       .catch((error) => {
         if (!error.response) {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Network error!`,
               type: 'error',
             }),
@@ -86,7 +86,7 @@ const MailIdle = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),
@@ -105,7 +105,7 @@ const MailIdle = () => {
     })
       .then((data) => {
         dispatch(
-          alertActions.createAlert({
+          createAlert({
             message: `${data.data}`,
             type: 'info',
           }),
@@ -114,7 +114,7 @@ const MailIdle = () => {
       .catch((error) => {
         if (!error.response) {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Network error!`,
               type: 'error',
             }),
@@ -123,7 +123,7 @@ const MailIdle = () => {
           logOut();
         } else {
           dispatch(
-            alertActions.createAlert({
+            createAlert({
               message: `Request error! ${error.response.status} ${error.response.data.error}`,
               type: 'error',
             }),
