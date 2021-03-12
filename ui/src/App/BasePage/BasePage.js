@@ -28,39 +28,24 @@ const BasePage = ({ children }) => {
   const classes = useStyles();
   const history = useHistory();
   const { auth, logOut } = useAuth();
-  const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const openMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <div className={classes.root}>
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
+        className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}
       >
         <Toolbar>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={() => setDrawerOpen(true)}
             className={clsx(
               classes.menuButton,
-              open && classes.menuButtonHidden,
+              drawerOpen && classes.menuButtonHidden,
             )}
           >
             <MenuIcon />
@@ -76,7 +61,7 @@ const BasePage = ({ children }) => {
             aria-label="menu"
             aria-controls="long-menu"
             aria-haspopup="true"
-            onClick={openMenu}
+            onClick={(event) => setAnchorEl(event.currentTarget)}
             color="inherit"
             size="medium"
           >
@@ -87,7 +72,7 @@ const BasePage = ({ children }) => {
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
-            onClose={closeMenu}
+            onClose={() => setAnchorEl(null)}
           >
             <MenuItem onClick={() => history.push('/password')}>
               Change password
@@ -99,13 +84,16 @@ const BasePage = ({ children }) => {
       <Drawer
         variant="permanent"
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          paper: clsx(
+            classes.drawerPaper,
+            !drawerOpen && classes.drawerPaperClose,
+          ),
         }}
-        open={open}
+        open={drawerOpen}
       >
         {' '}
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={() => setDrawerOpen(false)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
