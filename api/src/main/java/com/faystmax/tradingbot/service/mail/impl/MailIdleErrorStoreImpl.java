@@ -26,6 +26,6 @@ public class MailIdleErrorStoreImpl implements MailIdleErrorStore {
 
     @Override
     public void clear(User user) {
-        errorByUserMap.put(user, null);
+        errorByUserMap.remove(user);
     }
 }
