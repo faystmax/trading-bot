@@ -3,26 +3,18 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
 import { createAlert } from 'components/Alertbar';
-import api from 'utils/api';
+import authApi from 'utils/authApi';
 import useStyles from './styles';
 
 const ChangePasswordPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, logOut } = useAuth();
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newRepeatPassword, setNewRepeatPassword] = useState('');
   const [isPerforming, setIsPerforming] = useState(false);
-
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-  };
 
   const updateUser = () => {
     setIsPerforming(true);
@@ -36,17 +28,9 @@ const ChangePasswordPage = () => {
       setIsPerforming(false);
       return;
     }
-    api({
-      method: 'post',
-      url: 'password',
-      data: {
-        oldPassword,
-        newPassword,
-      },
-      headers,
-    })
+    authApi
+      .post('password', { oldPassword, newPassword })
       .then(() => {
-        setIsPerforming(false);
         dispatch(
           createAlert({
             message: `Password successfully changed!`,
@@ -54,26 +38,7 @@ const ChangePasswordPage = () => {
           }),
         );
       })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-        setIsPerforming(false);
-      });
+      .finally(() => setIsPerforming(false));
   };
 
   return (

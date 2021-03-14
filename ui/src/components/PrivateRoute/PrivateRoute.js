@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { useAuth } from 'hooks/useAuth';
+import { useSelector } from 'react-redux';
+
+const authSelector = (state) => state.auth;
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { auth } = useAuth();
+  const auth = useSelector(authSelector);
 
   return (
     <Route

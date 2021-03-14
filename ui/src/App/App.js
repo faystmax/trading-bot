@@ -2,7 +2,6 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
-import { ProvideAuth } from '../hooks';
 import SignInPage from './SignInPage';
 import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
@@ -13,18 +12,16 @@ const hist = createBrowserHistory();
 
 const App = () => {
   return (
-    <ProvideAuth>
-      <Router history={hist}>
-        <Switch>
-          <Route path="/signIn" component={SignInPage} />
-          <Route path="/signUp" component={SignUpPage} />
-          <PrivateRoute exact path="/" component={HomePage} />
-          <PrivateRoute exact path="/profile" component={ProfilePage} />
-          <PrivateRoute exact path="/password" component={ChangePasswordPage} />
-          <Redirect to="/" />
-        </Switch>
-      </Router>
-    </ProvideAuth>
+    <Router history={hist}>
+      <Switch>
+        <Route path="/signIn" component={SignInPage} />
+        <Route path="/signUp" component={SignUpPage} />
+        <PrivateRoute exact path="/" component={HomePage} />
+        <PrivateRoute exact path="/profile" component={ProfilePage} />
+        <PrivateRoute exact path="/password" component={ChangePasswordPage} />
+        <Redirect to="/" />
+      </Switch>
+    </Router>
   );
 };
 

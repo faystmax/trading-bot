@@ -12,14 +12,16 @@ import { useHistory } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { useAuth } from 'hooks/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { emptyAuth } from 'components/Auth';
 import MailIdle from './MailIdle';
 import useStyles from './styles';
 
 const Header = ({ drawerOpen, setDrawerOpen }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { auth, logOut } = useAuth();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
@@ -67,7 +69,7 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
           <MenuItem onClick={() => history.push('/password')}>
             Change password
           </MenuItem>
-          <MenuItem onClick={logOut}>Logout</MenuItem>
+          <MenuItem onClick={() => dispatch(emptyAuth())}>Logout</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>

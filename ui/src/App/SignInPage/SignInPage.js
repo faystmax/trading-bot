@@ -14,42 +14,37 @@ import {
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import Link from '@material-ui/core/Link';
-import { useAuth } from 'hooks/useAuth';
-import api from 'utils/api';
+import { useDispatch, useSelector } from 'react-redux';
+import api from 'utils/defaultApi';
 import Copyright from 'components/Copyright';
+import { updateAuth } from '../../components/Auth';
 import useStyles from './styles';
 
 const SignInPage = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isPerforming, setIsPerforming] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { auth, setAuth } = useAuth();
+  const auth = useSelector((state) => state.auth);
 
   const loginRequest = () => {
     setIsPerforming(true);
-    api({
-      method: 'post',
-      url: 'auth/signIn',
-      data: {
-        email,
-        password,
-      },
-    })
+    api
+      .post('auth/signIn', { email, password })
       .then((result) => {
-        setAuth(result.data);
+        dispatch(updateAuth(result.data));
         setIsPerforming(false);
       })
       .catch((error) => {
         if (!error.response) {
           setErrorMessage('Network error!');
-        } else {
-          setErrorMessage(
-            error.response.data.message ||
-              'The username or password provided were incorrect!',
-          );
+        } else if (error.response.status === 401) {
+          setErrorMessage('The username or password provided were incorrect!');
+        } else if (error.response.status === 401) {
+          setErrorMessage(error.response.data.message || 'Unknown error!');
         }
         setIsError(true);
         setIsPerforming(false);

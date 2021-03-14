@@ -6,54 +6,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
-import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
-import { createAlert } from 'components/Alertbar';
-import api from 'utils/api';
+import authApi from 'utils/authApi';
 import currencyFormat from 'utils/currency';
 import { StyledTableCell, StyledTableRow, useStyles } from './styles';
 
 const HomePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, logOut } = useAuth();
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-    };
-
-    api({
-      method: 'get',
-      url: 'orders',
-      headers,
-    })
-      .then((result) => {
-        setOrders(result.data);
-      })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-      });
-  }, [auth, logOut, dispatch]);
+    authApi.get('orders').then((result) => setOrders(result.data));
+  }, [dispatch]);
 
   return (
     <BasePage>

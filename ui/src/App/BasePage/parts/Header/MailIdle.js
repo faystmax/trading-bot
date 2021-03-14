@@ -1,108 +1,45 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import { IconButton } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import SyncIcon from '@material-ui/icons/Sync';
-import api from 'utils/api';
-import { useAuth } from 'hooks/useAuth';
+import authApi from 'utils/authApi';
 import { createAlert } from 'components/Alertbar';
 
 const MailIdle = () => {
-  const { auth, setAuth } = useAuth();
   const [isPerforming, setIsPerforming] = useState(false);
   const dispatch = useDispatch();
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-  };
 
-  const logOut = useCallback(() => {
-    setAuth(null);
-  }, [setAuth]);
+  const onSuccess = (data) => {
+    dispatch(
+      createAlert({
+        message: `${data.data.message}`,
+        type: 'success',
+      }),
+    );
+  };
 
   const recreateMailIdle = () => {
     setIsPerforming(true);
-    api({
-      method: 'post',
-      url: 'mailIdle/recreateAndStart',
-      headers,
-    })
-      .then((data) => {
-        dispatch(
-          createAlert({
-            message: `${data.data.message}`,
-            type: 'success',
-          }),
-        );
-      })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-      })
+    authApi
+      .post('mailIdle/recreateAndStart')
+      .then((data) => onSuccess(data))
       .finally(() => setIsPerforming(false));
   };
 
   const stopMailIdle = () => {
     setIsPerforming(true);
-    api({
-      method: 'post',
-      url: 'mailIdle/stop',
-      headers,
-    })
-      .then((data) => {
-        dispatch(
-          createAlert({
-            message: `${data.data.message}`,
-            type: 'success',
-          }),
-        );
-      })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-      })
+    authApi
+      .post('mailIdle/stop')
+      .then((data) => onSuccess(data))
       .finally(() => setIsPerforming(false));
   };
 
   const getStatus = () => {
     setIsPerforming(true);
-    api({
-      method: 'get',
-      url: 'mailIdle/status',
-      headers,
-    })
+    authApi
+      .get('mailIdle/status')
       .then((data) => {
         dispatch(
           createAlert({
@@ -110,25 +47,6 @@ const MailIdle = () => {
             type: 'info',
           }),
         );
-      })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
       })
       .finally(() => setIsPerforming(false));
   };

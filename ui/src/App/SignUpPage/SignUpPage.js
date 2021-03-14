@@ -14,43 +14,36 @@ import {
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import Link from '@material-ui/core/Link';
-import { useAuth } from 'hooks/useAuth';
-import api from 'utils/api';
+import { useDispatch, useSelector } from 'react-redux';
+import api from 'utils/defaultApi';
 import Copyright from 'components/Copyright';
+import { updateAuth } from '../../components/Auth';
 import useStyles from './styles';
 
 const SignUpPage = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isPerforming, setIsPerforming] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const { auth, setAuth } = useAuth();
+  const auth = useSelector((state) => state.auth);
 
   const signUpRequest = () => {
-    setIsPerforming(true);
     if (password !== repeatPassword) {
       setIsError(true);
       setErrorMessage('Passwords are not equals!');
-      setIsPerforming(false);
       return;
     }
     setIsError(false);
     setErrorMessage('');
-
-    api({
-      method: 'post',
-      url: 'auth/signUp',
-      data: {
-        email,
-        password,
-      },
-    })
+    setIsPerforming(true);
+    api
+      .post('auth/signUp', { email, password })
       .then((result) => {
-        setAuth(result.data);
-        setIsPerforming(false);
+        dispatch(updateAuth(result.data));
       })
       .catch((error) => {
         if (!error.response) {
@@ -59,8 +52,8 @@ const SignUpPage = (props) => {
           setErrorMessage(error.response.data.message);
         }
         setIsError(true);
-        setIsPerforming(false);
-      });
+      })
+      .finally(() => setIsPerforming(false));
   };
 
   if (auth) {

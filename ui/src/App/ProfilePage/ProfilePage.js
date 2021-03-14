@@ -1,71 +1,29 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import { useAuth } from 'hooks/useAuth';
 import BasePage from 'App/BasePage';
+import authApi from 'utils/authApi';
 import { createAlert } from 'components/Alertbar';
-import api from 'utils/api';
 import useStyles from './styles';
 
 const ProfilePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { auth, logOut } = useAuth();
   const [user, setUser] = useState({});
   const [isPerforming, setIsPerforming] = useState(false);
 
-  const headers = useMemo(
-    () => ({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(auth && { Authorization: `${auth.type} ${auth.token}` }),
-    }),
-    [auth],
-  );
-
   useEffect(() => {
-    api({
-      method: 'get',
-      url: 'user',
-      headers,
-    })
-      .then((result) => {
-        setUser(result.data);
-      })
-      .catch((error) => {
-        if (!error.response) {
-          dispatch(
-            createAlert({
-              message: `Network error!`,
-              type: 'error',
-            }),
-          );
-        } else if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-      });
-  }, [auth, logOut, dispatch, headers]);
+    authApi.get('user').then((result) => setUser(result.data));
+  }, [dispatch]);
 
   const updateUser = () => {
     setIsPerforming(true);
-    api({
-      method: 'put',
-      url: 'user',
-      data: user,
-      headers,
-    })
+    authApi
+      .put('user', user)
       .then((result) => {
         setUser(result.data);
-        setIsPerforming(false);
         dispatch(
           createAlert({
             message: `User info updated!`,
@@ -73,19 +31,7 @@ const ProfilePage = () => {
           }),
         );
       })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          logOut();
-        } else {
-          dispatch(
-            createAlert({
-              message: `Request error! ${error.response.status} ${error.response.data.error}`,
-              type: 'error',
-            }),
-          );
-        }
-        setIsPerforming(false);
-      });
+      .finally(() => setIsPerforming(false));
   };
 
   return (
