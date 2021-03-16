@@ -10,14 +10,28 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
 
-        <file>${LOG_FILE}</file>
-        <file>${FOLDER}/${LOG_FILE}.log</file>
+        <file>${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${FOLDER}/archive/${LOG_FILE}.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
     </appender>
+
+    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+        <file>${LOG_FILE}-stash.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${FOLDER}/archive/${LOG_FILE}-stash.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STASH" />
+    </root>
 
     <root level="WARN">
         <appender-ref ref="FILE"/>
