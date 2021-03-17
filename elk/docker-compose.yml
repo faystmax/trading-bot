@@ -19,8 +19,9 @@ services:
       - "25826:25826"
       - "5044:5044"
     volumes:
-      - ./logstash:/usr/share/logstash/pipeline:ro
       - ${LOGS_PATH}:/var/log/trading-bot:ro
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
     restart: on-failure
     depends_on:
       - elasticsearch
