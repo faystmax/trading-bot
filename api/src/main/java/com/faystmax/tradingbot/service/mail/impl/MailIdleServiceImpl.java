@@ -6,6 +6,7 @@ import com.faystmax.tradingbot.service.mail.MailIdleFactory;
 import com.faystmax.tradingbot.service.mail.MailIdleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.integration.mail.ImapIdleChannelAdapter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -60,6 +61,7 @@ public class MailIdleServiceImpl implements MailIdleService {
 
     @Override
     public void reCreateAndStartIdle(User user) {
+        checkEmailFields(user);
         if (channelByUserMap.containsKey(user)) {
             channelByUserMap.get(user).stop();
             channelByUserMap.get(user).destroy();
@@ -78,5 +80,17 @@ public class MailIdleServiceImpl implements MailIdleService {
             .filter(e -> e.getValue().equals(channelAdapter))
             .map(Map.Entry::getKey)
             .findFirst().orElseThrow(() -> new ServiceException("Can't find owner of channel adapter!"));
+    }
+
+    private void checkEmailFields(final User user) {
+        if (StringUtils.isEmpty(user.getEmailHost())) {
+            throw new ServiceException("EmailHost is empty! user = " + user.getEmail());
+        } else if (StringUtils.isEmpty(user.getEmailUsername())) {
+            throw new ServiceException("EmailUsername is empty! user = " + user.getEmail());
+        } else if (StringUtils.isEmpty(user.getEmailPassword())) {
+            throw new ServiceException("EmailPassword is empty! user = " + user.getEmail());
+        } else if (StringUtils.isEmpty(user.getEmailFolder())) {
+            throw new ServiceException("EmailFolder is empty! user = " + user.getEmail());
+        }
     }
 }
