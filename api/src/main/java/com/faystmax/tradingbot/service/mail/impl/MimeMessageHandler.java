@@ -29,7 +29,7 @@ public class MimeMessageHandler implements MessageHandler {
     @SneakyThrows
     public void handleMessage(Message<?> message) throws MessagingException {
         if (message.getPayload() instanceof MimeMessage) {
-            log.info("Received message: " + message.toString());
+            log.info("User {} Received message: {}", user.getEmail(), message);
             MimeMessageParser parser = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
 
             String content = getMainContent(parser);
