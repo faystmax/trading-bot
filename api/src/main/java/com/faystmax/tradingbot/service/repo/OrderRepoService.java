@@ -21,6 +21,7 @@ public class OrderRepoService {
     public Order createOrder(com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
         var myOrder = new Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());
+        myOrder.setSymbol(binanceOrder.getSymbol());
         myOrder.setDateAdd(new Date(binanceOrder.getTime()));
         myOrder.setPrice(binanceOrder.getPrice());
         myOrder.setStopPrice(binanceOrder.getStopPrice());
@@ -40,6 +41,7 @@ public class OrderRepoService {
     public Order createOrder(User user, NewOrderResponse orderResponse) {
         var myOrder = new Order();
         myOrder.setExchangeId(orderResponse.getOrderId().toString());
+        myOrder.setSymbol(orderResponse.getSymbol());
         myOrder.setDateAdd(new Date());
         myOrder.setPrice(orderResponse.getPrice());
         myOrder.setOrigQty(orderResponse.getOrigQty());
@@ -63,6 +65,7 @@ public class OrderRepoService {
     public void updateOrder(final User user, final Long orderId, final com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
         final Order order = repo.findById(orderId).orElseThrow();
         order.setPrice(binanceOrder.getPrice());
+        order.setSymbol(binanceOrder.getSymbol());
         order.setDateAdd(new Date(binanceOrder.getTime()));
         order.setStopPrice(binanceOrder.getStopPrice());
         order.setOrigQty(binanceOrder.getOrigQty());

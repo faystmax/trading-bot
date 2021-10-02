@@ -20,6 +20,7 @@ import java.util.Date;
 public class OrderDto {
     private Long id;
     private String exchangeId;
+    private String symbol;
     private Date dateAdd;
     private BigDecimal price;
     private BigDecimal stopPrice;

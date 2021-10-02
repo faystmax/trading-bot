@@ -41,6 +41,8 @@ public class Order implements Serializable {
 
     private String exchangeId;
 
+    private String symbol;
+
     @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAdd;

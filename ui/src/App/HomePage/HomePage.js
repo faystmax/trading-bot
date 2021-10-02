@@ -32,8 +32,9 @@ const HomePage = () => {
         <Table className={classes.table} size="small" aria-label="Orders table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="left">Price</StyledTableCell>
-              <StyledTableCell align="center">OrigQty</StyledTableCell>
+              <StyledTableCell align="left">Symbol</StyledTableCell>
+              <StyledTableCell align="right">Price</StyledTableCell>
+              <StyledTableCell align="right">OrigQty</StyledTableCell>
               <StyledTableCell align="right">
                 Cumulative Quote Qty
               </StyledTableCell>
@@ -47,9 +48,12 @@ const HomePage = () => {
             {orders.map((row) => (
               <StyledTableRow key={row.id}>
                 <StyledTableCell component="th" scope="row">
+                  {row.symbol}
+                </StyledTableCell>
+                <StyledTableCell align="right">
                   {currencyFormat(row.realPrice)}
                 </StyledTableCell>
-                <StyledTableCell align="center">{row.origQty}</StyledTableCell>
+                <StyledTableCell align="right">{row.origQty}</StyledTableCell>
                 <StyledTableCell align="right">
                   {currencyFormat(row.cumulativeQuoteQty)}
                 </StyledTableCell>
