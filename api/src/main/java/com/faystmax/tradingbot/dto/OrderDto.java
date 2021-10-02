@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @Getter
@@ -31,4 +32,8 @@ public class OrderDto {
     private OrderType type;
     private OrderSide side;
     private Long transactTime;
+
+    public BigDecimal getRealPrice() {
+        return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(origQty, RoundingMode.HALF_DOWN)) : price;
+    }
 }

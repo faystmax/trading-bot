@@ -17,4 +17,6 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o  where o.user = :user order by o.dateAdd desc ")
     List<Order> findAllByUserOrderByDateAddDesc(@Param("user") User user);
+
+    Order findByExchangeId(String exchangeId);
 }

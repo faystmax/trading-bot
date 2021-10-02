@@ -2,8 +2,8 @@ package com.faystmax.tradingbot.web;
 
 import com.faystmax.tradingbot.dto.MessageResponse;
 import com.faystmax.tradingbot.dto.auth.SignInRequest;
-import com.faystmax.tradingbot.dto.auth.UserAuthResponse;
 import com.faystmax.tradingbot.dto.auth.SignUpRequest;
+import com.faystmax.tradingbot.dto.auth.UserAuthResponse;
 import com.faystmax.tradingbot.exception.SignUpException;
 import com.faystmax.tradingbot.service.auth.SignInService;
 import com.faystmax.tradingbot.service.auth.SignUpService;

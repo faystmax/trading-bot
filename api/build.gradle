@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.springframework.integration:spring-integration-mail'
     implementation 'org.telegram:telegrambots-spring-boot-starter:5.0.1.1'
     implementation 'com.github.faystmax:exchange-rates-api-client:1.1.0'
-    implementation 'com.github.faystmax:binance-api-client:1.0.2'
+    implementation 'com.github.faystmax:binance-api-client:1.0.4'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'javax.mail:mail:1.4.7'
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'

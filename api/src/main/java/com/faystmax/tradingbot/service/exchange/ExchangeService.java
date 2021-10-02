@@ -12,8 +12,8 @@ public interface ExchangeService {
     BigDecimal convertUsdToRub(BigDecimal quantity);
 
     /**
-     * @param form     source currency
-     * @param to       destination currency
+     * @param form source currency
+     * @param to destination currency
      * @param quantity amount that you that to convert
      * @return converted quantity
      */

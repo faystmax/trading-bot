@@ -3,7 +3,6 @@ package com.faystmax.tradingbot.service.command.impl;
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
-import com.faystmax.tradingbot.service.binance.BinanceServiceFactory;
 import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import com.faystmax.tradingbot.service.command.Command;
@@ -24,7 +23,7 @@ public class BalanceCommand implements Command {
     private final static String BALANCE_DESCRIPTION = "balance.description";
 
     private final MessageSource messageSource;
-    private final BinanceServiceFactory binanceServiceFactory;
+    private final BinanceService binanceService;
 
     @Override
     public String getCode() {
@@ -37,10 +36,9 @@ public class BalanceCommand implements Command {
     }
 
     @Override
-    public String execute(User user, Collection<String> args) {
-        BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
-        FullBalance balance = binanceService.getCurrentBalance();
-        var builder = new StringBuilder();
+    public String execute(final User user, final Collection<String> args) {
+        final FullBalance balance = binanceService.getCurrentBalance(user);
+        final var builder = new StringBuilder();
         appendBalance(builder, balance.getBase());
         appendBalance(builder, balance.getQuote());
         return builder.toString();

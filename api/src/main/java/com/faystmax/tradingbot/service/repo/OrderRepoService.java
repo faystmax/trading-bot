@@ -26,6 +26,7 @@ public class OrderRepoService {
         myOrder.setStopPrice(binanceOrder.getStopPrice());
         myOrder.setOrigQty(binanceOrder.getOrigQty());
         myOrder.setExecutedQty(binanceOrder.getExecutedQty());
+        myOrder.setCumulativeQuoteQty(binanceOrder.getCummulativeQuoteQty());
         myOrder.setIcebergQty(binanceOrder.getIcebergQty());
         myOrder.setStatus(binanceOrder.getStatus());
         myOrder.setTimeInForce(binanceOrder.getTimeInForce());
@@ -43,6 +44,7 @@ public class OrderRepoService {
         myOrder.setPrice(orderResponse.getPrice());
         myOrder.setOrigQty(orderResponse.getOrigQty());
         myOrder.setExecutedQty(orderResponse.getExecutedQty());
+        myOrder.setCumulativeQuoteQty(orderResponse.getCummulativeQuoteQty());
         myOrder.setStatus(orderResponse.getStatus());
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
@@ -55,6 +57,25 @@ public class OrderRepoService {
         }
         repo.save(myOrder);
         return myOrder;
+    }
+
+    @Transactional
+    public void updateOrder(final User user, final Long orderId, final com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
+        final Order order = repo.findById(orderId).orElseThrow();
+        order.setPrice(binanceOrder.getPrice());
+        order.setDateAdd(new Date(binanceOrder.getTime()));
+        order.setStopPrice(binanceOrder.getStopPrice());
+        order.setOrigQty(binanceOrder.getOrigQty());
+        order.setExecutedQty(binanceOrder.getExecutedQty());
+        order.setIcebergQty(binanceOrder.getIcebergQty());
+        order.setStatus(binanceOrder.getStatus());
+        order.setTimeInForce(binanceOrder.getTimeInForce());
+        order.setType(binanceOrder.getType());
+        order.setSide(binanceOrder.getSide());
+        order.setUser(user);
+        if (binanceOrder.getCummulativeQuoteQty().compareTo(BigDecimal.ZERO) > 0) {
+            order.setCumulativeQuoteQty(binanceOrder.getCummulativeQuoteQty());
+        }
     }
 
     private void setAveragePriceByFills(NewOrderResponse response, Order order) {

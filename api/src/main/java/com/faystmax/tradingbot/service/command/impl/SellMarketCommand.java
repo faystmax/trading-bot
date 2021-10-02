@@ -32,7 +32,7 @@ public class SellMarketCommand implements Command {
 
     @Override
     public String execute(User user, Collection<String> args) {
-        Order order = tradeService.marketSellAll(user);
+        final Order order = tradeService.marketSellAll(user);
         return CommandHelper.getOrderCompletedMsg(order);
     }
 }

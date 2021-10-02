@@ -26,33 +26,31 @@ const HomePage = () => {
         <Table className={classes.table} size="small" aria-label="Orders table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>id</StyledTableCell>
               <StyledTableCell align="right">Price</StyledTableCell>
               <StyledTableCell align="right">OrigQty</StyledTableCell>
               <StyledTableCell align="right">Total value</StyledTableCell>
               <StyledTableCell align="right">Date Add</StyledTableCell>
               <StyledTableCell align="right">Side</StyledTableCell>
               <StyledTableCell align="right">OrderType</StyledTableCell>
+              <StyledTableCell align="right">Status</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((row) => (
               <StyledTableRow key={row.id}>
-                <StyledTableCell component="th" scope="row">
-                  {row.id}
-                </StyledTableCell>
                 <StyledTableCell align="right">
-                  {currencyFormat(row.price)}
+                  {currencyFormat(row.realPrice)}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.origQty}</StyledTableCell>
                 <StyledTableCell align="right">
-                  {currencyFormat(row.price * row.origQty)}
+                  {currencyFormat(row.cumulativeQuoteQty)}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {new Date(row.dateAdd).toUTCString()}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.side}</StyledTableCell>
                 <StyledTableCell align="right">{row.type}</StyledTableCell>
+                <StyledTableCell align="right">{row.status}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

@@ -31,8 +31,8 @@ public class BuyMarketCommand implements Command {
     }
 
     @Override
-    public String execute(User user, Collection<String> args) {
-        Order order = tradeService.marketBuyAll(user);
+    public String execute(final User user, final Collection<String> args) {
+        final Order order = tradeService.marketBuyAll(user);
         return CommandHelper.getOrderCompletedMsg(order);
     }
 }

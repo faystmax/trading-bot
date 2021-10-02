@@ -3,7 +3,6 @@ package com.faystmax.tradingbot.service.command.impl;
 import com.faystmax.tradingbot.config.message.MessageSource;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
-import com.faystmax.tradingbot.service.binance.BinanceServiceFactory;
 import com.faystmax.tradingbot.service.command.Command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class CurrentPriceCommand implements Command {
     private final static String CURRENT_PRICE_DESCRIPTION = "currentPrice.description";
 
     private final MessageSource messageSource;
-    private final BinanceServiceFactory binanceServiceFactory;
+    private final BinanceService binanceService;
 
     @Override
     public String getCode() {
@@ -38,8 +37,7 @@ public class CurrentPriceCommand implements Command {
 
     @Override
     public String execute(User user, Collection<String> args) {
-        BinanceService binanceService = binanceServiceFactory.createBinanceService(user);
-        BigDecimal lastPrice = binanceService.getLastPrice();
+        final BigDecimal lastPrice = binanceService.getLastPrice(user, user.getTradingSymbol());
         return messageSource.getMsg(CURRENT_PRICE_ANSWER, user.getTradingSymbol(), lastPrice.toPlainString());
     }
 }

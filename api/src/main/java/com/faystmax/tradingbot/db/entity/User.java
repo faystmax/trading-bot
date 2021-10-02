@@ -31,7 +31,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "user", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "email")
+        @UniqueConstraint(columnNames = "email")
 })
 public class User implements Serializable {
     private static final long serialVersionUID = 9149997874210856667L;
@@ -104,8 +104,8 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            '}';
+                "id=" + id +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
