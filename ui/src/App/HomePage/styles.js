@@ -21,3 +21,17 @@ export const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
   },
 }))(TableCell);
+
+export const RedTableCell = withStyles((theme) => ({
+  body: {
+    fontSize: 14,
+    color: 'red',
+  },
+}))(TableCell);
+
+export const GreedTableCell = withStyles((theme) => ({
+  body: {
+    fontSize: 14,
+    color: 'green',
+  },
+}))(TableCell);

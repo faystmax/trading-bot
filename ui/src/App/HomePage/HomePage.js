@@ -9,7 +9,13 @@ import { useDispatch } from 'react-redux';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
 import currencyFormat from 'utils/currency';
-import { StyledTableCell, StyledTableRow, useStyles } from './styles';
+import {
+  GreedTableCell,
+  RedTableCell,
+  StyledTableCell,
+  StyledTableRow,
+  useStyles,
+} from './styles';
 
 const HomePage = () => {
   const classes = useStyles();
@@ -26,9 +32,11 @@ const HomePage = () => {
         <Table className={classes.table} size="small" aria-label="Orders table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="right">Price</StyledTableCell>
-              <StyledTableCell align="right">OrigQty</StyledTableCell>
-              <StyledTableCell align="right">Total value</StyledTableCell>
+              <StyledTableCell align="left">Price</StyledTableCell>
+              <StyledTableCell align="center">OrigQty</StyledTableCell>
+              <StyledTableCell align="right">
+                Cumulative Quote Qty
+              </StyledTableCell>
               <StyledTableCell align="right">Date Add</StyledTableCell>
               <StyledTableCell align="right">Side</StyledTableCell>
               <StyledTableCell align="right">OrderType</StyledTableCell>
@@ -38,17 +46,21 @@ const HomePage = () => {
           <TableBody>
             {orders.map((row) => (
               <StyledTableRow key={row.id}>
-                <StyledTableCell align="right">
+                <StyledTableCell component="th" scope="row">
                   {currencyFormat(row.realPrice)}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.origQty}</StyledTableCell>
+                <StyledTableCell align="center">{row.origQty}</StyledTableCell>
                 <StyledTableCell align="right">
                   {currencyFormat(row.cumulativeQuoteQty)}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {new Date(row.dateAdd).toUTCString()}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.side}</StyledTableCell>
+                {row.side === 'BUY' ? (
+                  <GreedTableCell align="right">{row.side}</GreedTableCell>
+                ) : (
+                  <RedTableCell align="right">{row.side}</RedTableCell>
+                )}
                 <StyledTableCell align="right">{row.type}</StyledTableCell>
                 <StyledTableCell align="right">{row.status}</StyledTableCell>
               </StyledTableRow>
