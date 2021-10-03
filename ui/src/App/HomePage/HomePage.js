@@ -6,6 +6,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
+import { Button, CircularProgress, LinearProgress } from '@material-ui/core';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
 import currencyFormat from 'utils/currency';
@@ -21,23 +23,53 @@ const HomePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [orders, setOrders] = useState([]);
-  const [totalAmount, setTotalAmount] = useState();
+  const [isOrdersReloading, setIsOrdersReloading] = useState(false);
+  const [isOrdersLoading, setIsOrdersLoading] = useState(false);
 
   useEffect(() => {
-    authApi.get('orders').then((result) => setOrders(result.data));
-
-    const interval = setInterval(() => {
-      authApi
-        .get('binance/total')
-        .then((result) => setTotalAmount(result.data));
-    }, 10 * 1000);
-    return () => clearInterval(interval);
+    setIsOrdersLoading(true);
+    authApi
+      .get('orders')
+      .then((result) => setOrders(result.data))
+      .finally(() => setIsOrdersLoading(false));
   }, [dispatch]);
+
+  const reloadOrders = () => {
+    setIsOrdersReloading(true);
+    setIsOrdersLoading(true);
+    authApi
+      .post('orders/reload')
+      .then((result) => setOrders(result.data))
+      .finally(() => {
+        setIsOrdersReloading(false);
+        setIsOrdersLoading(false);
+      });
+  };
 
   return (
     <BasePage>
+      <Button
+        style={{ marginBottom: 10 }}
+        className={classes.submit}
+        variant="outlined"
+        color="orange"
+        disabled={isOrdersReloading}
+        onClick={reloadOrders}
+        startIcon={<RefreshIcon />}
+      >
+        Reload orders from Binance
+        {isOrdersReloading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
+      </Button>
+      {isOrdersLoading && <LinearProgress />}
       <TableContainer component={Paper}>
-        <Table className={classes.table} size="small" aria-label="Orders table">
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="Orders table"
+          stickyHeader
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Symbol</StyledTableCell>

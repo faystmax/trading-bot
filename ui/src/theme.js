@@ -15,6 +15,10 @@ const theme = createMuiTheme({
     background: {
       default: '#fff',
     },
+    orange: {
+      main: '#faa775',
+      contrastText: '#fff',
+    },
   },
 });
 

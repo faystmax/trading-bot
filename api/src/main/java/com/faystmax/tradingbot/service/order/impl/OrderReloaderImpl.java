@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * @author Amosov Maxim
  * @since 30.09.2021 : 23:07
@@ -33,24 +35,32 @@ public class OrderReloaderImpl implements OrderReloader {
     public void reloadOrders() {
         final List<User> users = userRepo.findAll();
         log.info("Start reloading orders! users.size = {}", users.size());
-        for (User user : users) {
+        for (final User user : users) {
             try {
-                final String tradingSymbol = user.getTradingSymbol();
-                final List<Order> orders = binanceService.getAllMyOrders(user, tradingSymbol);
-                for (final Order order : orders) {
-                    final var dbOrder = orderRepo.findByExchangeId(order.getOrderId().toString());
-                    if (Objects.isNull(dbOrder)) {
-                        final com.faystmax.tradingbot.db.entity.Order newOrder = orderRepoService.createOrder(order);
-                        log.info("Order for user = {}, created {}", user.getEmail(), newOrder.getId());
-                    } else {
-                        orderRepoService.updateOrder(user, dbOrder.getId(), order);
-                        log.info("Order for user = {}, updated {}", user.getEmail(), dbOrder.getId());
-                    }
+                if (isBlank(user.getBinanceApiKey()) || isBlank(user.getBinanceSecretKey())) {
+                    log.info("Binance api or secret key are blank! user = {}", user.getEmail());
+                    continue;
                 }
+                reloadOrdersForUser(user);
             } catch (final Exception ex) {
                 log.error("Error while updating orders for user = {}!", user.getEmail(), ex);
             }
         }
-        log.info("End reloading orders!}");
+        log.info("End reloading orders!");
+    }
+
+    public void reloadOrdersForUser(final User user) {
+        final String tradingSymbol = user.getTradingSymbol();
+        final List<Order> orders = binanceService.getAllMyOrders(user, tradingSymbol);
+        for (final Order binanceOrder : orders) {
+            final var dbOrder = orderRepo.findByExchangeId(binanceOrder.getOrderId().toString());
+            if (Objects.isNull(dbOrder)) {
+                orderRepoService.createOrder(binanceOrder);
+                log.info("Order for user = {}, created {}", user.getEmail(), binanceOrder.getOrderId());
+            } else {
+                orderRepoService.updateOrder(user, dbOrder.getId(), binanceOrder);
+                log.info("Order for user = {}, updated {}", user.getEmail(), binanceOrder.getOrderId());
+            }
+        }
     }
 }
