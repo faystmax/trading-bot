@@ -85,6 +85,13 @@ const HomePage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {orders.length === 0 && (
+              <StyledTableRow>
+                <StyledTableCell colSpan={8} align="center">
+                  Order list is empty!
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
             {orders.map((row) => (
               <StyledTableRow key={row.id}>
                 <StyledTableCell component="th" scope="row">
