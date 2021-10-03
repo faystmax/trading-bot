@@ -23,13 +23,13 @@ public class MailIdleController {
     private final MailIdleErrorStore mailIdleErrorStore;
 
     @PostMapping("/mailIdle/start")
-    public ResponseEntity<MessageResponse> startIdle(Principal principal) {
+    public ResponseEntity<MessageResponse> startIdle(final Principal principal) {
         mailIdleService.startIdle(userService.findUserByEmail(principal.getName()));
         return ok(new MessageResponse("Mail Idle successfully started!"));
     }
 
     @PostMapping("/mailIdle/recreateAndStart")
-    public ResponseEntity<MessageResponse> recreate(Principal principal) {
+    public ResponseEntity<MessageResponse> recreate(final Principal principal) {
         User user = userService.findUserByEmail(principal.getName());
         mailIdleService.reCreateAndStartIdle(user);
         mailIdleErrorStore.clear(user);
@@ -37,13 +37,13 @@ public class MailIdleController {
     }
 
     @PostMapping("/mailIdle/stop")
-    public ResponseEntity<MessageResponse> stopIdle(Principal principal) {
+    public ResponseEntity<MessageResponse> stopIdle(final Principal principal) {
         mailIdleService.stopIdle(userService.findUserByEmail(principal.getName()));
         return ok(new MessageResponse("Mail Idle successfully stopped!"));
     }
 
     @GetMapping("/mailIdle/status")
-    public ResponseEntity<String> status(Principal principal) {
+    public ResponseEntity<String> status(final Principal principal) {
         return ok(mailIdleErrorStore.getErrorMessage(userService.findUserByEmail(principal.getName())));
     }
 }

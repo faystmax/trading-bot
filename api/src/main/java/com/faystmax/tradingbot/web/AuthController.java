@@ -29,17 +29,17 @@ public class AuthController {
 
     @ResponseBody
     @PostMapping("/auth/signIn")
-    public ResponseEntity<UserAuthResponse> signIn(@Valid @RequestBody SignInRequest request) {
+    public ResponseEntity<UserAuthResponse> signIn(@Valid @RequestBody final SignInRequest request) {
         return ok(signInService.signIn(request.getEmail(), request.getPassword()));
     }
 
     @ResponseBody
     @PostMapping("/auth/signUp")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody final SignUpRequest request) {
         try {
             signUpService.signUp(request.getEmail(), request.getPassword());
             return ok(signInService.signIn(request.getEmail(), request.getPassword()));
-        } catch (SignUpException ex) {
+        } catch (final SignUpException ex) {
             log.error("SignUp error!", ex);
             return badRequest().body(new MessageResponse(ex.getMessage()));
         }

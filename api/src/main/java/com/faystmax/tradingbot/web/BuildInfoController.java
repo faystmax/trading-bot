@@ -17,7 +17,7 @@ public class BuildInfoController {
     private final Map<String, String> buildInfo;
 
     @Autowired
-    public BuildInfoController(BuildProperties buildProperties) {
+    public BuildInfoController(final BuildProperties buildProperties) {
         buildInfo = new LinkedHashMap<>() {{
             put("name", buildProperties.getName());
             put("group", buildProperties.getGroup());

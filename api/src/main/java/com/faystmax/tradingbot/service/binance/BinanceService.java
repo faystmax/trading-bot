@@ -14,6 +14,11 @@ import java.util.List;
  * Service for interaction with binance
  */
 public interface BinanceService {
+    /**
+     * @param user user
+     * @return total USDT amount on binance account
+     */
+    BigDecimal getTotalUsdtAmount(User user);
 
     /**
      * @param user user

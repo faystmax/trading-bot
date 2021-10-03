@@ -21,9 +21,17 @@ const HomePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [orders, setOrders] = useState([]);
+  const [totalAmount, setTotalAmount] = useState();
 
   useEffect(() => {
     authApi.get('orders').then((result) => setOrders(result.data));
+
+    const interval = setInterval(() => {
+      authApi
+        .get('binance/total')
+        .then((result) => setTotalAmount(result.data));
+    }, 10 * 1000);
+    return () => clearInterval(interval);
   }, [dispatch]);
 
   return (

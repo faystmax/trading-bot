@@ -23,10 +23,31 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+
+import static java.math.BigDecimal.ZERO;
+import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Service
 public class BinanceServiceImpl implements BinanceService {
+    @Override
+    public BigDecimal getTotalUsdtAmount(User user) {
+        final BinanceApiClient client = createClient(user);
+        final List<TickerPrice> latestPrices = client.getLatestPrice();
+        final List<AssetBalance> balances = client.getAccount().getBalances();
+        final Map<String, BigDecimal> pricesBySymbol = latestPrices.stream().collect(toMap(TickerPrice::getSymbol, TickerPrice::getPrice));
+        return balances.stream()
+            .filter(balance -> ZERO.compareTo(balance.getFree()) != 0 || ZERO.compareTo(balance.getLocked()) != 0)
+            .map(balance -> {
+                if (balance.getAsset().equals("USDT")) {
+                    return balance.getFree().add(balance.getLocked());
+                }
+                final BigDecimal balanceInUSDT = pricesBySymbol.getOrDefault(balance.getAsset() + "USDT", ZERO);
+                return balanceInUSDT.multiply(balance.getFree().add(balance.getLocked()));
+            }).reduce(ZERO, BigDecimal::add);
+    }
+
     @Override
     public List<TickerPrice> getAllLastPrices(final User user) {
         return createClient(user).getLatestPrice();

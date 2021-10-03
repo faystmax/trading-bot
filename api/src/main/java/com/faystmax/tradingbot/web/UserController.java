@@ -19,13 +19,13 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/user")
-    public UserDto getUserInfo(Principal principal) {
+    public UserDto getUserInfo(final Principal principal) {
         return userMapper.map(userService.findUserByEmail(principal.getName()));
     }
 
     @PutMapping("/user")
-    public UserDto putUserInfo(@RequestBody UserDto userDto, Principal principal) {
-        User updatedUser = userService.updateUser(principal.getName(), userDto);
+    public UserDto putUserInfo(@RequestBody final UserDto userDto, final Principal principal) {
+        final User updatedUser = userService.updateUser(principal.getName(), userDto);
         return userMapper.map(updatedUser);
     }
 }

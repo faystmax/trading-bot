@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
   AppBar,
@@ -14,6 +14,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { emptyAuth } from 'components/Auth';
+import authApi from '../../../../utils/authApi';
+import currencyFormat from '../../../../utils/currency';
 import MailIdle from './MailIdle';
 import useStyles from './styles';
 
@@ -23,6 +25,17 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [totalAmount, setTotalAmount] = useState();
+
+  const callTotalAmount = () => {
+    authApi.get('binance/total').then((result) => setTotalAmount(result.data));
+  };
+
+  useEffect(() => {
+    callTotalAmount();
+    const interval = setInterval(() => callTotalAmount(), 10 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <AppBar
@@ -45,6 +58,11 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
         <Typography variant="h6" noWrap className={classes.title}>
           Trading-bot
         </Typography>
+        {totalAmount != null && (
+          <Typography style={{ paddingRight: 10 }} variant="body1" noWrap>
+            {currencyFormat(totalAmount)}
+          </Typography>
+        )}
         <Typography variant="body1" noWrap>
           {auth.email}
         </Typography>

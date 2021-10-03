@@ -17,7 +17,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @GetMapping("/orders")
-    public Collection<OrderDto> getAllUserOrders(Principal principal) {
+    public Collection<OrderDto> getAllUserOrders(final Principal principal) {
         return orderMapper.mapAll(orderService.findOrdersByUserEmail(principal.getName()));
     }
 }

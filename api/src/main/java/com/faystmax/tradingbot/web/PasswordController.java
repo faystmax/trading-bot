@@ -19,7 +19,10 @@ public class PasswordController {
     private final UserService userService;
 
     @PostMapping("/password")
-    public ResponseEntity<MessageResponse> changePassword(@RequestBody NewPasswordDto dto, Principal principal) {
+    public ResponseEntity<MessageResponse> changePassword(
+        @RequestBody final NewPasswordDto dto,
+        final Principal principal
+    ) {
         userService.changePassword(principal.getName(), dto.getOldPassword(), dto.getNewPassword());
         return ok(new MessageResponse("Password successfully updated!"));
     }
