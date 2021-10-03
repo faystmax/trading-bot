@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.toMap;
@@ -46,6 +47,17 @@ public class BinanceServiceImpl implements BinanceService {
                 final BigDecimal balanceInUSDT = pricesBySymbol.getOrDefault(balance.getAsset() + "USDT", ZERO);
                 return balanceInUSDT.multiply(balance.getFree().add(balance.getLocked()));
             }).reduce(ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public List<String> getActiveSymbols(final User user) {
+        final BinanceApiClient client = createClient(user);
+        final List<AssetBalance> balances = client.getAccount().getBalances();
+        return balances.stream()
+            .filter(balance -> ZERO.compareTo(balance.getFree()) != 0 || ZERO.compareTo(balance.getLocked()) != 0)
+            .filter(balance -> !balance.getAsset().equals("USDT"))
+            .map(balance -> balance.getAsset() + "USDT")
+            .collect(Collectors.toList());
     }
 
     @Override

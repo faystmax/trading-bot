@@ -5,6 +5,7 @@ import com.faystmax.tradingbot.db.repo.UserRepo;
 import com.faystmax.tradingbot.dto.UserDto;
 import com.faystmax.tradingbot.exception.ServiceException;
 import com.faystmax.tradingbot.service.user.UserService;
+import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,20 +23,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public User findUserByEmail(String userEmail) {
+    public User findUserByEmail(final String userEmail) {
         return userRepo.findByEmail(userEmail)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
     }
 
     @Nullable
     @Override
-    public User findUserByChatId(Long chatId) {
+    public User findUserByChatId(final Long chatId) {
         return userRepo.findByTelegramChatId(chatId).orElse(null);
     }
 
     @Override
     @Transactional
-    public User updateUser(String email, UserDto userDto) {
+    public User updateUser(final String email, final UserDto userDto) {
         User user = findUserByEmail(email);
 
         user.setTelegramChatId(userDto.getTelegramChatId());
@@ -50,8 +52,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User changePassword(String email, String oldPassword, String newPassword) {
-        User user = findUserByEmail(email);
+    public User changePassword(final String email, final String oldPassword, final String newPassword) {
+        final User user = findUserByEmail(email);
 
         if (encoder.matches(user.getPassword(), oldPassword)) {
             throw new ServiceException("Current password is incorrect!");
@@ -61,5 +63,13 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(encoder.encode(newPassword));
         return user;
+    }
+
+    @Override
+    @Transactional
+    public void updateUserActiveSymbols(final Long id, final List<String> activeSymbols) {
+        final User user = userRepo.findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+        user.setActiveSymbols(UserUtils.joinSymbols(activeSymbols));
     }
 }

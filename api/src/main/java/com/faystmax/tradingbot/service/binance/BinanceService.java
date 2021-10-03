@@ -22,6 +22,12 @@ public interface BinanceService {
 
     /**
      * @param user user
+     * @return list of active trading symbols
+     */
+    List<String> getActiveSymbols(User user);
+
+    /**
+     * @param user user
      * @return last price of selected user symbol
      */
     List<TickerPrice> getAllLastPrices(User user);

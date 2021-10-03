@@ -7,6 +7,7 @@ import com.faystmax.tradingbot.db.repo.UserRepo;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.order.OrderReloader;
 import com.faystmax.tradingbot.service.repo.OrderRepoService;
+import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -50,16 +51,18 @@ public class OrderReloaderImpl implements OrderReloader {
     }
 
     public void reloadOrdersForUser(final User user) {
-        final String tradingSymbol = user.getTradingSymbol();
-        final List<Order> orders = binanceService.getAllMyOrders(user, tradingSymbol);
-        for (final Order binanceOrder : orders) {
-            final var dbOrder = orderRepo.findByExchangeId(binanceOrder.getOrderId().toString());
-            if (Objects.isNull(dbOrder)) {
-                orderRepoService.createOrder(binanceOrder);
-                log.info("Order for user = {}, created {}", user.getEmail(), binanceOrder.getOrderId());
-            } else {
-                orderRepoService.updateOrder(user, dbOrder.getId(), binanceOrder);
-                log.info("Order for user = {}, updated {}", user.getEmail(), binanceOrder.getOrderId());
+        final List<String> activeSymbols = UserUtils.parseSymbols(user);
+        for (final String activeSymbol : activeSymbols) {
+            final List<Order> orders = binanceService.getAllMyOrders(user, activeSymbol);
+            for (final Order binanceOrder : orders) {
+                final var dbOrder = orderRepo.findByExchangeId(binanceOrder.getOrderId().toString());
+                if (Objects.isNull(dbOrder)) {
+                    orderRepoService.createOrder(binanceOrder);
+                    log.info("Order for user = {}, created {}", user.getEmail(), binanceOrder.getOrderId());
+                } else {
+                    orderRepoService.updateOrder(user, dbOrder.getId(), binanceOrder);
+                    log.info("Order for user = {}, updated {}", user.getEmail(), binanceOrder.getOrderId());
+                }
             }
         }
     }

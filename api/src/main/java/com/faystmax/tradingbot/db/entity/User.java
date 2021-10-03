@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -87,6 +88,9 @@ public class User implements Serializable {
 
     @Size(max = 50)
     private String emailFolder;
+
+    @Lob
+    private String activeSymbols;
 
     @Override
     public boolean equals(Object o) {

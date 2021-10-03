@@ -25,6 +25,9 @@ const HomePage = () => {
   const [orders, setOrders] = useState([]);
   const [isOrdersReloading, setIsOrdersReloading] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
+  const [isActiveSymbolsReloading, setIsActiveSymbolsReloading] = useState(
+    false,
+  );
 
   useEffect(() => {
     setIsOrdersLoading(true);
@@ -46,6 +49,13 @@ const HomePage = () => {
       });
   };
 
+  const reloadActiveSymbols = () => {
+    setIsActiveSymbolsReloading(true);
+    authApi
+      .post('binance/symbols/reload')
+      .finally(() => setIsActiveSymbolsReloading(false));
+  };
+
   return (
     <BasePage>
       <Button
@@ -59,6 +69,20 @@ const HomePage = () => {
       >
         Reload orders from Binance
         {isOrdersReloading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
+      </Button>
+      <Button
+        style={{ marginBottom: 10, marginLeft: 10 }}
+        className={classes.submit}
+        variant="outlined"
+        color="orange"
+        disabled={isActiveSymbolsReloading}
+        onClick={reloadActiveSymbols}
+        startIcon={<RefreshIcon />}
+      >
+        Reload active symbols
+        {isActiveSymbolsReloading && (
           <CircularProgress size={24} className={classes.buttonProgress} />
         )}
       </Button>

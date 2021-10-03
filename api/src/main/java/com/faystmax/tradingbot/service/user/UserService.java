@@ -4,6 +4,8 @@ import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.dto.UserDto;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 public interface UserService {
     /**
      * Return user by email
@@ -40,4 +42,11 @@ public interface UserService {
      * @return user with updated password
      */
     User changePassword(String email, String oldPassword, String newPassword);
+
+    /**
+     * @param id id
+     * @param activeSymbols activeSymbols
+     * @return update user active symbols
+     */
+    void updateUserActiveSymbols(final Long id, final List<String> activeSymbols);
 }
