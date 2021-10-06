@@ -2,6 +2,7 @@ package com.faystmax.tradingbot.service.binance.impl;
 
 import com.faystmax.binance.api.client.BinanceApiClient;
 import com.faystmax.binance.api.client.BinanceApiClientFactory;
+import com.faystmax.binance.api.client.domain.ExchangeInfo;
 import com.faystmax.binance.api.client.domain.SymbolFilter;
 import com.faystmax.binance.api.client.domain.SymbolInfo;
 import com.faystmax.binance.api.client.domain.TickerPrice;
@@ -17,6 +18,7 @@ import com.faystmax.binance.api.client.domain.trade.Trade;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.binance.model.Balance;
+import com.faystmax.tradingbot.service.binance.model.Commission;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,11 @@ import static java.util.stream.Collectors.toMap;
 @Slf4j
 @Service
 public class BinanceServiceImpl implements BinanceService {
+    @Override
+    public ExchangeInfo getExchangeInfo(final User user) {
+        return createClient(user).getExchangeInfo();
+    }
+
     @Override
     public BigDecimal getTotalUsdtAmount(User user) {
         final BinanceApiClient client = createClient(user);
@@ -88,6 +95,12 @@ public class BinanceServiceImpl implements BinanceService {
         final AssetBalance baseBalance = account.getAssetBalance(symbolInfo.getBaseAsset());
         final AssetBalance quoteBalance = account.getAssetBalance(symbolInfo.getQuoteAsset());
         return new FullBalance(Balance.valueOf(baseBalance), Balance.valueOf(quoteBalance));
+    }
+
+    @Override
+    public Commission getCommission(final User user) {
+        final Account account = createClient(user).getAccount();
+        return new Commission(account.getMakerCommission(), account.getTakerCommission());
     }
 
     @Override

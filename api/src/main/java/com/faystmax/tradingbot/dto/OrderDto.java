@@ -33,8 +33,59 @@ public class OrderDto {
     private OrderType type;
     private OrderSide side;
     private Long transactTime;
+    private Date dateUpdate;
+
+    private BigDecimal notUsedQty;
+    private transient OrderDto buyOrder;
 
     public BigDecimal getRealPrice() {
         return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(origQty, RoundingMode.HALF_DOWN)) : price;
+    }
+
+    public BigDecimal getDealIncome() {
+        if (buyOrder != null && origQty != null && price != null) {
+            final BigDecimal usedQty = origQty.subtract(notUsedQty);
+            final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
+            return getDealProfit().divide(cumulativeUsedBuyQty, RoundingMode.HALF_DOWN);
+        }
+        return null;
+    }
+
+    public BigDecimal getDealProfit() {
+        if (buyOrder != null && origQty != null && price != null) {
+            final BigDecimal usedQty = origQty.subtract(notUsedQty);
+            final BigDecimal cumulativeUsedSellQty = usedQty.multiply(getRealPrice());
+            final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
+            return cumulativeUsedSellQty.subtract(cumulativeUsedBuyQty);
+        }
+        return null;
+    }
+
+    public BigDecimal getUsedQty() {
+        if (origQty != null && notUsedQty != null) {
+            return origQty.subtract(notUsedQty);
+        }
+        return origQty;
+    }
+
+    public OrderDto(final OrderDto source) {
+        this.id = source.id;
+        this.exchangeId = source.getExchangeId();
+        this.symbol = source.getSymbol();
+        this.dateAdd = source.getDateAdd();
+        this.price = source.getPrice();
+        this.stopPrice = source.getStopPrice();
+        this.origQty = source.getOrigQty();
+        this.executedQty = source.getExecutedQty();
+        this.icebergQty = source.getIcebergQty();
+        this.cumulativeQuoteQty = source.getCumulativeQuoteQty();
+        this.status = source.getStatus();
+        this.timeInForce = source.getTimeInForce();
+        this.type = source.getType();
+        this.side = source.getSide();
+        this.transactTime = source.getTransactTime();
+        this.dateUpdate = source.getDateUpdate();
+        this.notUsedQty = source.getNotUsedQty();
+        this.buyOrder = source.getBuyOrder();
     }
 }

@@ -3,6 +3,7 @@ package com.faystmax.tradingbot.web;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.user.UserService;
+import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Amosov Maxim
@@ -32,8 +34,12 @@ public class BinanceController {
     @PostMapping("symbols/reload")
     public List<String> reloadActiveSymbols(final Principal principal) {
         final User user = userService.findUserByEmail(principal.getName());
+        final List<String> userActiveSymbols = UserUtils.parseSymbols(user);
         final List<String> activeSymbols = binanceService.getActiveSymbols(user);
-        userService.updateUserActiveSymbols(user.getId(), activeSymbols);
-        return activeSymbols;
+        userActiveSymbols.addAll(activeSymbols);
+
+        final List<String> resultActiveSymbols = userActiveSymbols.stream().distinct().collect(Collectors.toList());
+        userService.updateUserActiveSymbols(user.getId(), resultActiveSymbols);
+        return resultActiveSymbols;
     }
 }

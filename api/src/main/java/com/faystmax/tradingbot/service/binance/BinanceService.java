@@ -1,10 +1,12 @@
 package com.faystmax.tradingbot.service.binance;
 
+import com.faystmax.binance.api.client.domain.ExchangeInfo;
 import com.faystmax.binance.api.client.domain.TickerPrice;
 import com.faystmax.binance.api.client.domain.trade.NewOrderResponse;
 import com.faystmax.binance.api.client.domain.trade.Order;
 import com.faystmax.binance.api.client.domain.trade.Trade;
 import com.faystmax.tradingbot.db.entity.User;
+import com.faystmax.tradingbot.service.binance.model.Commission;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
 
 import java.math.BigDecimal;
@@ -14,6 +16,12 @@ import java.util.List;
  * Service for interaction with binance
  */
 public interface BinanceService {
+    /**
+     * @param user user
+     * @return ExchangeInfo for all symbols
+     */
+    ExchangeInfo getExchangeInfo(final User user);
+
     /**
      * @param user user
      * @return total USDT amount on binance account
@@ -60,6 +68,12 @@ public interface BinanceService {
      * @return base and quote balances
      */
     FullBalance getCurrentBalance(User user);
+
+    /**
+     * @param user user
+     * @return commission of current user
+     */
+    Commission getCommission(final User user);
 
     /**
      * Buy at market price on all free balance

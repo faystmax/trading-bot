@@ -33,6 +33,7 @@ public class OrderRepoService {
         myOrder.setTimeInForce(binanceOrder.getTimeInForce());
         myOrder.setType(binanceOrder.getType());
         myOrder.setSide(binanceOrder.getSide());
+        myOrder.setDateUpdate(new Date(binanceOrder.getUpdateTime()));
         repo.save(myOrder);
         return myOrder;
     }
@@ -51,6 +52,7 @@ public class OrderRepoService {
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
         myOrder.setSide(orderResponse.getSide());
+        myOrder.setDateUpdate(myOrder.getDateAdd());
         myOrder.setUser(user);
 
         // if order has zero price, then calculate average price by orders fills
@@ -75,6 +77,7 @@ public class OrderRepoService {
         order.setTimeInForce(binanceOrder.getTimeInForce());
         order.setType(binanceOrder.getType());
         order.setSide(binanceOrder.getSide());
+        order.setDateUpdate(new Date(binanceOrder.getUpdateTime()));
         order.setUser(user);
         if (binanceOrder.getCummulativeQuoteQty().compareTo(BigDecimal.ZERO) > 0) {
             order.setCumulativeQuoteQty(binanceOrder.getCummulativeQuoteQty());

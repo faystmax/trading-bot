@@ -76,6 +76,10 @@ public class Order implements Serializable {
 
     private Long transactTime;
 
+    @Basic(optional = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateUpdate;
+
     @JoinColumn(name = "userRef", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;

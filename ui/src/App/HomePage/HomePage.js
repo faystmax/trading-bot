@@ -10,7 +10,7 @@ import { Button, CircularProgress, LinearProgress } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
-import currencyFormat from 'utils/currency';
+import { moneyFormat, priceFormat } from 'utils/currency';
 import {
   GreedTableCell,
   RedTableCell,
@@ -109,7 +109,7 @@ const HomePage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.length === 0 && (
+            {!isOrdersLoading && orders.length === 0 && (
               <StyledTableRow>
                 <StyledTableCell colSpan={8} align="center">
                   Order list is empty!
@@ -122,11 +122,11 @@ const HomePage = () => {
                   {row.symbol}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {currencyFormat(row.realPrice)}
+                  {priceFormat(row.realPrice)}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.origQty}</StyledTableCell>
                 <StyledTableCell align="right">
-                  {currencyFormat(row.cumulativeQuoteQty)}
+                  {moneyFormat(row.cumulativeQuoteQty)}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {new Date(row.dateAdd).toUTCString()}

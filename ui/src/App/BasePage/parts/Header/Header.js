@@ -14,8 +14,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { emptyAuth } from 'components/Auth';
-import authApi from '../../../../utils/authApi';
-import currencyFormat from '../../../../utils/currency';
+import authApi from 'utils/authApi';
+import { moneyFormat } from 'utils/currency';
 import MailIdle from './MailIdle';
 import useStyles from './styles';
 
@@ -60,7 +60,7 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
         </Typography>
         {totalAmount != null && (
           <Typography style={{ paddingRight: 10 }} variant="body1" noWrap>
-            {currencyFormat(totalAmount)}
+            {moneyFormat(totalAmount)}
           </Typography>
         )}
         <Typography variant="body1" noWrap>
