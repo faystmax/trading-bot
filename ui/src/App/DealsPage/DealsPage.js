@@ -39,6 +39,9 @@ const DealsPage = () => {
     if (income < 0) {
       return `rgba(252,209,209,${Math.abs(income) + 0.4})`;
     }
+    if (!row.isFilled && row.sellOrders.length !== 0) {
+      return `rgba(229, 92, 255, 0.26)`;
+    }
 
     return '#ffffff';
   };

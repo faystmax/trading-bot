@@ -3,7 +3,7 @@ export const priceFormat = (num) => {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
-    maximumFractionDigits: 5,
+    maximumFractionDigits: num > 30 ? 2 : 5,
   });
 };
 

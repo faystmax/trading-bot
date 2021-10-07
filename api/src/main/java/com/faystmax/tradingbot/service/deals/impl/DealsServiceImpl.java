@@ -54,7 +54,8 @@ public class DealsServiceImpl implements DealsService {
             .values()
             .stream().map(orders -> createDeals(orders, commissions, exchangeInfo))
             .flatMap(Collection::stream)
-            .sorted(comparing(DealDto::getLastSellDate, nullsFirst(reverseOrder()))
+            .sorted(comparing(DealDto::getIsFilled)
+                .thenComparing(DealDto::getLastSellDate, nullsFirst(reverseOrder()))
                 .thenComparing(DealDto::getBuyDate, reverseOrder()))
             .peek(deal -> deal.getSellOrders().sort(comparing(OrderDto::getDateUpdate).reversed()))
             .collect(Collectors.toList());
@@ -123,8 +124,8 @@ public class DealsServiceImpl implements DealsService {
 
     private OrderDto getFirstAfter(final Date dateAdd, final List<OrderDto> sellOrders, final BigDecimal buyQty) {
         for (final OrderDto sellOrder : sellOrders) {
-            if(sellOrder.getDateAdd().after(dateAdd)){
-                if( buyQty.subtract(sellOrder.getNotUsedQty()).compareTo(BigDecimal.ZERO) > 0){
+            if (sellOrder.getDateAdd().after(dateAdd)) {
+                if (buyQty.subtract(sellOrder.getNotUsedQty()).compareTo(BigDecimal.ZERO) > 0) {
                     sellOrders.remove(sellOrder);
                 }
 
@@ -133,5 +134,4 @@ public class DealsServiceImpl implements DealsService {
         }
         return null;
     }
-
 }
