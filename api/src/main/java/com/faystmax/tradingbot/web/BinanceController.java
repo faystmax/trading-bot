@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class BinanceController {
     @PostMapping("symbols/reload")
     public List<String> reloadActiveSymbols(final Principal principal) {
         final User user = userService.findUserByEmail(principal.getName());
-        final List<String> userActiveSymbols = UserUtils.parseSymbols(user);
+        final List<String> userActiveSymbols = new ArrayList<>(UserUtils.parseSymbols(user));
         final List<String> activeSymbols = binanceService.getActiveSymbols(user);
         userActiveSymbols.addAll(activeSymbols);
 
