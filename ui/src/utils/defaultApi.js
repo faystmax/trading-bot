@@ -5,5 +5,5 @@ axios.defaults.headers.ContentType = 'application/json';
 
 export default axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 10000,
+  timeout: 30000,
 });
