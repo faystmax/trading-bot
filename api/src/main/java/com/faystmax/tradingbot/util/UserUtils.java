@@ -19,7 +19,7 @@ public class UserUtils {
      * @return list of symbols
      */
     public List<String> parseSymbols(@NotNull final User user) {
-        return List.of(StringUtils.split(user.getActiveSymbols(), ","));
+        return List.of(StringUtils.split(StringUtils.defaultString(user.getActiveSymbols()), ","));
     }
 
     /**
