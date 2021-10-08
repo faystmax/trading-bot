@@ -40,27 +40,27 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
         <List>
           <ListItem
             button
-            key="My Orders"
+            key="My Deals"
             className={classes.menuListItem}
             onClick={() => history.push('/')}
             selected={window.location.pathname === '/'}
           >
             <ListItemIcon>
-              <BookIcon />
-            </ListItemIcon>
-            <ListItemText primary="My Orders" />
-          </ListItem>
-          <ListItem
-            button
-            key="My Deals"
-            className={classes.menuListItem}
-            onClick={() => history.push('/deals')}
-            selected={window.location.pathname === '/deals'}
-          >
-            <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="My Deals" />
+          </ListItem>
+          <ListItem
+            button
+            key="My Orders"
+            className={classes.menuListItem}
+            onClick={() => history.push('/orders')}
+            selected={window.location.pathname === '/orders'}
+          >
+            <ListItemIcon>
+              <BookIcon />
+            </ListItemIcon>
+            <ListItemText primary="My Orders" />
           </ListItem>
           <ListItem
             button

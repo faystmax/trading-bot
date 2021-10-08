@@ -19,7 +19,7 @@ import {
   useStyles,
 } from './styles';
 
-const HomePage = () => {
+const OrdersPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [orders, setOrders] = useState([]);
@@ -147,4 +147,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default OrdersPage;
