@@ -11,6 +11,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
 import { moneyFormat, priceFormat } from 'utils/currency';
+import dateFormat from '../../utils/dateFormat';
 import {
   GreedTableCell,
   RedTableCell,
@@ -98,9 +99,9 @@ const OrdersPage = () => {
             <TableRow>
               <StyledTableCell align="left">Symbol</StyledTableCell>
               <StyledTableCell align="right">Price</StyledTableCell>
-              <StyledTableCell align="right">OrigQty</StyledTableCell>
+              <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">
-                Cumulative Quote Qty
+                Cumulative Quantity
               </StyledTableCell>
               <StyledTableCell align="right">Date Add</StyledTableCell>
               <StyledTableCell align="right">Side</StyledTableCell>
@@ -129,7 +130,7 @@ const OrdersPage = () => {
                   {moneyFormat(row.cumulativeQuoteQty)}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {new Date(row.dateAdd).toUTCString()}
+                  {dateFormat(new Date(row.dateAdd))}
                 </StyledTableCell>
                 {row.side === 'BUY' ? (
                   <GreedTableCell align="right">{row.side}</GreedTableCell>

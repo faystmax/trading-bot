@@ -58,7 +58,7 @@ public interface BinanceService {
      * @param symbol trading symbol
      * @return all last account orders (in last 3 months)
      */
-    List<Order> getAllMyOrders(User user, String symbol);
+    List<Order> getAllOrdersForSymbol(User user, String symbol);
 
     /**
      * Return Base and Quote balance

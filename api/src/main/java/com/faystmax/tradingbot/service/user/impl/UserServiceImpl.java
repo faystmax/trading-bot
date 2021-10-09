@@ -28,6 +28,12 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
     }
 
+    @Override
+    public User findUserById(final Long id) {
+        return userRepo.findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+    }
+
     @Nullable
     @Override
     public User findUserByChatId(final Long chatId) {
@@ -37,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(final String email, final UserDto userDto) {
-        User user = findUserByEmail(email);
+        final User user = findUserByEmail(email);
 
         user.setTelegramChatId(userDto.getTelegramChatId());
         user.setTradingSymbol(userDto.getTradingSymbol());

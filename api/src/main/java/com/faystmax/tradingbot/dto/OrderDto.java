@@ -32,7 +32,6 @@ public class OrderDto {
     private TimeInForce timeInForce;
     private OrderType type;
     private OrderSide side;
-    private Long transactTime;
     private Date dateUpdate;
 
     private BigDecimal notUsedQty;
@@ -102,7 +101,6 @@ public class OrderDto {
         this.timeInForce = source.getTimeInForce();
         this.type = source.getType();
         this.side = source.getSide();
-        this.transactTime = source.getTransactTime();
         this.dateUpdate = source.getDateUpdate();
         this.notUsedQty = source.getNotUsedQty();
         this.buyOrder = source.getBuyOrder();

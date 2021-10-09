@@ -11,10 +11,19 @@ public interface UserService {
      * Return user by email
      *
      * @param userEmail user email
-     * @return corresponding user with the transferred userEmail
+     * @return user by email
      * @throws UsernameNotFoundException when can't find user
      */
     User findUserByEmail(String userEmail);
+
+    /**
+     * Return user by id
+     *
+     * @param id user id
+     * @return user by id
+     * @throws UsernameNotFoundException when can't find user
+     */
+    User findUserById(Long id);
 
     /**
      * Return user by chat id

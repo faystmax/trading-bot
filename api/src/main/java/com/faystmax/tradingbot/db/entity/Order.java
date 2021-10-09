@@ -74,7 +74,7 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderSide side;
 
-    private Long transactTime;
+    private Boolean working;
 
     @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)

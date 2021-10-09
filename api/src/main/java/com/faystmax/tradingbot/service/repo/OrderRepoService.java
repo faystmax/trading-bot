@@ -18,7 +18,7 @@ public class OrderRepoService {
     private final OrderRepo repo;
 
     @Transactional
-    public Order createOrder(com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
+    public void createOrder(final User user, final com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
         var myOrder = new Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());
         myOrder.setSymbol(binanceOrder.getSymbol());
@@ -33,13 +33,14 @@ public class OrderRepoService {
         myOrder.setTimeInForce(binanceOrder.getTimeInForce());
         myOrder.setType(binanceOrder.getType());
         myOrder.setSide(binanceOrder.getSide());
+        myOrder.setWorking(binanceOrder.isWorking());
         myOrder.setDateUpdate(new Date(binanceOrder.getUpdateTime()));
+        myOrder.setUser(user);
         repo.save(myOrder);
-        return myOrder;
     }
 
     @Transactional
-    public Order createOrder(User user, NewOrderResponse orderResponse) {
+    public Order createOrder(final User user, final NewOrderResponse orderResponse) {
         var myOrder = new Order();
         myOrder.setExchangeId(orderResponse.getOrderId().toString());
         myOrder.setSymbol(orderResponse.getSymbol());
@@ -52,6 +53,7 @@ public class OrderRepoService {
         myOrder.setTimeInForce(orderResponse.getTimeInForce());
         myOrder.setType(orderResponse.getType());
         myOrder.setSide(orderResponse.getSide());
+        myOrder.setWorking(true);
         myOrder.setDateUpdate(myOrder.getDateAdd());
         myOrder.setUser(user);
 
@@ -78,13 +80,14 @@ public class OrderRepoService {
         order.setType(binanceOrder.getType());
         order.setSide(binanceOrder.getSide());
         order.setDateUpdate(new Date(binanceOrder.getUpdateTime()));
+        order.setWorking(binanceOrder.isWorking());
         order.setUser(user);
         if (binanceOrder.getCummulativeQuoteQty().compareTo(BigDecimal.ZERO) > 0) {
             order.setCumulativeQuoteQty(binanceOrder.getCummulativeQuoteQty());
         }
     }
 
-    private void setAveragePriceByFills(NewOrderResponse response, Order order) {
+    private void setAveragePriceByFills(final NewOrderResponse response, final Order order) {
         response.getFills().stream().map(trade -> {
             BigDecimal part = trade.getQty().divide(response.getExecutedQty(), RoundingMode.HALF_EVEN);
             return part.multiply(trade.getPrice());

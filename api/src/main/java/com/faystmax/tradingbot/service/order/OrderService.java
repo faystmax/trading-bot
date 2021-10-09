@@ -7,13 +7,6 @@ import java.util.List;
 
 public interface OrderService {
     /**
-     * Return all orders
-     *
-     * @return all orders
-     */
-    List<Order> findAllOrders();
-
-    /**
      * Return all user orders by user email
      *
      * @param userEmail user email

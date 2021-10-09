@@ -5,14 +5,15 @@ import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.db.repo.OrderRepo;
 import com.faystmax.tradingbot.db.repo.UserRepo;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.deals.SymbolsService;
 import com.faystmax.tradingbot.service.order.OrderReloader;
 import com.faystmax.tradingbot.service.repo.OrderRepoService;
-import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ public class OrderReloaderImpl implements OrderReloader {
     private final UserRepo userRepo;
     private final OrderRepo orderRepo;
     private final BinanceService binanceService;
+    private final SymbolsService symbolsService;
     private final OrderRepoService orderRepoService;
 
     @Override
@@ -51,13 +53,14 @@ public class OrderReloaderImpl implements OrderReloader {
     }
 
     public void reloadOrdersForUser(final User user) {
-        final List<String> activeSymbols = UserUtils.parseSymbols(user);
+        final List<String> activeSymbols = symbolsService.updateActiveSymbols(user);
         for (final String activeSymbol : activeSymbols) {
-            final List<Order> orders = binanceService.getAllMyOrders(user, activeSymbol);
+            log.info("Getting all orders for symbol = '{}', user = '{}'", activeSymbol, user.getEmail());
+            final List<Order> orders = safeLoadOrders(user, activeSymbol);
             for (final Order binanceOrder : orders) {
                 final var dbOrder = orderRepo.findByExchangeId(binanceOrder.getOrderId().toString());
                 if (Objects.isNull(dbOrder)) {
-                    orderRepoService.createOrder(binanceOrder);
+                    orderRepoService.createOrder(user, binanceOrder);
                     log.info("Order for user = {}, created {}", user.getEmail(), binanceOrder.getOrderId());
                 } else {
                     orderRepoService.updateOrder(user, dbOrder.getId(), binanceOrder);
@@ -65,5 +68,14 @@ public class OrderReloaderImpl implements OrderReloader {
                 }
             }
         }
+    }
+
+    private List<Order> safeLoadOrders(final User user, final String activeSymbol) {
+        try {
+            return binanceService.getAllOrdersForSymbol(user, activeSymbol);
+        } catch (final Exception ex) {
+            log.error("Error during loading orders! user = {}, symbol = {}", user.getEmail(), activeSymbol, ex);
+        }
+        return Collections.emptyList();
     }
 }

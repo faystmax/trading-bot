@@ -83,7 +83,7 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public List<Order> getAllMyOrders(final User user, final String symbol) {
+    public List<Order> getAllOrdersForSymbol(final User user, final String symbol) {
         final var request = new AllOrdersRequest(symbol);
         return createClient(user).getAllOrders(request);
     }
