@@ -150,7 +150,7 @@ public class BinanceServiceImpl implements BinanceService {
         final SymbolInfo symbolInfo = createClient(user).getExchangeInfo().getSymbolInfo(user.getTradingSymbol());
         final SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         final BigDecimal stepSize = symbolFilter.getStepSize();
-        return quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(2))));
+        return quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(1))));
     }
 
     /**
