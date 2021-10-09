@@ -10,6 +10,7 @@ import com.faystmax.tradingbot.service.repo.OrderRepoService;
 import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class OrderReloaderImpl implements OrderReloader {
     private final OrderRepoService orderRepoService;
 
     @Override
-//    @Scheduled(initialDelay = 1000, fixedDelay = 3600 * 1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 3600 * 1000)
     public void reloadOrders() {
         final List<User> users = userRepo.findAll();
         log.info("Start reloading orders! users.size = {}", users.size());
