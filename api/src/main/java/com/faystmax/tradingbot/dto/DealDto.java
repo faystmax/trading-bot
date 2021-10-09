@@ -52,7 +52,12 @@ public class DealDto {
             this.sellOrders.forEach(sellOrder -> sellOrder.setBuyOrder(buyOrder));
             if (isFilled) {
                 this.dealProfit = this.sellOrders.stream().map(OrderDto::getDealProfit).reduce(ZERO, BigDecimal::add);
-                this.dealIncome = dealProfit.divide(buyCumulativeQty, RoundingMode.HALF_DOWN);
+
+                if (this.dealProfit.compareTo(ZERO) == 0) {
+                    this.dealIncome = ZERO;
+                } else {
+                    this.dealIncome = dealProfit.divide(buyCumulativeQty, RoundingMode.HALF_EVEN);
+                }
             }
         }
     }

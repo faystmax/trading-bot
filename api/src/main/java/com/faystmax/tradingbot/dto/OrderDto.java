@@ -39,26 +39,45 @@ public class OrderDto {
     private transient OrderDto buyOrder;
 
     public BigDecimal getRealPrice() {
-        return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(origQty, RoundingMode.HALF_DOWN)) : price;
+        return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(origQty, RoundingMode.HALF_EVEN)) : price;
+    }
+
+    public void setOrigQtyWithoutCommission(final BigDecimal origQtyWithoutCommission) {
+        if(BigDecimal.ZERO.compareTo(price) == 0){
+            this.price = getRealPrice();
+        }
+        this.origQty = origQtyWithoutCommission;
+        this.cumulativeQuoteQty = origQtyWithoutCommission.multiply(price);
     }
 
     public BigDecimal getDealIncome() {
         if (buyOrder != null && origQty != null && price != null) {
-            final BigDecimal usedQty = origQty.subtract(notUsedQty);
+            final BigDecimal usedQty = getUsedQty();
             final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
-            return getDealProfit().divide(cumulativeUsedBuyQty, RoundingMode.HALF_DOWN);
+            if(getDealProfit().compareTo(BigDecimal.ZERO) == 0){
+                return BigDecimal.ZERO;
+            }
+            return getDealProfit().divide(cumulativeUsedBuyQty, RoundingMode.HALF_EVEN);
         }
         return null;
     }
 
     public BigDecimal getDealProfit() {
         if (buyOrder != null && origQty != null && price != null) {
-            final BigDecimal usedQty = origQty.subtract(notUsedQty);
+            final BigDecimal usedQty = getUsedQty();
             final BigDecimal cumulativeUsedSellQty = usedQty.multiply(getRealPrice());
             final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
             return cumulativeUsedSellQty.subtract(cumulativeUsedBuyQty);
         }
         return null;
+    }
+
+    public BigDecimal getCumulativeUsedSellQty() {
+        final BigDecimal usedQty = getUsedQty();
+        if (usedQty != null) {
+            return usedQty.multiply(getRealPrice());
+        }
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal getUsedQty() {

@@ -30,14 +30,17 @@ const DealsPage = () => {
 
   const calcRowColor = (row) => {
     if (row.sellOrders.length === 0) {
-      return 'rgba(241,241,241,0.70)';
+      return 'rgb(241,241,241)';
     }
     const income = row.dealIncome;
     if (income > 0) {
-      return `rgba(188,253,187,${income + 0.4})`;
+      return `rgba(188,253,187,${income + 0.45})`;
     }
     if (income < 0) {
-      return `rgba(252,209,209,${Math.abs(income) + 0.4})`;
+      return `rgba(252,209,209,${Math.abs(income) + 0.45})`;
+    }
+    if (income === 0) {
+      return 'rgba(255,251,232,0.71)';
     }
     if (!row.isFilled && row.sellOrders.length !== 0) {
       return `rgba(229, 92, 255, 0.26)`;
@@ -96,7 +99,7 @@ const DealsPage = () => {
                 Cumulative Quantity
               </StyledTableCell>
               <StyledTableCell align="center">Date</StyledTableCell>
-              <StyledTableCell align="center">Qty</StyledTableCell>
+              <StyledTableCell align="center">Quantity</StyledTableCell>
               <StyledTableCell align="center">Price</StyledTableCell>
               <StyledTableCell align="center">
                 Cumulative Quantity
@@ -173,7 +176,7 @@ const DealsPage = () => {
                           {priceFormat(row.sellOrders[0].realPrice)}
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          {moneyFormat(row.sellOrders[0].cumulativeQuoteQty)}
+                          {moneyFormat(row.sellOrders[0].cumulativeUsedSellQty)}
                         </StyledTableCell>
                         <StyledTableCell align="right">
                           {moneyFormat(row.sellOrders[0].dealProfit)}

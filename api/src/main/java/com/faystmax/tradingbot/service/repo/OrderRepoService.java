@@ -86,7 +86,7 @@ public class OrderRepoService {
 
     private void setAveragePriceByFills(NewOrderResponse response, Order order) {
         response.getFills().stream().map(trade -> {
-            BigDecimal part = trade.getQty().divide(response.getExecutedQty(), RoundingMode.HALF_DOWN);
+            BigDecimal part = trade.getQty().divide(response.getExecutedQty(), RoundingMode.HALF_EVEN);
             return part.multiply(trade.getPrice());
         }).reduce(BigDecimal::add).ifPresent(order::setPrice);
     }

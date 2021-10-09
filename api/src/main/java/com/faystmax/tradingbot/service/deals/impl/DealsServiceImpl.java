@@ -100,24 +100,30 @@ public class DealsServiceImpl implements DealsService {
 
         final BigDecimal commission = BASE_COMMISSION.multiply(new BigDecimal(commissions.getMakerCommission()));
         buyQty = buyQty.subtract(buyQty.multiply(commission));
+        buyOrder.setOrigQtyWithoutCommission(buyQty);
 
         while (buyQty.compareTo(stepSize) > 0) {
             final OrderDto sellOrder = getFirstAfter(dateAdd, sellOrders, buyQty);
             if (sellOrder == null) {
                 break;
             }
+
+            OrderDto newNotFullyUsedOrder = null;
             final BigDecimal notUsedSellQty = sellOrder.getNotUsedQty();
             final BigDecimal resultQty = buyQty.subtract(notUsedSellQty);
             if (resultQty.compareTo(BigDecimal.ZERO) >= 0) {
                 sellOrder.setNotUsedQty(BigDecimal.ZERO);
                 buyQty = resultQty;
+                newNotFullyUsedOrder = new OrderDto(sellOrder);
             } else {
                 final BigDecimal newNotUsedSellQty = notUsedSellQty.subtract(buyQty);
                 sellOrder.setNotUsedQty(newNotUsedSellQty);
+                newNotFullyUsedOrder = new OrderDto(sellOrder);
+                sellOrder.setOrigQty(newNotUsedSellQty);
                 buyQty = BigDecimal.ZERO;
             }
 
-            extractedSellOrders.add(new OrderDto(sellOrder));
+            extractedSellOrders.add(newNotFullyUsedOrder);
         }
         return Pair.of(buyQty.compareTo(stepSize) < 0, extractedSellOrders);
     }
@@ -125,7 +131,7 @@ public class DealsServiceImpl implements DealsService {
     private OrderDto getFirstAfter(final Date dateAdd, final List<OrderDto> sellOrders, final BigDecimal buyQty) {
         for (final OrderDto sellOrder : sellOrders) {
             if (sellOrder.getDateAdd().after(dateAdd)) {
-                if (buyQty.subtract(sellOrder.getNotUsedQty()).compareTo(BigDecimal.ZERO) > 0) {
+                if (buyQty.subtract(sellOrder.getNotUsedQty()).compareTo(BigDecimal.ZERO) >= 0) {
                     sellOrders.remove(sellOrder);
                 }
 
