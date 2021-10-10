@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
-import { IconButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import SyncIcon from '@material-ui/icons/Sync';
 import authApi from 'utils/authApi';
@@ -53,33 +53,40 @@ const MailIdle = () => {
 
   return (
     <>
-      <IconButton
-        aria-label="Recreate Mail Idle"
+      <Button
         onClick={recreateMailIdle}
         disabled={isPerforming}
         color="inherit"
         size="medium"
+        variant="contained"
+        endIcon={<PlayArrowIcon />}
+        style={{ margin: '8px' }}
       >
-        <PlayArrowIcon />
-      </IconButton>
-      <IconButton
-        aria-label="Stop Mail Idle"
+        Recreate Mail Idle
+      </Button>
+      <Button
         onClick={stopMailIdle}
         disabled={isPerforming}
         color="inherit"
         size="medium"
+        variant="contained"
+        endIcon={<StopIcon />}
+        style={{ margin: '8px' }}
       >
-        <StopIcon />
-      </IconButton>
-      <IconButton
-        aria-label="Get status"
+        Stop Mail Idle
+      </Button>
+      <Button
         onClick={getStatus}
         disabled={isPerforming}
         color="inherit"
         size="medium"
+        variant="contained"
+        endIcon={<SyncIcon />}
+        style={{ margin: '8px' }}
       >
         <SyncIcon />
-      </IconButton>
+        Get status
+      </Button>
     </>
   );
 };

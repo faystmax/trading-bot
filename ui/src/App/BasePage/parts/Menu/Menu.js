@@ -8,11 +8,12 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import BookIcon from '@material-ui/icons/Book';
 import PersonIcon from '@material-ui/icons/Person';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { useHistory } from 'react-router-dom';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AndroidIcon from '@material-ui/icons/Android';
+import ReorderIcon from '@material-ui/icons/Reorder';
 
 import useStyles from './styles';
 
@@ -58,9 +59,21 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
             selected={window.location.pathname === '/orders'}
           >
             <ListItemIcon>
-              <BookIcon />
+              <ReorderIcon />
             </ListItemIcon>
             <ListItemText primary="My Orders" />
+          </ListItem>
+          <ListItem
+            button
+            key="Bot config"
+            className={classes.menuListItem}
+            onClick={() => history.push('/bot-config')}
+            selected={window.location.pathname === '/bot-config'}
+          >
+            <ListItemIcon>
+              <AndroidIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bot config" />
           </ListItem>
           <ListItem
             button

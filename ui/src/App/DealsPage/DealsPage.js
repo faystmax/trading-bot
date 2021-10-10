@@ -93,7 +93,12 @@ const DealsPage = () => {
         component={Paper}
         classes={{ root: classes.customTableContainer }}
       >
-        <Table aria-label="Deals table" style={{ borderCollapse: 'separate' }}>
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="Deals table"
+          style={{ borderCollapse: 'separate' }}
+        >
           <StickyTableHead>
             <TableRow>
               <StyledTableCell align="center" rowSpan={2}>

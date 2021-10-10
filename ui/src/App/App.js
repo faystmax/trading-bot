@@ -8,6 +8,7 @@ import SignUpPage from './SignUpPage';
 import ProfilePage from './ProfilePage';
 import ChangePasswordPage from './ChangePasswordPage';
 import DealsPage from './DealsPage';
+import BotConfigPage from './BotConfigPage';
 
 const hist = createBrowserHistory();
 
@@ -20,6 +21,7 @@ const App = () => {
         <PrivateRoute exact path="/" component={DealsPage} />
         <PrivateRoute exact path="/orders" component={OrdersPage} />
         <PrivateRoute exact path="/profile" component={ProfilePage} />
+        <PrivateRoute exact path="/bot-config" component={BotConfigPage} />
         <PrivateRoute exact path="/password" component={ChangePasswordPage} />
         <Redirect to="/" />
       </Switch>

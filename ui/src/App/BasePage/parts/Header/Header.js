@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { emptyAuth } from 'components/Auth';
 import authApi from 'utils/authApi';
 import { moneyFormat } from 'utils/currency';
-import MailIdle from './MailIdle';
 import useStyles from './styles';
 
 const Header = ({ drawerOpen, setDrawerOpen }) => {
@@ -66,7 +65,6 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
         <Typography variant="body1" noWrap>
           {auth.email}
         </Typography>
-        <MailIdle />
         <IconButton
           aria-label="menu"
           aria-controls="long-menu"
