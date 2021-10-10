@@ -27,7 +27,6 @@ const DealsPage = () => {
         result.data.map((ticket) => [ticket.symbol, ticket.price]),
       );
       setLatestPrices(map);
-      console.log(map);
     });
   };
 
@@ -47,16 +46,6 @@ const DealsPage = () => {
     return latestPrices !== null ? latestPrices.get(symbol) : '';
   };
 
-  const calcRowColor = (row) => {
-    if (row.sellOrders.length === 0) {
-      return 'rgb(241,241,241)';
-    }
-    if (!row.isFilled && row.sellOrders.length !== 0) {
-      return `rgba(229, 92, 255, 0.26)`;
-    }
-    return calcColorByIncome(row.dealIncome);
-  };
-
   const calcColorByIncome = (income) => {
     if (income > 0) {
       return `rgba(188,253,187,${income + 0.45})`;
@@ -68,6 +57,16 @@ const DealsPage = () => {
       return 'rgba(255,251,232,0.71)';
     }
     return '#ffffff';
+  };
+
+  const calcRowColor = (row) => {
+    if (row.sellOrders.length === 0) {
+      return 'rgb(241,241,241)';
+    }
+    if (!row.isFilled && row.sellOrders.length !== 0) {
+      return `rgba(229, 92, 255, 0.26)`;
+    }
+    return calcColorByIncome(row.dealIncome);
   };
 
   return (
