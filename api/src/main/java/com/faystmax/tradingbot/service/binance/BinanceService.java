@@ -117,4 +117,12 @@ public interface BinanceService {
      * @return order response
      */
     NewOrderResponse marketSell(User user, BigDecimal quantity);
+
+    /**
+     * Latest price for alla symbols
+     *
+     * @param user user
+     * @return latest ticker price
+     */
+    List<TickerPrice> getLatestPrice(final User user);
 }

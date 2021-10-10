@@ -140,6 +140,11 @@ public class BinanceServiceImpl implements BinanceService {
         return createOrder(user, newOrder);
     }
 
+    @Override
+    public List<TickerPrice> getLatestPrice(final User user) {
+        return createClient(user).getLatestPrice();
+    }
+
     /**
      * Cut quantity with stepSize
      *

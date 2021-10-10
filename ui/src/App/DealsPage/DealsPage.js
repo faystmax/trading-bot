@@ -17,8 +17,19 @@ import { StyledTableCell, StyledTableRow, useStyles } from './styles';
 const DealsPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [latestPrices, setLatestPrices] = useState(null);
   const [deals, setDeals] = useState([]);
   const [isDealsLoading, setIsDealsLoading] = useState(false);
+
+  const callLatestPrices = () => {
+    authApi.get('binance/price').then((result) => {
+      const map = new Map(
+        result.data.map((ticket) => [ticket.symbol, ticket.price]),
+      );
+      setLatestPrices(map);
+      console.log(map);
+    });
+  };
 
   useEffect(() => {
     setIsDealsLoading(true);
@@ -26,13 +37,27 @@ const DealsPage = () => {
       .get('deals')
       .then((result) => setDeals(result.data))
       .finally(() => setIsDealsLoading(false));
+
+    callLatestPrices();
+    const interval = setInterval(() => callLatestPrices(), 10 * 1000);
+    return () => clearInterval(interval);
   }, [dispatch]);
+
+  const getLatestPrice = (symbol) => {
+    return latestPrices !== null ? latestPrices.get(symbol) : '';
+  };
 
   const calcRowColor = (row) => {
     if (row.sellOrders.length === 0) {
       return 'rgb(241,241,241)';
     }
-    const income = row.dealIncome;
+    if (!row.isFilled && row.sellOrders.length !== 0) {
+      return `rgba(229, 92, 255, 0.26)`;
+    }
+    return calcColorByIncome(row.dealIncome);
+  };
+
+  const calcColorByIncome = (income) => {
     if (income > 0) {
       return `rgba(188,253,187,${income + 0.45})`;
     }
@@ -42,10 +67,6 @@ const DealsPage = () => {
     if (income === 0) {
       return 'rgba(255,251,232,0.71)';
     }
-    if (!row.isFilled && row.sellOrders.length !== 0) {
-      return `rgba(229, 92, 255, 0.26)`;
-    }
-
     return '#ffffff';
   };
 
@@ -116,6 +137,15 @@ const DealsPage = () => {
             )}
             {deals.map((row) => {
               const rowColor = calcRowColor(row);
+              const predictedPrice = getLatestPrice(row.symbol);
+              const predictedCummulativeQty = predictedPrice * row.buyQty;
+              const predictedProfit =
+                predictedCummulativeQty - row.buyCumulativeQty;
+              const predictedIncome =
+                predictedProfit === 0
+                  ? 0
+                  : predictedProfit / row.buyCumulativeQty;
+              const predictedColor = calcColorByIncome(predictedIncome);
 
               return (
                 <>
@@ -159,10 +189,30 @@ const DealsPage = () => {
                       <>
                         <StyledTableCell align="right" />
                         <StyledTableCell align="right" />
-                        <StyledTableCell align="right" />
-                        <StyledTableCell align="right" />
-                        <StyledTableCell align="right" />
-                        <StyledTableCell align="right" />
+                        <StyledTableCell
+                          align="right"
+                          style={{ backgroundColor: predictedColor }}
+                        >
+                          {priceFormat(predictedPrice)}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="right"
+                          style={{ backgroundColor: predictedColor }}
+                        >
+                          {moneyFormat(predictedCummulativeQty)}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="right"
+                          style={{ backgroundColor: predictedColor }}
+                        >
+                          {moneyFormat(predictedProfit)}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="right"
+                          style={{ backgroundColor: predictedColor }}
+                        >
+                          {percentFormat(predictedIncome)}
+                        </StyledTableCell>
                       </>
                     ) : (
                       <>

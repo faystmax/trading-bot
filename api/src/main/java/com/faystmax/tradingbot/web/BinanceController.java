@@ -1,5 +1,6 @@
 package com.faystmax.tradingbot.web;
 
+import com.faystmax.binance.api.client.domain.TickerPrice;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.deals.SymbolsService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @author Amosov Maxim
@@ -34,5 +36,11 @@ public class BinanceController {
     public void reloadActiveSymbols(final Principal principal) {
         final User user = userService.findUserByEmail(principal.getName());
         symbolsService.updateActiveSymbols(user);
+    }
+
+    @GetMapping("price")
+    public List<TickerPrice> getLatestPrice(final Principal principal) {
+        final User user = userService.findUserByEmail(principal.getName());
+        return binanceService.getLatestPrice(user);
     }
 }
