@@ -9,6 +9,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    paddingTop: mainTheme.spacing(9),
     padding: mainTheme.spacing(3),
   },
 }));

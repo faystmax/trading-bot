@@ -1,8 +1,13 @@
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
 
-export const useStyles = makeStyles(null);
+export const useStyles = makeStyles({
+  customTableContainer: {
+    overflowX: 'initial',
+  },
+});
 
 export const StyledTableRow = withStyles(() => ({
   root: {
@@ -26,3 +31,12 @@ export const StyledTableCell = withStyles((theme) => ({
     borderStyle: 'solid',
   },
 }))(TableCell);
+
+export const StickyTableHead = withStyles(() => ({
+  root: {
+    top: 0,
+    left: 0,
+    zIndex: 2,
+    position: 'sticky',
+  },
+}))(TableHead);

@@ -13,10 +13,7 @@ const BasePage = ({ children }) => {
     <div className={classes.root}>
       <Header drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       <Menu drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      <main className={classes.content}>
-        <Toolbar />
-        {children}
-      </main>
+      <main className={classes.content}>{children}</main>
     </div>
   );
 };

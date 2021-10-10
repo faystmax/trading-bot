@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
@@ -12,7 +11,12 @@ import percentFormat from 'utils/percent';
 import dateFormat from 'utils/dateFormat';
 import { moneyFormat, priceFormat } from 'utils/currency';
 import authApi from 'utils/authApi';
-import { StyledTableCell, StyledTableRow, useStyles } from './styles';
+import {
+  StickyTableHead,
+  StyledTableCell,
+  StyledTableRow,
+  useStyles,
+} from './styles';
 
 const DealsPage = () => {
   const classes = useStyles();
@@ -85,14 +89,12 @@ const DealsPage = () => {
         )}
       </Typography>
       {isDealsLoading && <LinearProgress />}
-      <TableContainer component={Paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="Deals table"
-          stickyHeader
-        >
-          <TableHead>
+      <TableContainer
+        component={Paper}
+        classes={{ root: classes.customTableContainer }}
+      >
+        <Table aria-label="Deals table" style={{ borderCollapse: 'separate' }}>
+          <StickyTableHead>
             <TableRow>
               <StyledTableCell align="center" rowSpan={2}>
                 Symbol
@@ -125,7 +127,7 @@ const DealsPage = () => {
                 Cumulative Quantity
               </StyledTableCell>
             </TableRow>
-          </TableHead>
+          </StickyTableHead>
           <TableBody>
             {!isDealsLoading && deals.length === 0 && (
               <StyledTableRow>
