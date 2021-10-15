@@ -102,7 +102,7 @@ public class DealsServiceImpl implements DealsService {
         buyQty = buyQty.subtract(buyQty.multiply(commission));
         buyOrder.setOrigQtyWithoutCommission(buyQty);
 
-        while (buyQty.compareTo(stepSize) > 0) {
+        while (buyQty.compareTo(stepSize) >= 0) {
             final OrderDto sellOrder = getFirstAfter(dateAdd, sellOrders, buyQty);
             if (sellOrder == null) {
                 break;
