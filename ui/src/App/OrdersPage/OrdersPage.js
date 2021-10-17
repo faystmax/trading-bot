@@ -73,6 +73,7 @@ const OrdersPage = () => {
         >
           <TableHead>
             <TableRow>
+              <StyledTableCell align="left">Id</StyledTableCell>
               <StyledTableCell align="left">Symbol</StyledTableCell>
               <StyledTableCell align="right">Price</StyledTableCell>
               <StyledTableCell align="right">Quantity</StyledTableCell>
@@ -96,8 +97,9 @@ const OrdersPage = () => {
             {orders.map((row) => (
               <StyledTableRow key={row.id}>
                 <StyledTableCell component="th" scope="row">
-                  {row.symbol}
+                  {row.exchangeId}
                 </StyledTableCell>
+                <StyledTableCell align="right">{row.symbol}</StyledTableCell>
                 <StyledTableCell align="right">
                   {priceFormat(row.realPrice)}
                 </StyledTableCell>

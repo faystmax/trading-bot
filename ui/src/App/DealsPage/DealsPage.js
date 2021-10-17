@@ -7,9 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import { useDispatch } from 'react-redux';
 import { LinearProgress, Typography } from '@material-ui/core';
 import BasePage from 'App/BasePage';
-import percentFormat from 'utils/percent';
-import dateFormat from 'utils/dateFormat';
-import { moneyFormat, priceFormat } from 'utils/currency';
+import { moneyFormat } from 'utils/currency';
 import authApi from 'utils/authApi';
 import {
   StickyTableHead,
@@ -17,6 +15,7 @@ import {
   StyledTableRow,
   useStyles,
 } from './styles';
+import DealRow from './DealRow';
 
 const DealsPage = () => {
   const classes = useStyles();
@@ -48,29 +47,6 @@ const DealsPage = () => {
 
   const getLatestPrice = (symbol) => {
     return latestPrices !== null ? latestPrices.get(symbol) : '';
-  };
-
-  const calcColorByIncome = (income) => {
-    if (income > 0) {
-      return `rgba(188,253,187,${income + 0.45})`;
-    }
-    if (income < 0) {
-      return `rgba(252,209,209,${Math.abs(income) + 0.45})`;
-    }
-    if (income === 0) {
-      return 'rgba(255,251,232,0.71)';
-    }
-    return '#ffffff';
-  };
-
-  const calcRowColor = (row) => {
-    if (row.sellOrders.length === 0) {
-      return 'rgb(241,241,241)';
-    }
-    if (!row.isFilled && row.sellOrders.length !== 0) {
-      return `rgba(229, 92, 255, 0.26)`;
-    }
-    return calcColorByIncome(row.dealIncome);
   };
 
   return (
@@ -141,137 +117,9 @@ const DealsPage = () => {
                 </StyledTableCell>
               </StyledTableRow>
             )}
-            {deals.map((row) => {
-              const rowColor = calcRowColor(row);
-              const predictedPrice = getLatestPrice(row.symbol);
-              const predictedCummulativeQty = predictedPrice * row.buyQty;
-              const predictedProfit =
-                predictedCummulativeQty - row.buyCumulativeQty;
-              const predictedIncome =
-                predictedProfit === 0
-                  ? 0
-                  : predictedProfit / row.buyCumulativeQty;
-              const predictedColor = calcColorByIncome(predictedIncome);
-
-              return (
-                <>
-                  <StyledTableRow
-                    key={row.buyId}
-                    style={{ backgroundColor: rowColor }}
-                  >
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      rowSpan={Math.max(row.sellOrders.length, 1)}
-                    >
-                      {row.symbol}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="right"
-                      rowSpan={Math.max(row.sellOrders.length, 1)}
-                    >
-                      {dateFormat(row.buyDate)}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="right"
-                      rowSpan={Math.max(row.sellOrders.length, 1)}
-                    >
-                      {row.buyQty}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="right"
-                      rowSpan={Math.max(row.sellOrders.length, 1)}
-                    >
-                      {priceFormat(row.buyPrice)}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="right"
-                      rowSpan={Math.max(row.sellOrders.length, 1)}
-                    >
-                      {moneyFormat(row.buyCumulativeQty)}
-                    </StyledTableCell>
-
-                    {row.sellOrders.length === 0 ? (
-                      <>
-                        <StyledTableCell align="right" />
-                        <StyledTableCell align="right" />
-                        <StyledTableCell
-                          align="right"
-                          style={{ backgroundColor: predictedColor }}
-                        >
-                          {priceFormat(predictedPrice)}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="right"
-                          style={{ backgroundColor: predictedColor }}
-                        >
-                          {moneyFormat(predictedCummulativeQty)}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="right"
-                          style={{ backgroundColor: predictedColor }}
-                        >
-                          {moneyFormat(predictedProfit)}
-                        </StyledTableCell>
-                        <StyledTableCell
-                          align="right"
-                          style={{ backgroundColor: predictedColor }}
-                        >
-                          {percentFormat(predictedIncome)}
-                        </StyledTableCell>
-                      </>
-                    ) : (
-                      <>
-                        <StyledTableCell align="right">
-                          {dateFormat(row.sellOrders[0].dateUpdate)}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {row.sellOrders[0].usedQty}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {priceFormat(row.sellOrders[0].realPrice)}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {moneyFormat(row.sellOrders[0].cumulativeUsedSellQty)}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {moneyFormat(row.sellOrders[0].dealProfit)}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {percentFormat(row.sellOrders[0].dealIncome)}
-                        </StyledTableCell>
-                      </>
-                    )}
-                  </StyledTableRow>
-
-                  {row.sellOrders.slice(1).map((sellOrder) => (
-                    <StyledTableRow
-                      key={sellOrder.id}
-                      style={{ backgroundColor: rowColor }}
-                    >
-                      <StyledTableCell align="right">
-                        {dateFormat(sellOrder.dateUpdate)}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {sellOrder.usedQty}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {priceFormat(sellOrder.realPrice)}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {moneyFormat(sellOrder.cumulativeQuoteQty)}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {moneyFormat(sellOrder.dealProfit)}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {percentFormat(sellOrder.dealIncome)}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </>
-              );
-            })}
+            {deals.map((deal) => (
+              <DealRow deal={deal} getLatestPrice={getLatestPrice} />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -125,6 +125,7 @@ public class DealsServiceImpl implements DealsService {
 
             extractedSellOrders.add(newNotFullyUsedOrder);
         }
+        buyOrder.setNotUsedQty(buyQty);
         return Pair.of(buyQty.compareTo(stepSize) < 0, extractedSellOrders);
     }
 
