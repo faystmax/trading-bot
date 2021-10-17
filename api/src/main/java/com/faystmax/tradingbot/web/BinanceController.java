@@ -1,14 +1,17 @@
 package com.faystmax.tradingbot.web;
 
 import com.faystmax.binance.api.client.domain.TickerPrice;
+import com.faystmax.tradingbot.db.entity.Order;
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.deals.SymbolsService;
+import com.faystmax.tradingbot.service.trade.TradeService;
 import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -24,6 +27,7 @@ import java.util.List;
 @RequestMapping("binance")
 public class BinanceController {
     private final UserService userService;
+    private final TradeService tradeService;
     private final SymbolsService symbolsService;
     private final BinanceService binanceService;
 
@@ -42,5 +46,11 @@ public class BinanceController {
     public List<TickerPrice> getLatestPrice(final Principal principal) {
         final User user = userService.findUserByEmail(principal.getName());
         return binanceService.getLatestPrice(user);
+    }
+
+    @PostMapping("sellAll")
+    public Order sellAll(@RequestParam final String symbol, final Principal principal) {
+        final User user = userService.findUserByEmail(principal.getName());
+        return tradeService.marketSellAll(user, symbol);
     }
 }

@@ -16,17 +16,24 @@ public class TradeServiceImpl implements TradeService {
     private final BinanceService binanceService;
     private final OrderRepoService orderRepoService;
 
-    @Transactional
     @Override
+    @Transactional
     public Order marketBuyAll(final User user) {
         final NewOrderResponse response = binanceService.marketBuyAll(user);
         return orderRepoService.createOrder(user, response);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Order marketSellAll(final User user) {
         final NewOrderResponse response = binanceService.marketSellAll(user);
+        return orderRepoService.createOrder(user, response);
+    }
+
+    @Override
+    @Transactional
+    public Order marketSellAll(final User user, final String symbol) {
+        final NewOrderResponse response = binanceService.marketSellAll(user, symbol);
         return orderRepoService.createOrder(user, response);
     }
 }

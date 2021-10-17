@@ -119,6 +119,15 @@ public interface BinanceService {
     NewOrderResponse marketSell(User user, BigDecimal quantity);
 
     /**
+     * Sell at market price selected symbol
+     *
+     * @param user user
+     * @param symbol symbol
+     * @return order response
+     */
+    NewOrderResponse marketSellAll(User user, String symbol);
+
+    /**
      * Latest price for alla symbols
      *
      * @param user user

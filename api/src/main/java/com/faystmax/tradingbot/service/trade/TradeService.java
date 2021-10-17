@@ -22,4 +22,13 @@ public interface TradeService {
      * @return created Order
      */
     Order marketSellAll(User user);
+
+    /**
+     * Sell at market price
+     *
+     * @param user user
+     * @param symbol symbol
+     * @return created Order
+     */
+    Order marketSellAll(final User user, final String symbol);
 }

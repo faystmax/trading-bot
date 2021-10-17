@@ -141,6 +141,17 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
+    public NewOrderResponse marketSellAll(final User user, final String symbol) {
+        final Account account = createClient(user).getAccount();
+        final AssetBalance balance = account.getAssetBalance(symbol);
+        final BigDecimal baseFreeQuantity = balance.getFree();
+
+        final BigDecimal correctQuantity = cutQuantity(user,symbol, baseFreeQuantity);
+        final NewOrder newOrder = NewOrder.marketSell(symbol, correctQuantity);
+        return createOrder(user, newOrder);
+    }
+
+    @Override
     public List<TickerPrice> getLatestPrice(final User user) {
         return createClient(user).getLatestPrice();
     }
@@ -152,7 +163,17 @@ public class BinanceServiceImpl implements BinanceService {
      * @return return cutted quantity
      */
     private BigDecimal cutQuantity(final User user, final BigDecimal quantity) {
-        final SymbolInfo symbolInfo = createClient(user).getExchangeInfo().getSymbolInfo(user.getTradingSymbol());
+        return cutQuantity(user, user.getTradingSymbol(), quantity);
+    }
+
+    /**
+     * Cut quantity with stepSize
+     *
+     * @param quantity value to cut
+     * @return return cutted quantity
+     */
+    private BigDecimal cutQuantity(final User user, final String symbol, final BigDecimal quantity) {
+        final SymbolInfo symbolInfo = createClient(user).getExchangeInfo().getSymbolInfo(symbol);
         final SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
         final BigDecimal stepSize = symbolFilter.getStepSize();
         return quantity.subtract(quantity.remainder(stepSize.multiply(BigDecimal.valueOf(1))));
