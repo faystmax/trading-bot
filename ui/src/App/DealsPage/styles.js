@@ -2,6 +2,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
+import mainTheme from '../../theme';
 
 export const useStyles = makeStyles({
   customTableContainer: {
@@ -34,7 +35,7 @@ export const StyledTableCell = withStyles((theme) => ({
 
 export const StickyTableHead = withStyles(() => ({
   root: {
-    top: 0,
+    top: -mainTheme.spacing(1),
     left: 0,
     zIndex: 2,
     position: 'sticky',
