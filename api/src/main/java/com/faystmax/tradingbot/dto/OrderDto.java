@@ -38,7 +38,7 @@ public class OrderDto {
     private transient OrderDto buyOrder;
 
     public BigDecimal getRealPrice() {
-        return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(origQty, RoundingMode.HALF_EVEN)) : price;
+        return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(executedQty, RoundingMode.HALF_EVEN)) : price;
     }
 
     public void setOrigQtyWithoutCommission(final BigDecimal origQtyWithoutCommission) {
