@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.service.deals;
 
 import com.faystmax.tradingbot.db.entity.User;
-import com.faystmax.tradingbot.dto.DealDto;
+import com.faystmax.tradingbot.dto.order.DealDto;
 
 import java.util.List;
 

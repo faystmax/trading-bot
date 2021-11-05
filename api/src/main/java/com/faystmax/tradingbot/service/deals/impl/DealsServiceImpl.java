@@ -1,33 +1,35 @@
 package com.faystmax.tradingbot.service.deals.impl;
 
 import com.faystmax.binance.api.client.domain.ExchangeInfo;
-import com.faystmax.binance.api.client.domain.SymbolFilter;
 import com.faystmax.binance.api.client.domain.SymbolInfo;
 import com.faystmax.binance.api.client.domain.enums.FilterType;
 import com.faystmax.binance.api.client.domain.trade.OrderSide;
 import com.faystmax.binance.api.client.domain.trade.OrderStatus;
 import com.faystmax.tradingbot.db.entity.User;
-import com.faystmax.tradingbot.dto.DealDto;
 import com.faystmax.tradingbot.dto.OrderDto;
+import com.faystmax.tradingbot.dto.order.BuyOrderDto;
+import com.faystmax.tradingbot.dto.order.DealDto;
+import com.faystmax.tradingbot.dto.order.SellOrderDto;
 import com.faystmax.tradingbot.mapper.OrderMapper;
 import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.binance.model.Commission;
 import com.faystmax.tradingbot.service.deals.DealsService;
 import com.faystmax.tradingbot.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.faystmax.binance.api.client.domain.trade.OrderSide.BUY;
+import static com.faystmax.binance.api.client.domain.trade.OrderSide.SELL;
+import static java.util.Collections.emptyList;
 import static java.util.Comparator.*;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * @author Amosov Maxim
@@ -36,8 +38,6 @@ import static java.util.Comparator.*;
 @Service
 @RequiredArgsConstructor
 public class DealsServiceImpl implements DealsService {
-    private final static BigDecimal BASE_COMMISSION = new BigDecimal("0.0001");
-
     private final OrderMapper orderMapper;
     private final OrderService orderService;
     private final BinanceService binanceService;
@@ -50,95 +50,83 @@ public class DealsServiceImpl implements DealsService {
         return orderService.findOrdersByUser(user).stream()
             .map(orderMapper::map)
             .filter(order -> order.getStatus() == OrderStatus.FILLED)
-            .collect(Collectors.groupingBy(OrderDto::getSymbol))
+            .collect(groupingBy(OrderDto::getSymbol))
             .values()
-            .stream().map(orders -> createDeals(orders, commissions, exchangeInfo))
-            .flatMap(Collection::stream)
+            .stream()
+            .flatMap(orders -> createDeals(orders, commissions, exchangeInfo).stream())
             .sorted(comparing(DealDto::getIsFilled)
                 .thenComparing(DealDto::getLastSellDate, nullsFirst(reverseOrder()))
-                .thenComparing(DealDto::getBuyDate, reverseOrder()))
-            .peek(deal -> deal.getSellOrders().sort(comparing(OrderDto::getDateUpdate).reversed()))
+                .thenComparing(DealDto::getBuyDate, reverseOrder())
+            ).peek(deal -> deal.getSellOrders().sort(comparing(OrderDto::getDateUpdate).reversed()))
             .collect(Collectors.toList());
     }
-
 
     public List<DealDto> createDeals(
         final List<OrderDto> orders,
-        final Commission commissions,
+        final Commission commission,
         final ExchangeInfo exchangeInfo
     ) {
-        final Map<OrderSide, List<OrderDto>> ordersBySide = orders.stream().collect(Collectors.groupingBy(OrderDto::getSide));
+        final Map<OrderSide, List<OrderDto>> ordersBySide = orders.stream().collect(groupingBy(OrderDto::getSide));
 
-        final List<OrderDto> buyOrders = ordersBySide.getOrDefault(OrderSide.BUY, Collections.emptyList());
-        buyOrders.sort(comparing(OrderDto::getDateAdd));
+        final List<SellOrderDto> sellOrders = ordersBySide.getOrDefault(SELL, emptyList())
+            .stream()
+            .map(SellOrderDto::new)
+            .sorted(comparing(SellOrderDto::getDateAdd))
+            .collect(Collectors.toList());
 
-        final List<OrderDto> sellOrders = ordersBySide.getOrDefault(OrderSide.SELL, Collections.emptyList());
-        sellOrders.sort(comparing(OrderDto::getDateAdd));
-        sellOrders.forEach(orderDto -> orderDto.setNotUsedQty(orderDto.getOrigQty()));
-
-        return buyOrders.stream()
-            .map(buyOrder -> {
-                final Pair<Boolean, List<OrderDto>> pair = extractSellOrders(buyOrder, sellOrders, commissions, exchangeInfo);
-                return new DealDto(buyOrder, pair.getLeft(), pair.getRight());
-            })
+        return ordersBySide.getOrDefault(BUY, emptyList())
+            .stream()
+            .map(orderDto -> new BuyOrderDto(orderDto, commission))
+            .sorted(comparing(BuyOrderDto::getDateAdd))
+            .map(buyOrder -> new DealDto(buyOrder, extractSellOrders(buyOrder, sellOrders, exchangeInfo)))
             .collect(Collectors.toList());
     }
 
-    private Pair<Boolean, List<OrderDto>> extractSellOrders(
-        final OrderDto buyOrder,
-        final List<OrderDto> sellOrders,
-        final Commission commissions,
+
+    private List<SellOrderDto> extractSellOrders(
+        final BuyOrderDto buyOrder,
+        final List<SellOrderDto> sellOrders,
         final ExchangeInfo exchangeInfo
     ) {
-        final ArrayList<OrderDto> extractedSellOrders = new ArrayList<>();
-        final Date dateAdd = buyOrder.getDateAdd();
-        BigDecimal buyQty = buyOrder.getOrigQty();
-
-        final SymbolInfo symbolInfo = exchangeInfo.getSymbolInfo(buyOrder.getSymbol());
-        final SymbolFilter symbolFilter = symbolInfo.getSymbolFilter(FilterType.LOT_SIZE);
-        final BigDecimal stepSize = symbolFilter.getStepSize();
-
-        final BigDecimal commission = BASE_COMMISSION.multiply(new BigDecimal(commissions.getMakerCommission()));
-        buyQty = buyQty.subtract(buyQty.multiply(commission));
-        buyOrder.setOrigQtyWithoutCommission(buyQty);
-
+        final ArrayList<SellOrderDto> extractedSellOrders = new ArrayList<>();
+        BigDecimal buyQty = buyOrder.getQtyWithoutCommission();
+        final BigDecimal stepSize = getSymbolStepSize(buyOrder.getSymbol(), exchangeInfo);
         while (buyQty.compareTo(stepSize) >= 0) {
-            final OrderDto sellOrder = getFirstAfter(dateAdd, sellOrders, buyQty);
+            final SellOrderDto sellOrder = getFirstAfter(buyOrder.getDateAdd(), sellOrders);
             if (sellOrder == null) {
                 break;
             }
 
-            OrderDto newNotFullyUsedOrder = null;
+            SellOrderDto sellOrderCopy;
             final BigDecimal notUsedSellQty = sellOrder.getNotUsedQty();
             final BigDecimal resultQty = buyQty.subtract(notUsedSellQty);
             if (resultQty.compareTo(BigDecimal.ZERO) >= 0) {
+                sellOrders.remove(sellOrder);
                 sellOrder.setNotUsedQty(BigDecimal.ZERO);
                 buyQty = resultQty;
-                newNotFullyUsedOrder = new OrderDto(sellOrder);
+                sellOrderCopy = new SellOrderDto(sellOrder,BigDecimal.ZERO);
             } else {
                 final BigDecimal newNotUsedSellQty = notUsedSellQty.subtract(buyQty);
                 sellOrder.setNotUsedQty(newNotUsedSellQty);
-                newNotFullyUsedOrder = new OrderDto(sellOrder);
+                sellOrderCopy = new SellOrderDto(sellOrder, newNotUsedSellQty);
                 sellOrder.setOrigQty(newNotUsedSellQty);
                 buyQty = BigDecimal.ZERO;
             }
 
-            extractedSellOrders.add(newNotFullyUsedOrder);
+            extractedSellOrders.add(sellOrderCopy);
         }
-        buyOrder.setNotUsedQty(buyQty);
-        return Pair.of(buyQty.compareTo(stepSize) < 0, extractedSellOrders);
+
+        buyOrder.setNotSoldQty(buyQty);
+        buyOrder.setIsFullySold(buyQty.compareTo(stepSize) < 0);
+        return extractedSellOrders;
     }
 
-    private OrderDto getFirstAfter(final Date dateAdd, final List<OrderDto> sellOrders, final BigDecimal buyQty) {
-        for (final OrderDto sellOrder : sellOrders) {
-            if (sellOrder.getDateAdd().after(dateAdd)) {
-                if (buyQty.subtract(sellOrder.getNotUsedQty()).compareTo(BigDecimal.ZERO) >= 0) {
-                    sellOrders.remove(sellOrder);
-                }
+    private BigDecimal getSymbolStepSize(final String symbol, final ExchangeInfo exchangeInfo) {
+        final SymbolInfo symbolInfo = exchangeInfo.getSymbolInfo(symbol);
+        return symbolInfo.getSymbolFilter(FilterType.LOT_SIZE).getStepSize();
+    }
 
-                return sellOrder;
-            }
-        }
-        return null;
+    private SellOrderDto getFirstAfter(final Date dateStart, final List<SellOrderDto> sellOrders) {
+        return sellOrders.stream().filter(order -> order.getDateAdd().after(dateStart)).findFirst().orElse(null);
     }
 }

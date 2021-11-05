@@ -40,10 +40,10 @@ const DealRow = ({ deal, getLatestPrice }) => {
 
   if (!deal.isFilled) {
     predictedPrice = getLatestPrice(deal.symbol);
-    predictedCumulativeQty = predictedPrice * deal.buyOrder.notUsedQty;
+    predictedCumulativeQty = predictedPrice * deal.buyOrder.notSoldQty;
 
     const notSelledCumulativeQty =
-      deal.buyOrder.notUsedQty * deal.buyOrder.realPrice;
+      deal.buyOrder.notSoldQty * deal.buyOrder.price;
     predictedProfit = predictedCumulativeQty - notSelledCumulativeQty;
     predictedIncome =
       predictedProfit === 0 ? 0 : predictedProfit / notSelledCumulativeQty;
@@ -79,9 +79,7 @@ const DealRow = ({ deal, getLatestPrice }) => {
           align="right"
           style={{ backgroundColor: predictedColor }}
         >
-          {priceFormat(
-            deal.isFilled ? sellOrders[0].realPrice : predictedPrice,
-          )}
+          {priceFormat(deal.isFilled ? sellOrders[0].price : predictedPrice)}
         </StyledTableCell>
         <StyledTableCell
           align="right"
@@ -97,16 +95,14 @@ const DealRow = ({ deal, getLatestPrice }) => {
           align="right"
           style={{ backgroundColor: predictedColor }}
         >
-          {moneyFormat(
-            deal.isFilled ? sellOrders[0].dealProfit : predictedProfit,
-          )}
+          {moneyFormat(deal.isFilled ? sellOrders[0].profit : predictedProfit)}
         </StyledTableCell>
         <StyledTableCell
           align="right"
           style={{ backgroundColor: predictedColor }}
         >
           {percentFormat(
-            deal.isFilled ? sellOrders[0].dealIncome : predictedIncome,
+            deal.isFilled ? sellOrders[0].income : predictedIncome,
           )}
         </StyledTableCell>
       </StyledTableRow>
@@ -120,16 +116,16 @@ const DealRow = ({ deal, getLatestPrice }) => {
           </StyledTableCell>
           <StyledTableCell align="right">{sellOrder.usedQty}</StyledTableCell>
           <StyledTableCell align="right">
-            {priceFormat(sellOrder.realPrice)}
+            {priceFormat(sellOrder.price)}
           </StyledTableCell>
           <StyledTableCell align="right">
             {moneyFormat(sellOrder.cumulativeQuoteQty)}
           </StyledTableCell>
           <StyledTableCell align="right">
-            {moneyFormat(sellOrder.dealProfit)}
+            {moneyFormat(sellOrder.profit)}
           </StyledTableCell>
           <StyledTableCell align="right">
-            {percentFormat(sellOrder.dealIncome)}
+            {percentFormat(sellOrder.income)}
           </StyledTableCell>
         </StyledTableRow>
       ))}

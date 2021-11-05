@@ -1,7 +1,8 @@
-package com.faystmax.tradingbot.service.deals;
+package com.faystmax.tradingbot.service.deals.impl;
 
 import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.service.binance.BinanceService;
+import com.faystmax.tradingbot.service.deals.SymbolsService;
 import com.faystmax.tradingbot.service.user.UserService;
 import com.faystmax.tradingbot.util.UserUtils;
 import lombok.RequiredArgsConstructor;

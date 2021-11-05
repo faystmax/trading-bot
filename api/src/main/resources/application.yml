@@ -19,8 +19,6 @@ spring:
   flyway:
     user: sa
     password: pass
-  mvc:
-    locale: en_US
 
 server:
   port: 8090
@@ -37,3 +35,6 @@ jwt:
 
 cors:
   allowOrigin: http://localhost:3000
+
+binance:
+  base-commission: 0.0001

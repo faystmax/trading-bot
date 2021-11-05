@@ -32,7 +32,7 @@ public class Balance {
     }
 
     public static Balance valueOf(final AssetBalance assetBalance) {
-        Balance balance = new Balance();
+        final Balance balance = new Balance();
         balance.setAsset(assetBalance.getAsset());
         balance.setFree(assetBalance.getFree());
         balance.setLocked(assetBalance.getLocked());

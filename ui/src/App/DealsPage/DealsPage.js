@@ -57,12 +57,7 @@ const DealsPage = () => {
         align="right"
         noWrap
       >
-        Total profit:{' '}
-        {moneyFormat(
-          deals
-            .flatMap((deal) => deal.sellOrders)
-            .reduce((a, b) => a + b.dealProfit, 0),
-        )}
+        Total profit: {moneyFormat(deals.reduce((a, b) => a + b.dealProfit, 0))}
       </Typography>
       {isDealsLoading && <LinearProgress />}
       <TableContainer

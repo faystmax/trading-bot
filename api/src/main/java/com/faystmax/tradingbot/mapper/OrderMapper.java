@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-    OrderDto map(Order order);
+    OrderDto map(final Order order);
 
-    Collection<OrderDto> mapAll(Collection<Order> orders);
+    Collection<OrderDto> mapAll(final Collection<Order> orders);
 }

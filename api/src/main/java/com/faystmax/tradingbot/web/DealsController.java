@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.web;
 
-import com.faystmax.tradingbot.dto.DealDto;
+import com.faystmax.tradingbot.dto.order.DealDto;
 import com.faystmax.tradingbot.service.deals.DealsService;
 import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;

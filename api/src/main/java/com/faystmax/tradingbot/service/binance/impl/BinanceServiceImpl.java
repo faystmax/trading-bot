@@ -20,7 +20,9 @@ import com.faystmax.tradingbot.service.binance.BinanceService;
 import com.faystmax.tradingbot.service.binance.model.Balance;
 import com.faystmax.tradingbot.service.binance.model.Commission;
 import com.faystmax.tradingbot.service.binance.model.FullBalance;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,7 +35,11 @@ import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BinanceServiceImpl implements BinanceService {
+    @Value("${binance.base-commission}")
+    private final BigDecimal baseCommission;
+
     @Override
     public ExchangeInfo getExchangeInfo(final User user) {
         return createClient(user).getExchangeInfo();
@@ -100,7 +106,7 @@ public class BinanceServiceImpl implements BinanceService {
     @Override
     public Commission getCommission(final User user) {
         final Account account = createClient(user).getAccount();
-        return new Commission(account.getMakerCommission(), account.getTakerCommission());
+        return Commission.of(account.getMakerCommission(), account.getTakerCommission(), baseCommission);
     }
 
     @Override

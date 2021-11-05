@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.dto;
+package com.faystmax.tradingbot.dto.order;
 
 import com.google.common.collect.Iterables;
 import lombok.AllArgsConstructor;
@@ -29,29 +29,31 @@ public class DealDto {
     private BigDecimal buyQty;
     private BigDecimal buyCumulativeQty;
 
-    private OrderDto buyOrder;
+    private BuyOrderDto buyOrder;
     private Date lastSellDate;
     private Boolean isFilled;
     private BigDecimal dealIncome;
     private BigDecimal dealProfit;
-    private List<OrderDto> sellOrders;
+    private List<SellOrderDto> sellOrders;
 
-    public DealDto(final OrderDto buyOrder, final Boolean isFilled, final List<OrderDto> sellOrders) {
+    public DealDto(final BuyOrderDto buyOrder, final List<SellOrderDto> sellOrders) {
         this.buyOrder = buyOrder;
         this.buyId = buyOrder.getId();
         this.symbol = buyOrder.getSymbol();
-        this.buyPrice = buyOrder.getRealPrice();
+        this.buyPrice = buyOrder.getPrice();
         this.buyDate = buyOrder.getDateAdd();
-        this.buyQty = buyOrder.getOrigQty();
-        this.buyCumulativeQty = buyOrder.getCumulativeQuoteQty();
-        this.isFilled = isFilled;
+        this.buyQty = buyOrder.getQtyWithoutCommission();
+        this.buyCumulativeQty = buyOrder.getCumulativeQtyWithoutCommission();
+        this.isFilled = buyOrder.getIsFullySold();
         this.sellOrders = sellOrders;
 
         if (CollectionUtils.isNotEmpty(sellOrders)) {
             this.lastSellDate = Iterables.getLast(sellOrders).getDateUpdate();
             this.sellOrders.forEach(sellOrder -> sellOrder.setBuyOrder(buyOrder));
             if (isFilled) {
-                this.dealProfit = this.sellOrders.stream().map(OrderDto::getDealProfit).reduce(ZERO, BigDecimal::add);
+                this.dealProfit = this.sellOrders.stream()
+                    .map(SellOrderDto::getProfit)
+                    .reduce(ZERO, BigDecimal::add);
 
                 if (this.dealProfit.compareTo(ZERO) == 0) {
                     this.dealIncome = ZERO;

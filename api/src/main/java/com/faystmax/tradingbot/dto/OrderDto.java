@@ -18,72 +18,24 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDto {
-    private Long id;
-    private String exchangeId;
-    private String symbol;
-    private Date dateAdd;
-    private BigDecimal price;
-    private BigDecimal stopPrice;
-    private BigDecimal origQty;
-    private BigDecimal executedQty;
-    private BigDecimal icebergQty;
-    private BigDecimal cumulativeQuoteQty;
-    private OrderStatus status;
-    private TimeInForce timeInForce;
-    private OrderType type;
-    private OrderSide side;
-    private Date dateUpdate;
-
-    private BigDecimal notUsedQty;
-    private transient OrderDto buyOrder;
+    protected Long id;
+    protected String exchangeId;
+    protected String symbol;
+    protected Date dateAdd;
+    protected BigDecimal price;
+    protected BigDecimal stopPrice;
+    protected BigDecimal origQty;
+    protected BigDecimal executedQty;
+    protected BigDecimal icebergQty;
+    protected BigDecimal cumulativeQuoteQty;
+    protected OrderStatus status;
+    protected TimeInForce timeInForce;
+    protected OrderType type;
+    protected OrderSide side;
+    protected Date dateUpdate;
 
     public BigDecimal getRealPrice() {
         return BigDecimal.ZERO.compareTo(price) == 0 ? (cumulativeQuoteQty.divide(executedQty, RoundingMode.HALF_EVEN)) : price;
-    }
-
-    public void setOrigQtyWithoutCommission(final BigDecimal origQtyWithoutCommission) {
-        if(BigDecimal.ZERO.compareTo(price) == 0){
-            this.price = getRealPrice();
-        }
-        this.origQty = origQtyWithoutCommission;
-        this.cumulativeQuoteQty = origQtyWithoutCommission.multiply(price);
-    }
-
-    public BigDecimal getDealIncome() {
-        if (buyOrder != null && origQty != null && price != null) {
-            final BigDecimal usedQty = getUsedQty();
-            final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
-            if(getDealProfit().compareTo(BigDecimal.ZERO) == 0){
-                return BigDecimal.ZERO;
-            }
-            return getDealProfit().divide(cumulativeUsedBuyQty, RoundingMode.HALF_EVEN);
-        }
-        return null;
-    }
-
-    public BigDecimal getDealProfit() {
-        if (buyOrder != null && origQty != null && price != null) {
-            final BigDecimal usedQty = getUsedQty();
-            final BigDecimal cumulativeUsedSellQty = usedQty.multiply(getRealPrice());
-            final BigDecimal cumulativeUsedBuyQty = usedQty.multiply(buyOrder.getRealPrice());
-            return cumulativeUsedSellQty.subtract(cumulativeUsedBuyQty);
-        }
-        return null;
-    }
-
-    public BigDecimal getCumulativeUsedSellQty() {
-        final BigDecimal usedQty = getUsedQty();
-        if (usedQty != null) {
-            return usedQty.multiply(getRealPrice());
-        }
-        return BigDecimal.ZERO;
-    }
-
-    public BigDecimal getUsedQty() {
-        if (origQty != null && notUsedQty != null) {
-            return origQty.subtract(notUsedQty);
-        }
-        return origQty;
     }
 
     public OrderDto(final OrderDto source) {
@@ -102,7 +54,5 @@ public class OrderDto {
         this.type = source.getType();
         this.side = source.getSide();
         this.dateUpdate = source.getDateUpdate();
-        this.notUsedQty = source.getNotUsedQty();
-        this.buyOrder = source.getBuyOrder();
     }
 }
