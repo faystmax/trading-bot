@@ -1,7 +1,7 @@
 plugins {
     id 'idea'
     id 'java-library'
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-email:1.5'
 
-    implementation 'org.postgresql:postgresql:42.2.10'
+    runtimeOnly  'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core'
 
     compileOnly 'org.projectlombok:lombok'
@@ -52,6 +52,8 @@ dependencies {
         exclude group: "com.vaadin.external.google", module:"android-json"
     }
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.testcontainers:junit-jupiter:1.16.2'
+    testImplementation 'org.testcontainers:postgresql:1.16.0'
 }
 
 test {

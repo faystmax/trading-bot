@@ -16,7 +16,6 @@ spring:
     hibernate:
       ddl-auto: validate
   datasource:
-    driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/trading_bot
     username: trading_bot
     password: password

@@ -1,8 +1,8 @@
-logging:
-  level:
-    org.springframework: warn
-    com.faystmax: info
-    root: warn
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:13.3:///test_database
+    username: trading_bot
+    password: password
 
 telegram:
   botName: test
