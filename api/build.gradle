@@ -64,11 +64,11 @@ task deploy {
     doLast {
         ssh.run {
             session(remotes.server) {
-                put from: jar.archiveFile.get().asFile.absolutePath , into: "./"
+                put from: bootJar.archiveFile.get().asFile.absolutePath , into: "./"
                 executeSudo "service trading-bot stop", pty: true
-                executeSudo "cp ./${jar.archiveFileName.get()} /srv/trading-bot/", pty: true
+                executeSudo "cp ./${bootJar.archiveFileName.get()} /srv/trading-bot/", pty: true
                 executeSudo "rm -f /srv/trading-bot/application.jar", pty: true
-                executeSudo "ln -s /srv/trading-bot/${jar.archiveFileName.get()} /srv/trading-bot/application.jar", pty: true
+                executeSudo "ln -s /srv/trading-bot/${bootJar.archiveFileName.get()} /srv/trading-bot/application.jar", pty: true
                 executeSudo "service trading-bot start", pty: true
             }
         }
