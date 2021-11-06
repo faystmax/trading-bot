@@ -1,27 +1,25 @@
+server:
+  port: 8090
+  shutdown: graceful
+
 spring:
   profiles:
     active: develop
-  jpa:
-    open-in-view: false
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: validate
   jackson:
     time-zone: Europe/Moscow
     date-format: dd.MM.yyyy HH:mm:ss
     serialization:
       write-dates-as-timestamps: true
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: validate
   datasource:
-    url: jdbc:h2:file:~/trading-bot/db
-    driverClassName: org.h2.Driver
-    username: sa
-    password: pass
-  flyway:
-    user: sa
-    password: pass
-
-server:
-  port: 8090
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/trading_bot
+    username: trading_bot
+    password: password
 
 logging:
   level:

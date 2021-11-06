@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-email:1.5'
 
-    runtimeOnly 'com.h2database:h2:1.4.199'
+    implementation 'org.postgresql:postgresql:42.2.10'
     implementation 'org.flywaydb:flyway-core'
 
     compileOnly 'org.projectlombok:lombok'

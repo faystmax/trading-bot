@@ -1,6 +1,6 @@
 CREATE TABLE orders
 (
-    id                   IDENTITY                 NOT NULL PRIMARY KEY,
+    id                   BIGSERIAL                NOT NULL PRIMARY KEY,
     exchange_id          VARCHAR(256) UNIQUE,
     date_add             TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     price                DECIMAL                  NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE orders
     time_in_force        VARCHAR(64)              NOT NULL,
     type                 VARCHAR(64)              NOT NULL,
     side                 VARCHAR(64)              NOT NULL,
-    transact_time        LONG
+    transact_time        BIGINT
 );
 
 CREATE TABLE trade
 (
-    id                IDENTITY                 NOT NULL PRIMARY KEY,
+    id                BIGSERIAL                NOT NULL PRIMARY KEY,
     exchange_trade_id VARCHAR(256) UNIQUE,
     date_add          TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     order_ref         BIGINT                   NOT NULL,
@@ -32,5 +32,5 @@ CREATE TABLE trade
     maker             BOOLEAN                  NOT NULL,
     best_match        BOOLEAN                  NOT NULL,
 
-    FOREIGN KEY (order_ref) REFERENCES orders (ID)
+    FOREIGN KEY (order_ref) REFERENCES ORDERS (ID)
 );
