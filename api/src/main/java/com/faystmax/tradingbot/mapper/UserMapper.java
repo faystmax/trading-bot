@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserDto map(final User user);
+    UserDto map(User user);
 
-    Collection<UserDto> mapAll(final Collection<User> users);
+    Collection<UserDto> mapAll(Collection<User> users);
 }
