@@ -1,5 +1,7 @@
-package com.faystmax.tradingbot.dto.order;
+package com.faystmax.tradingbot.dto;
 
+import com.faystmax.tradingbot.dto.order.BuyOrderDto;
+import com.faystmax.tradingbot.dto.order.SellOrderDto;
 import com.google.common.collect.Iterables;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,10 +15,6 @@ import java.util.List;
 
 import static java.math.BigDecimal.ZERO;
 
-/**
- * @author Amosov Maxim
- * @since 03.10.2021 : 21:25
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

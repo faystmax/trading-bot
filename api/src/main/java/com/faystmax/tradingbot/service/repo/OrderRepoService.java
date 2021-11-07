@@ -19,7 +19,7 @@ public class OrderRepoService {
 
     @Transactional
     public void createOrder(final User user, final com.faystmax.binance.api.client.domain.trade.Order binanceOrder) {
-        var myOrder = new Order();
+        final Order myOrder = new Order();
         myOrder.setExchangeId(binanceOrder.getOrderId().toString());
         myOrder.setSymbol(binanceOrder.getSymbol());
         myOrder.setDateAdd(new Date(binanceOrder.getTime()));
@@ -41,7 +41,7 @@ public class OrderRepoService {
 
     @Transactional
     public Order createOrder(final User user, final NewOrderResponse orderResponse) {
-        var myOrder = new Order();
+        final Order myOrder = new Order();
         myOrder.setExchangeId(orderResponse.getOrderId().toString());
         myOrder.setSymbol(orderResponse.getSymbol());
         myOrder.setDateAdd(new Date());

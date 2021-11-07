@@ -22,8 +22,8 @@ public class MailIdleFactoryImpl implements MailIdleFactory {
     private final CommandExecutor commandExecutor;
 
     @Override
-    public ImapIdleChannelAdapter createIdleChannelAdapter(User user, ThreadPoolTaskScheduler taskScheduler) {
-        var channelAdapter = new ImapIdleChannelAdapter(createMailReceiver(context, user));
+    public ImapIdleChannelAdapter createIdleChannelAdapter(final User user, final ThreadPoolTaskScheduler taskScheduler) {
+        final var channelAdapter = new ImapIdleChannelAdapter(createMailReceiver(context, user));
         channelAdapter.setAutoStartup(true);
         channelAdapter.setReconnectDelay(5000);
         channelAdapter.setShouldReconnectAutomatically(true);
@@ -32,7 +32,7 @@ public class MailIdleFactoryImpl implements MailIdleFactory {
         return channelAdapter;
     }
 
-    private ImapMailReceiver createMailReceiver(ApplicationContext context, User user) {
+    private ImapMailReceiver createMailReceiver(final ApplicationContext context, final User user) {
         var receiver = new ImapMailReceiver(buildUrl(user));
         receiver.setShouldDeleteMessages(false);
         receiver.setShouldMarkMessagesAsRead(true);
@@ -53,12 +53,12 @@ public class MailIdleFactoryImpl implements MailIdleFactory {
         return props;
     }
 
-    private String buildUrl(User user) {
+    private String buildUrl(final User user) {
         return "imaps://" + user.getEmailUsername() + ':' + user.getEmailPassword() +
             '@' + user.getEmailHost() + '/' + user.getEmailFolder();
     }
 
-    private DirectChannel createDirectChannel(User user) {
+    private DirectChannel createDirectChannel(final User user) {
         DirectChannel directChannel = new DirectChannel();
         directChannel.subscribe(new MimeMessageHandler(user, messageService, commandExecutor));
         return directChannel;

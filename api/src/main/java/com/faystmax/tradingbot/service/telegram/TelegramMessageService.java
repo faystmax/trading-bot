@@ -11,12 +11,12 @@ public class TelegramMessageService implements MessageService {
     private final TelegramBot telegramBot;
 
     @Override
-    public void sendMessageToOwner(String message) {
+    public void sendMessageToOwner(final String message) {
         telegramBot.sendMsgToOwner(message);
     }
 
     @Override
-    public void sendMessageToUser(User user, String message) {
+    public void sendMessageToUser(final User user, final String message) {
         telegramBot.sendMsg(user.getTelegramChatId(), message);
     }
 }

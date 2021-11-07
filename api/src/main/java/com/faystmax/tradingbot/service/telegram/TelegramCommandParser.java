@@ -24,12 +24,12 @@ public class TelegramCommandParser implements CommandParser {
                 throw new TelegramCommandParseException(messageSource.getMsg(PARSE_ERROR, command));
             }
 
-            List<String> parts = Lists.newArrayList(command.split("\\s+"));
-            String commandCode = parts.remove(0);
+            final List<String> parts = Lists.newArrayList(command.split("\\s+"));
+            final String commandCode = parts.remove(0);
             return Pair.of(commandCode, parts);
-        } catch (TelegramCommandParseException ex) {
+        } catch (final TelegramCommandParseException ex) {
             throw ex;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new TelegramCommandParseException(messageSource.getMsg(PARSE_ERROR, command), ex);
         }
     }

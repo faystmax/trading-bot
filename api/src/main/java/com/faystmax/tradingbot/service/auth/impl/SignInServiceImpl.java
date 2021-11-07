@@ -20,11 +20,11 @@ public class SignInServiceImpl implements SignInService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public UserAuthResponse signIn(String email, String password) {
-        var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+    public UserAuthResponse signIn(final String email, final String password) {
+        final var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        final UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         return new UserAuthResponse(jwtUtils.generateJwtToken(auth),
             userDetails.getId(),
             userDetails.getEmail(),

@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 public class ServiceException extends RuntimeException {
-    public ServiceException(String message) {
+    public ServiceException(final String message) {
         super(message);
     }
 
-    public ServiceException(String message, Throwable cause) {
+    public ServiceException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

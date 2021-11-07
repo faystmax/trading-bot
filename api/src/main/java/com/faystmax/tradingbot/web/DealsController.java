@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.web;
 
-import com.faystmax.tradingbot.dto.order.DealDto;
+import com.faystmax.tradingbot.dto.DealDto;
 import com.faystmax.tradingbot.service.deals.DealsService;
 import com.faystmax.tradingbot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * @author Amosov Maxim
- * @since 04.10.2021 : 21:50
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("deals")

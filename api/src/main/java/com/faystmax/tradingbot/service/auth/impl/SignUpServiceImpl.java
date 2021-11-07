@@ -23,12 +23,12 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     @Transactional
-    public void signUp(String email, String password) {
+    public void signUp(final String email, final String password) {
         if (userRepo.existsByEmail(email)) {
             throw new SignUpException(format("Email \"{0}\" is already in use!", email));
         }
 
-        var user = new User();
+        final var user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setRole(USER);

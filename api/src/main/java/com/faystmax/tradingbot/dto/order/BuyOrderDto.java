@@ -1,6 +1,5 @@
 package com.faystmax.tradingbot.dto.order;
 
-import com.faystmax.tradingbot.dto.OrderDto;
 import com.faystmax.tradingbot.service.binance.model.Commission;
 import com.faystmax.tradingbot.util.CommissionUtils;
 import lombok.AllArgsConstructor;
@@ -10,10 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- * @author Amosov Maxim
- * @since 05.11.2021 : 12:08
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

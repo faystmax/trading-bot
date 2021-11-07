@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class TradingBotApplication {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(TradingBotApplication.class, args);
     }
 }

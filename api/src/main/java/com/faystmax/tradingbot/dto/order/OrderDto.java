@@ -1,4 +1,4 @@
-package com.faystmax.tradingbot.dto;
+package com.faystmax.tradingbot.dto.order;
 
 import com.faystmax.binance.api.client.domain.enums.OrderType;
 import com.faystmax.binance.api.client.domain.trade.OrderSide;

@@ -64,7 +64,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    /* Move to attributes */
     private Long telegramChatId;
 
     @Size(max = 20)

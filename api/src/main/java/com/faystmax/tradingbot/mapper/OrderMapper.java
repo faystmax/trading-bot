@@ -1,7 +1,7 @@
 package com.faystmax.tradingbot.mapper;
 
 import com.faystmax.tradingbot.db.entity.Order;
-import com.faystmax.tradingbot.dto.OrderDto;
+import com.faystmax.tradingbot.dto.order.OrderDto;
 import org.mapstruct.Mapper;
 
 import java.util.Collection;

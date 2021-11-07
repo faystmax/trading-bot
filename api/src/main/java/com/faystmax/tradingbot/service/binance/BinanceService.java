@@ -20,7 +20,7 @@ public interface BinanceService {
      * @param user user
      * @return ExchangeInfo for all symbols
      */
-    ExchangeInfo getExchangeInfo(final User user);
+    ExchangeInfo getExchangeInfo(User user);
 
     /**
      * @param user user

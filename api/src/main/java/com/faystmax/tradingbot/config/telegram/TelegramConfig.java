@@ -13,11 +13,11 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Configuration
 public class TelegramConfig {
     @Bean
-    public DefaultBotOptions botOptions(TelegramProperties properties) {
+    public DefaultBotOptions botOptions(final TelegramProperties properties) {
         DefaultBotOptions options = new DefaultBotOptions();
 
         // Configuring proxy
-        var proxy = properties.getProxy();
+        final var proxy = properties.getProxy();
         if (proxy != null) {
             configureAuthenticator(proxy.getUser(), proxy.getPassword());
             options.setProxyHost(proxy.getHost());
@@ -27,13 +27,14 @@ public class TelegramConfig {
         return options;
     }
 
-    private void configureAuthenticator(String user, String password) {
-        if (isNotBlank(user) && isNotBlank(password))
+    private void configureAuthenticator(final String user, final String password) {
+        if (isNotBlank(user) && isNotBlank(password)) {
             Authenticator.setDefault(new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(user, password.toCharArray());
                 }
             });
+        }
     }
 }

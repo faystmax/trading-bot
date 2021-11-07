@@ -6,9 +6,9 @@ import com.faystmax.binance.api.client.domain.enums.FilterType;
 import com.faystmax.binance.api.client.domain.trade.OrderSide;
 import com.faystmax.binance.api.client.domain.trade.OrderStatus;
 import com.faystmax.tradingbot.db.entity.User;
-import com.faystmax.tradingbot.dto.OrderDto;
+import com.faystmax.tradingbot.dto.DealDto;
 import com.faystmax.tradingbot.dto.order.BuyOrderDto;
-import com.faystmax.tradingbot.dto.order.DealDto;
+import com.faystmax.tradingbot.dto.order.OrderDto;
 import com.faystmax.tradingbot.dto.order.SellOrderDto;
 import com.faystmax.tradingbot.mapper.OrderMapper;
 import com.faystmax.tradingbot.service.binance.BinanceService;
@@ -31,10 +31,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.groupingBy;
 
-/**
- * @author Amosov Maxim
- * @since 05.10.2021 : 22:50
- */
 @Service
 @RequiredArgsConstructor
 public class DealsServiceImpl implements DealsService {
@@ -104,7 +100,7 @@ public class DealsServiceImpl implements DealsService {
                 sellOrders.remove(sellOrder);
                 sellOrder.setNotUsedQty(BigDecimal.ZERO);
                 buyQty = resultQty;
-                sellOrderCopy = new SellOrderDto(sellOrder,BigDecimal.ZERO);
+                sellOrderCopy = new SellOrderDto(sellOrder, BigDecimal.ZERO);
             } else {
                 final BigDecimal newNotUsedSellQty = notUsedSellQty.subtract(buyQty);
                 sellOrder.setNotUsedQty(newNotUsedSellQty);

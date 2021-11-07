@@ -1,6 +1,6 @@
 package com.faystmax.tradingbot.web;
 
-import com.faystmax.tradingbot.dto.OrderDto;
+import com.faystmax.tradingbot.dto.order.OrderDto;
 import com.faystmax.tradingbot.mapper.OrderMapper;
 import com.faystmax.tradingbot.service.order.OrderReloader;
 import com.faystmax.tradingbot.service.order.OrderService;

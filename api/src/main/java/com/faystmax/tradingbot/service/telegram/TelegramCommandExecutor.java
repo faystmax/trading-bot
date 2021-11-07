@@ -28,9 +28,11 @@ public class TelegramCommandExecutor implements CommandExecutor {
     private final Map<String, Command> commandsMap;
 
     @Autowired
-    public TelegramCommandExecutor(MessageSource messageSource,
-                                   TelegramCommandParser telegramCommandParser,
-                                   List<Command> commands) {
+    public TelegramCommandExecutor(
+        final MessageSource messageSource,
+        final TelegramCommandParser telegramCommandParser,
+        final List<Command> commands
+    ) {
         this.messageSource = messageSource;
         this.telegramCommandParser = telegramCommandParser;
         this.commandsMap = commands.stream().collect(toUnmodifiableMap(Command::getCode, identity()));
@@ -45,10 +47,10 @@ public class TelegramCommandExecutor implements CommandExecutor {
             }
 
             // Executing command
-            Command command = commandsMap.get(codeAndArgs.getKey());
+            final Command command = commandsMap.get(codeAndArgs.getKey());
             return command.execute(user, codeAndArgs.getValue());
-        } catch (Exception ex) {
-            String msg = messageSource.getMsg(COMMAND_PROCESSING_ERROR, commandText, ex.getMessage());
+        } catch (final Exception ex) {
+            final String msg = messageSource.getMsg(COMMAND_PROCESSING_ERROR, commandText, ex.getMessage());
             log.error(msg, ex);
             return msg;
         }

@@ -27,7 +27,7 @@ public class MimeMessageHandler implements MessageHandler {
 
     @Override
     @SneakyThrows
-    public void handleMessage(Message<?> message) throws MessagingException {
+    public void handleMessage(final Message<?> message) throws MessagingException {
         if (message.getPayload() instanceof MimeMessage) {
             log.info("User {} Received message: {}", user.getEmail(), message);
             MimeMessageParser parser = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
@@ -43,11 +43,11 @@ public class MimeMessageHandler implements MessageHandler {
         }
     }
 
-    private String getMainContent(MimeMessageParser parser) {
+    private String getMainContent(final MimeMessageParser parser) {
         return firstNonEmpty(parser.getPlainContent(), parser.getHtmlContent(), StringUtils.EMPTY);
     }
 
-    private String translateToCommandCode(String mainText) {
+    private String translateToCommandCode(final String mainText) {
         if (mainText.contains("buy")) {
             return BuyMarketCommand.BUY_MARKET_CODE;
         } else if (mainText.contains("sell")) {

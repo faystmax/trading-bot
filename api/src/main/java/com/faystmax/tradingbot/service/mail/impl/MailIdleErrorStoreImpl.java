@@ -14,18 +14,18 @@ public class MailIdleErrorStoreImpl implements MailIdleErrorStore {
     private final Map<User, Throwable> errorByUserMap = new ConcurrentHashMap<>();
 
     @Override
-    public void put(User user, Throwable throwable) {
+    public void put(final User user, final Throwable throwable) {
         errorByUserMap.put(user, throwable);
     }
 
     @Override
-    public String getErrorMessage(User user) {
+    public String getErrorMessage(final User user) {
         Throwable throwable = errorByUserMap.get(user);
         return throwable == null ? "No Errors!" : throwable.getClass() + ": " + throwable.getMessage();
     }
 
     @Override
-    public void clear(User user) {
+    public void clear(final User user) {
         errorByUserMap.remove(user);
     }
 }

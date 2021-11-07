@@ -22,7 +22,7 @@ public class MailIdleStartUpService implements ApplicationListener<ContextRefres
     private final MailIdleService mailIdleService;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void onApplicationEvent(final ContextRefreshedEvent event) {
         log.info("Starting mailIdle...");
         List<User> users = repo.findAll();
         int mailIdleCount = 0;
@@ -40,7 +40,7 @@ public class MailIdleStartUpService implements ApplicationListener<ContextRefres
         log.info("Ending mailIdle! mailIdleCount = " + mailIdleCount);
     }
 
-    private boolean checkEmailFields(User user) {
+    private boolean checkEmailFields(final User user) {
         if (StringUtils.isEmpty(user.getEmailHost())) {
             log.warn("EmailHost is empty! user = {}", user.getEmail());
             return false;

@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author Amosov Maxim
- * @since 09.10.2021 : 22:10
- */
 @Service
 @RequiredArgsConstructor
 public class SymbolsServiceImpl implements SymbolsService {

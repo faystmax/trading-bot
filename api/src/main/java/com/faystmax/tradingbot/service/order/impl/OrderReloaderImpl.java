@@ -19,10 +19,6 @@ import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-/**
- * @author Amosov Maxim
- * @since 30.09.2021 : 23:07
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor

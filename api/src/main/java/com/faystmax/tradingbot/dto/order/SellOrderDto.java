@@ -1,6 +1,5 @@
 package com.faystmax.tradingbot.dto.order;
 
-import com.faystmax.tradingbot.dto.OrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,10 +8,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * @author Amosov Maxim
- * @since 05.11.2021 : 12:12
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

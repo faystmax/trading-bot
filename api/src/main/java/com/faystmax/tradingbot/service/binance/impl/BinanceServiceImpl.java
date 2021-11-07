@@ -46,7 +46,7 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
-    public BigDecimal getTotalUsdtAmount(User user) {
+    public BigDecimal getTotalUsdtAmount(final User user) {
         final BinanceApiClient client = createClient(user);
         final List<TickerPrice> latestPrices = client.getLatestPrice();
         final List<AssetBalance> balances = client.getAccount().getBalances();
@@ -152,7 +152,7 @@ public class BinanceServiceImpl implements BinanceService {
         final AssetBalance balance = account.getAssetBalance(symbol);
         final BigDecimal baseFreeQuantity = balance.getFree();
 
-        final BigDecimal correctQuantity = cutQuantity(user,symbol, baseFreeQuantity);
+        final BigDecimal correctQuantity = cutQuantity(user, symbol, baseFreeQuantity);
         final NewOrder newOrder = NewOrder.marketSell(symbol, correctQuantity);
         return createOrder(user, newOrder);
     }

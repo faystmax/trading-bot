@@ -20,7 +20,7 @@ public class MailIdleErrorListenerImpl implements MailIdleErrorListener {
 
     @Override
     @EventListener
-    public void handleException(ImapIdleExceptionEvent event) {
+    public void handleException(final ImapIdleExceptionEvent event) {
         User user = mailIdleService.findUserByChannelAdapter((ImapIdleChannelAdapter) event.getSource());
         mailIdleErrorStore.put(user, event.getCause().getCause());
         log.error("Mail idle error for user = '{}', error = '{}'", user.getEmail(), event.getCause().getCause().getMessage());

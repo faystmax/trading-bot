@@ -18,10 +18,6 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * @author Amosov Maxim
- * @since 03.10.2021 : 11:45
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("binance")

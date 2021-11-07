@@ -32,7 +32,7 @@ public class MailIdleServiceImpl implements MailIdleService {
     }
 
     @Override
-    public void createIdle(User user) {
+    public void createIdle(final User user) {
         if (channelByUserMap.containsKey(user)) {
             throw new ServiceException("Mail Idle already exist for user = " + user);
         }
@@ -43,7 +43,7 @@ public class MailIdleServiceImpl implements MailIdleService {
     }
 
     @Override
-    public void startIdle(User user) {
+    public void startIdle(final User user) {
         if (!channelByUserMap.containsKey(user)) {
             createIdle(user);
         }
@@ -52,7 +52,7 @@ public class MailIdleServiceImpl implements MailIdleService {
     }
 
     @Override
-    public void stopIdle(User user) {
+    public void stopIdle(final User user) {
         if (channelByUserMap.containsKey(user)) {
             channelByUserMap.get(user).stop();
         }
@@ -60,7 +60,7 @@ public class MailIdleServiceImpl implements MailIdleService {
     }
 
     @Override
-    public void reCreateAndStartIdle(User user) {
+    public void reCreateAndStartIdle(final User user) {
         checkEmailFields(user);
         if (channelByUserMap.containsKey(user)) {
             channelByUserMap.get(user).stop();
@@ -75,7 +75,7 @@ public class MailIdleServiceImpl implements MailIdleService {
     }
 
     @Override
-    public User findUserByChannelAdapter(ImapIdleChannelAdapter channelAdapter) {
+    public User findUserByChannelAdapter(final ImapIdleChannelAdapter channelAdapter) {
         return channelByUserMap.entrySet().stream()
             .filter(e -> e.getValue().equals(channelAdapter))
             .map(Map.Entry::getKey)

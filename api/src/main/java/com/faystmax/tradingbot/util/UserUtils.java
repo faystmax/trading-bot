@@ -8,10 +8,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @author Amosov Maxim
- * @since 03.10.2021 : 19:24
- */
 @UtilityClass
 public class UserUtils {
     /**
