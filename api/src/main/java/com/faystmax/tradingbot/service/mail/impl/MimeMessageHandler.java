@@ -1,6 +1,7 @@
 package com.faystmax.tradingbot.service.mail.impl;
 
 import com.faystmax.tradingbot.db.entity.User;
+import com.faystmax.tradingbot.exception.MailCommandTranslateException;
 import com.faystmax.tradingbot.service.command.CommandExecutor;
 import com.faystmax.tradingbot.service.command.impl.BuyMarketCommand;
 import com.faystmax.tradingbot.service.command.impl.SellMarketCommand;
@@ -8,7 +9,6 @@ import com.faystmax.tradingbot.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.util.MimeMessageParser;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
@@ -30,21 +30,21 @@ public class MimeMessageHandler implements MessageHandler {
     public void handleMessage(final Message<?> message) throws MessagingException {
         if (message.getPayload() instanceof MimeMessage) {
             log.info("User {} Received message: {}", user.getEmail(), message);
-            MimeMessageParser parser = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
+            final MimeMessageParser parser = new MimeMessageParser(((MimeMessage) message.getPayload())).parse();
 
-            String content = getMainContent(parser);
+            final String content = getMainContent(parser);
             log.info("Message content: " + content);
 
-            String mainText = substringBetween(content, "!START!", "!END!");
+            final String mainText = substringBetween(content, "!START!", "!END!");
             if (isNotBlank(mainText)) {
-                String result = commandExecutor.execute(user, translateToCommandCode(mainText));
+                final String result = commandExecutor.execute(user, translateToCommandCode(mainText));
                 messageService.sendMessageToUser(user, result);
             }
         }
     }
 
     private String getMainContent(final MimeMessageParser parser) {
-        return firstNonEmpty(parser.getPlainContent(), parser.getHtmlContent(), StringUtils.EMPTY);
+        return firstNonEmpty(parser.getPlainContent(), parser.getHtmlContent(), EMPTY);
     }
 
     private String translateToCommandCode(final String mainText) {
@@ -53,6 +53,6 @@ public class MimeMessageHandler implements MessageHandler {
         } else if (mainText.contains("sell")) {
             return SellMarketCommand.SELL_MARKET_CODE;
         }
-        throw new RuntimeException("Wrong command! mainText = " + mainText);
+        throw new MailCommandTranslateException(mainText);
     }
 }
