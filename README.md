@@ -12,7 +12,7 @@ To build this project run this from base directory:
 ```console
 ./gradlew clean build
 ```
-For windows users:
+For Windows users:
 ```console
 gradlew.bat clean build
 ```

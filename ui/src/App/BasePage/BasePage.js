@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Toolbar } from '@material-ui/core';
 
 import useStyles from './styles';
 import Header from './parts/Header';
