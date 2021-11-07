@@ -22,13 +22,12 @@ spring:
 
 logging:
   level:
-    org.springframework: warn
     com.faystmax: info
     root: warn
 
 jwt:
   secret: client_secret
-  expiration: 86400000
+  expiration: 604800000 # one week
 
 cors:
   allowOrigin: http://localhost:3000
