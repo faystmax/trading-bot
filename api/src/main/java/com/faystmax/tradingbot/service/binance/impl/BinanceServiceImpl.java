@@ -23,6 +23,10 @@ import com.faystmax.tradingbot.service.binance.model.FullBalance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,6 +39,7 @@ import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Service
+@EnableCaching
 @RequiredArgsConstructor
 public class BinanceServiceImpl implements BinanceService {
     @Value("${binance.base-commission}")
@@ -158,8 +163,15 @@ public class BinanceServiceImpl implements BinanceService {
     }
 
     @Override
+    @Cacheable("latestPrice")
     public List<TickerPrice> getLatestPrice(final User user) {
         return createClient(user).getLatestPrice();
+    }
+
+    @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
+    @CacheEvict(value = "latestPrice", allEntries = true)
+    public void clearCache() {
+        log.info("Clear cache latestPrice");
     }
 
     /**

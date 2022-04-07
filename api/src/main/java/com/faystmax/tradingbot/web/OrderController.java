@@ -30,7 +30,7 @@ public class OrderController {
 
     @PostMapping("reload")
     public Collection<OrderDto> reloadAndGetOrders(final Principal principal) {
-        orderReloader.reloadOrdersForUser(userService.findUserByEmail(principal.getName()));
+        orderReloader.reloadAllOrdersForUser(userService.findUserByEmail(principal.getName()));
         return orderMapper.mapAll(orderService.findOrdersByUserEmail(principal.getName()));
     }
 }

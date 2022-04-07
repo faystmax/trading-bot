@@ -11,5 +11,5 @@ public interface OrderReloader {
     /**
      * Reload orders for user
      */
-    void reloadOrdersForUser(User user);
+    void reloadAllOrdersForUser(User user);
 }
