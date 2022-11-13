@@ -1,6 +1,5 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
-import { Redirect, Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import SignInPage from './SignInPage';
 import OrdersPage from './OrdersPage';
@@ -10,22 +9,20 @@ import ChangePasswordPage from './ChangePasswordPage';
 import DealsPage from './DealsPage';
 import BotConfigPage from './BotConfigPage';
 
-const hist = createBrowserHistory();
-
 const App = () => {
   return (
-    <Router history={hist}>
-      <Switch>
-        <Route path="/signIn" component={SignInPage} />
-        <Route path="/signUp" component={SignUpPage} />
-        <PrivateRoute exact path="/" component={DealsPage} />
-        <PrivateRoute exact path="/orders" component={OrdersPage} />
-        <PrivateRoute exact path="/profile" component={ProfilePage} />
-        <PrivateRoute exact path="/bot-config" component={BotConfigPage} />
-        <PrivateRoute exact path="/password" component={ChangePasswordPage} />
-        <Redirect to="/" />
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/signIn" element={<SignInPage />} />
+        <Route path="/signUp" element={<SignUpPage />} />
+        <PrivateRoute path="/" element={DealsPage} />
+        <PrivateRoute path="/orders" element={OrdersPage} />
+        <PrivateRoute path="/profile" element={ProfilePage} />
+        <PrivateRoute path="/bot-config" element={BotConfigPage} />
+        <PrivateRoute path="/password" element={ChangePasswordPage} />
+        <Navigate to="/" replace />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

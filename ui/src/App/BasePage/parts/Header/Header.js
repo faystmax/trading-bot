@@ -7,10 +7,10 @@ import {
   MenuItem,
   Toolbar,
   Typography,
-} from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import MenuIcon from '@material-ui/icons/Menu';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { emptyAuth } from 'components/Auth';
@@ -20,7 +20,7 @@ import useStyles from './styles';
 
 const Header = ({ drawerOpen, setDrawerOpen }) => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -82,7 +82,7 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
         >
-          <MenuItem onClick={() => history.push('/password')}>
+          <MenuItem onClick={() => navigate('/password')}>
             Change password
           </MenuItem>
           <MenuItem onClick={() => dispatch(emptyAuth())}>Logout</MenuItem>

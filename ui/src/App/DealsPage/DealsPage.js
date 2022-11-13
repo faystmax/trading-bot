@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import { useDispatch } from 'react-redux';
-import { LinearProgress, Typography } from '@material-ui/core';
+import { LinearProgress, Typography } from '@mui/material';
 import BasePage from 'App/BasePage';
 import { moneyFormat } from 'utils/currency';
 import authApi from 'utils/authApi';

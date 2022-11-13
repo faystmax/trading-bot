@@ -1,22 +1,21 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate, Route, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const authSelector = (state) => state.auth;
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ element: Element, ...rest }) => {
   const auth = useSelector(authSelector);
+  const location = useLocation();
 
   return (
     <Route
       {...rest}
-      render={(props) =>
+      element={
         auth ? (
-          <Component {...props} />
+          <Element />
         ) : (
-          <Redirect
-            to={{ pathname: '/signIn', state: { referer: props.location } }}
-          />
+          <Navigate to="/signIn" state={{ from: location }} replace />
         )
       }
     />

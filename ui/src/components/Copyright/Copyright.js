@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 
 const Copyright = () => {
   return (
@@ -9,8 +9,7 @@ const Copyright = () => {
       <Link color="inherit" href="https://faystmax.club/">
         Trading Bot
       </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      {new Date().getFullYear()}.
     </Typography>
   );
 };

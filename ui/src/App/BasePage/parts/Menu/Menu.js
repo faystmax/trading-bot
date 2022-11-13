@@ -7,19 +7,19 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import { useHistory } from 'react-router-dom';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import AndroidIcon from '@material-ui/icons/Android';
-import ReorderIcon from '@material-ui/icons/Reorder';
+} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useNavigate } from 'react-router-dom';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import AndroidIcon from '@mui/icons-material/Android';
+import ReorderIcon from '@mui/icons-material/Reorder';
 
 import useStyles from './styles';
 
 const Menu = ({ drawerOpen, setDrawerOpen }) => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Drawer
@@ -43,7 +43,7 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
             button
             key="My Deals"
             className={classes.menuListItem}
-            onClick={() => history.push('/')}
+            onClick={() => navigate('/')}
             selected={window.location.pathname === '/'}
           >
             <ListItemIcon>
@@ -55,7 +55,7 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
             button
             key="My Orders"
             className={classes.menuListItem}
-            onClick={() => history.push('/orders')}
+            onClick={() => navigate('/orders')}
             selected={window.location.pathname === '/orders'}
           >
             <ListItemIcon>
@@ -67,7 +67,7 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
             button
             key="Bot config"
             className={classes.menuListItem}
-            onClick={() => history.push('/bot-config')}
+            onClick={() => navigate('/bot-config')}
             selected={window.location.pathname === '/bot-config'}
           >
             <ListItemIcon>
@@ -79,7 +79,7 @@ const Menu = ({ drawerOpen, setDrawerOpen }) => {
             button
             key="Profile"
             className={classes.menuListItem}
-            onClick={() => history.push('/profile')}
+            onClick={() => navigate('/profile')}
             selected={window.location.pathname === '/profile'}
           >
             <ListItemIcon>

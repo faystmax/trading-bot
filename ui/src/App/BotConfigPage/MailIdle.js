@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import StopIcon from '@material-ui/icons/Stop';
-import { Button } from '@material-ui/core';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import SyncIcon from '@material-ui/icons/Sync';
+import SyncIcon from '@mui/icons-material/Sync';
 import authApi from 'utils/authApi';
 import { createAlert } from 'components/Alertbar';
 

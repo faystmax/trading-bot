@@ -1,6 +1,6 @@
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import { makeStyles, withStyles } from '@mui/material';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 export const useStyles = makeStyles(null);
 

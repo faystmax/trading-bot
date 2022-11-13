@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { Button, CircularProgress, Grid, TextField } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import { Button, CircularProgress, Grid, TextField } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
 import { createAlert } from 'components/Alertbar';

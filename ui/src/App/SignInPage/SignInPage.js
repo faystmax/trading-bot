@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -10,18 +10,19 @@ import {
   Paper,
   TextField,
   Typography,
-} from '@material-ui/core';
-import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import Link from '@material-ui/core/Link';
+} from '@mui/material';
+import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
+import Alert from '@mui/material/Alert';
+import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import api from 'utils/defaultApi';
 import Copyright from 'components/Copyright';
 import { updateAuth } from '../../components/Auth';
 import useStyles from './styles';
 
-const SignInPage = (props) => {
+const SignInPage = () => {
   const classes = useStyles();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -43,7 +44,7 @@ const SignInPage = (props) => {
           setErrorMessage('Network error!');
         } else if (error.response.status === 401) {
           setErrorMessage('The username or password provided were incorrect!');
-        } else if (error.response.status === 401) {
+        } else {
           setErrorMessage(error.response.data.message || 'Unknown error!');
         }
         setIsError(true);
@@ -52,7 +53,7 @@ const SignInPage = (props) => {
   };
 
   if (auth) {
-    return <Redirect to={props.location.state?.referer || '/'} />;
+    return <Navigate to={location.state?.from || '/'} replace />;
   }
 
   return (
