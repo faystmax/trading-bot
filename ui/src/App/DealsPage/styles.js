@@ -1,24 +1,18 @@
-import { makeStyles, withStyles } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import mainTheme from '../../theme';
 
-export const useStyles = makeStyles({
-  customTableContainer: {
-    overflowX: 'initial',
-  },
-});
-
-export const StyledTableRow = withStyles(() => ({
+export const StyledTableRow = styled(TableRow)(() => ({
   root: {
     // '&:nth-of-type(odd)': {
     //   backgroundColor: theme.palette.action.hover,
     // },
   },
-}))(TableRow);
+}));
 
-export const StyledTableCell = withStyles((theme) => ({
+export const StyledTableCell = styled(TableCell)((theme) => ({
   head: {
     backgroundColor: '#9aebff',
     color: theme.palette.common.black,
@@ -31,13 +25,13 @@ export const StyledTableCell = withStyles((theme) => ({
     borderColor: 'rgb(161,161,161)',
     borderStyle: 'solid',
   },
-}))(TableCell);
+}));
 
-export const StickyTableHead = withStyles(() => ({
+export const StickyTableHead = styled(TableHead)(() => ({
   root: {
     top: -mainTheme.spacing(1),
     left: 0,
     zIndex: 2,
     position: 'sticky',
   },
-}))(TableHead);
+}));

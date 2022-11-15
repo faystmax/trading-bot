@@ -1,18 +1,16 @@
-import { makeStyles, withStyles } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-export const useStyles = makeStyles(null);
-
-export const StyledTableRow = withStyles((theme) => ({
+export const StyledTableRow = styled(TableRow)((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
-}))(TableRow);
+}));
 
-export const StyledTableCell = withStyles((theme) => ({
+export const StyledTableCell = styled(TableCell)((theme) => ({
   head: {
     backgroundColor: '#b3b8ca',
     color: theme.palette.common.white,
@@ -20,18 +18,18 @@ export const StyledTableCell = withStyles((theme) => ({
   body: {
     fontSize: 14,
   },
-}))(TableCell);
+}));
 
-export const RedTableCell = withStyles(() => ({
+export const RedTableCell = styled(TableCell)(() => ({
   body: {
     fontSize: 14,
     color: 'red',
   },
-}))(TableCell);
+}));
 
-export const GreedTableCell = withStyles(() => ({
+export const GreedTableCell = styled(TableCell)(() => ({
   body: {
     fontSize: 14,
     color: 'green',
   },
-}))(TableCell);
+}));

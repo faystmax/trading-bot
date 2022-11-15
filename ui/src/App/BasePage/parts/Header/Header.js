@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import {
   AppBar,
   IconButton,
@@ -16,10 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { emptyAuth } from 'components/Auth';
 import authApi from 'utils/authApi';
 import { moneyFormat } from 'utils/currency';
-import useStyles from './styles';
+
+const drawerWidth = 240;
 
 const Header = ({ drawerOpen, setDrawerOpen }) => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -39,7 +38,23 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
   return (
     <AppBar
       position="fixed"
-      className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        transition: (theme) =>
+          theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+        ...(drawerOpen && {
+          marginLeft: drawerWidth,
+          width: `calc(100% - ${drawerWidth}px)`,
+          transition: (theme) =>
+            theme.transitions.create(['width', 'margin'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+        }),
+      }}
     >
       <Toolbar>
         <IconButton
@@ -47,14 +62,14 @@ const Header = ({ drawerOpen, setDrawerOpen }) => {
           color="inherit"
           aria-label="open drawer"
           onClick={() => setDrawerOpen(true)}
-          className={clsx(
-            classes.menuButton,
-            drawerOpen && classes.menuButtonHidden,
-          )}
+          sx={{
+            marginRight: 36,
+            ...(drawerOpen && { display: 'none' }),
+          }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap className={classes.title}>
+        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
           Trading-bot
         </Typography>
         {totalAmount != null && (

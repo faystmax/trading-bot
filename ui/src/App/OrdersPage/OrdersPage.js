@@ -17,11 +17,9 @@ import {
   RedTableCell,
   StyledTableCell,
   StyledTableRow,
-  useStyles,
 } from './styles';
 
 const OrdersPage = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [orders, setOrders] = useState([]);
   const [isOrdersReloading, setIsOrdersReloading] = useState(false);
@@ -51,7 +49,6 @@ const OrdersPage = () => {
     <BasePage>
       <Button
         style={{ marginBottom: 10 }}
-        className={classes.submit}
         variant="outlined"
         color="orange"
         disabled={isOrdersReloading}
@@ -59,18 +56,11 @@ const OrdersPage = () => {
         startIcon={<RefreshIcon />}
       >
         Reload orders from Binance
-        {isOrdersReloading && (
-          <CircularProgress size={24} className={classes.buttonProgress} />
-        )}
+        {isOrdersReloading && <CircularProgress size={24} />}
       </Button>
       {isOrdersLoading && <LinearProgress />}
       <TableContainer component={Paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="Orders table"
-          stickyHeader
-        >
+        <Table size="small" aria-label="Orders table" stickyHeader>
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Id</StyledTableCell>

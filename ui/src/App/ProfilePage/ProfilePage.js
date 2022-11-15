@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, CircularProgress, Grid, TextField } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
 import BasePage from 'App/BasePage';
 import authApi from 'utils/authApi';
 import { createAlert } from 'components/Alertbar';
-import useStyles from './styles';
 
 const ProfilePage = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [isPerforming, setIsPerforming] = useState(false);
@@ -36,7 +35,7 @@ const ProfilePage = () => {
 
   return (
     <BasePage>
-      <form className={classes.root} noValidate autoComplete="off">
+      <Box component="form" noValidate autoComplete="off">
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4}>
             <TextField
@@ -210,7 +209,6 @@ const ProfilePage = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Button
-              className={classes.submit}
               variant="contained"
               color="primary"
               fullWidth
@@ -219,16 +217,11 @@ const ProfilePage = () => {
               startIcon={<SaveIcon />}
             >
               Save
-              {isPerforming && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
+              {isPerforming && <CircularProgress size={24} />}
             </Button>
           </Grid>
         </Grid>
-      </form>
+      </Box>
     </BasePage>
   );
 };

@@ -9,16 +9,10 @@ import { LinearProgress, Typography } from '@mui/material';
 import BasePage from 'App/BasePage';
 import { moneyFormat } from 'utils/currency';
 import authApi from 'utils/authApi';
-import {
-  StickyTableHead,
-  StyledTableCell,
-  StyledTableRow,
-  useStyles,
-} from './styles';
+import { StickyTableHead, StyledTableCell, StyledTableRow } from './styles';
 import DealRow from './DealRow';
 
 const DealsPage = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [latestPrices, setLatestPrices] = useState(null);
   const [deals, setDeals] = useState([]);
@@ -60,12 +54,8 @@ const DealsPage = () => {
         Total profit: {moneyFormat(deals.reduce((a, b) => a + b.dealProfit, 0))}
       </Typography>
       {isDealsLoading && <LinearProgress />}
-      <TableContainer
-        component={Paper}
-        classes={{ root: classes.customTableContainer }}
-      >
+      <TableContainer component={Paper} sx={{ overflowX: 'initial' }}>
         <Table
-          className={classes.table}
           size="small"
           aria-label="Deals table"
           style={{ borderCollapse: 'separate' }}

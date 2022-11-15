@@ -17,11 +17,10 @@ import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import api from 'utils/defaultApi';
 import Copyright from 'components/Copyright';
+import BackgroundImage from 'assets/background.jpg';
 import { updateAuth } from '../../components/Auth';
-import useStyles from './styles';
 
 const SignUpPage = () => {
-  const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
@@ -63,17 +62,41 @@ const SignUpPage = () => {
 
   return (
     <div>
-      <Paper elevation={0} className={classes.background} />
+      <Paper
+        elevation={0}
+        sx={{
+          backgroundImage: `url(${BackgroundImage})`,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          height: '100%',
+          width: '100%',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          zIndex: '-1',
+        }}
+      />
       <Container component="main" maxWidth="xs">
-        <Paper className={classes.signIn}>
-          <Avatar className={classes.avatar}>
+        <Paper
+          sx={{
+            backgroundColor: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center',
+            marginTop: 7,
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography className={classes.label} component="h1" variant="h5">
+          <Typography sx={{ m: 1 }} component="h1" variant="h5">
             Sign up in Trading Bot
           </Typography>
           {isError && <Alert severity="error">{errorMessage}</Alert>}
-          <form className={classes.form} noValidate>
+          <Box component="form" sx={{ mt: 0, mx: 3, mb: 3 }} noValidate>
             <TextField
               required
               fullWidth
@@ -117,7 +140,7 @@ const SignUpPage = () => {
               }}
             />
             <Button
-              className={classes.submit}
+              sx={{ mt: 3, my: 0, mb: 2 }}
               variant="contained"
               color="primary"
               fullWidth
@@ -128,7 +151,13 @@ const SignUpPage = () => {
               {isPerforming && (
                 <CircularProgress
                   size={24}
-                  className={classes.buttonProgress}
+                  sx={{
+                    mt: -12,
+                    ml: -12,
+                    top: '50%',
+                    left: '50%',
+                    position: 'absolute',
+                  }}
                 />
               )}
             </Button>
@@ -139,7 +168,7 @@ const SignUpPage = () => {
                 </Link>
               </Grid>
             </Grid>
-          </form>
+          </Box>
         </Paper>
         <Box mt={5}>
           <Copyright />

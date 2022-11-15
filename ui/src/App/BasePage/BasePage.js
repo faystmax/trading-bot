@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 
-import useStyles from './styles';
+import Box from '@mui/material/Box';
 import Header from './parts/Header';
 import Menu from './parts/Menu';
 
 const BasePage = ({ children }) => {
-  const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ display: 'flex' }}>
       <Header drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       <Menu drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      <main className={classes.content}>{children}</main>
-    </div>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, h: '100vh', overflow: 'auto', pt: 9, p: 3 }}
+      >
+        {children}
+      </Box>
+    </Box>
   );
 };
 export default BasePage;

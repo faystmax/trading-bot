@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoutes from '../components/PrivateRoute';
 import SignInPage from './SignInPage';
 import OrdersPage from './OrdersPage';
 import SignUpPage from './SignUpPage';
@@ -15,12 +15,14 @@ const App = () => {
       <Routes>
         <Route path="/signIn" element={<SignInPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
-        <PrivateRoute path="/" element={DealsPage} />
-        <PrivateRoute path="/orders" element={OrdersPage} />
-        <PrivateRoute path="/profile" element={ProfilePage} />
-        <PrivateRoute path="/bot-config" element={BotConfigPage} />
-        <PrivateRoute path="/password" element={ChangePasswordPage} />
-        <Navigate to="/" replace />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={DealsPage} />
+          <Route path="/orders" element={OrdersPage} />
+          <Route path="/profile" element={ProfilePage} />
+          <Route path="/bot-config" element={BotConfigPage} />
+          <Route path="/password" element={ChangePasswordPage} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
