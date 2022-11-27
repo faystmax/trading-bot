@@ -2,7 +2,6 @@ import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
-import mainTheme from '../../theme';
 
 export const StyledTableRow = styled(TableRow)(() => ({
   root: {
@@ -12,7 +11,7 @@ export const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export const StyledTableCell = styled(TableCell)((theme) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   head: {
     backgroundColor: '#9aebff',
     color: theme.palette.common.black,
@@ -27,9 +26,9 @@ export const StyledTableCell = styled(TableCell)((theme) => ({
   },
 }));
 
-export const StickyTableHead = styled(TableHead)(() => ({
+export const StickyTableHead = styled(TableHead)(({ theme }) => ({
   root: {
-    top: -mainTheme.spacing(1),
+    top: -theme.spacing(1),
     left: 0,
     zIndex: 2,
     position: 'sticky',

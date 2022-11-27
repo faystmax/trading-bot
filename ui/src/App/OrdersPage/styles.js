@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-export const StyledTableRow = styled(TableRow)((theme) => ({
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   root: {
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -10,7 +10,7 @@ export const StyledTableRow = styled(TableRow)((theme) => ({
   },
 }));
 
-export const StyledTableCell = styled(TableCell)((theme) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   head: {
     backgroundColor: '#b3b8ca',
     color: theme.palette.common.white,

@@ -16,11 +16,11 @@ const App = () => {
         <Route path="/signIn" element={<SignInPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="/" element={DealsPage} />
-          <Route path="/orders" element={OrdersPage} />
-          <Route path="/profile" element={ProfilePage} />
-          <Route path="/bot-config" element={BotConfigPage} />
-          <Route path="/password" element={ChangePasswordPage} />
+          <Route path="/" element={<DealsPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/bot-config" element={<BotConfigPage />} />
+          <Route path="/password" element={<ChangePasswordPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
