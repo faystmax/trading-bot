@@ -171,7 +171,7 @@ public class BinanceServiceImpl implements BinanceService {
     @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
     @CacheEvict(value = "latestPrice", allEntries = true)
     public void clearCache() {
-        log.info("Clear cache latestPrice");
+        log.debug("Clear cache latestPrice");
     }
 
     /**
