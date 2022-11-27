@@ -33,7 +33,7 @@
         <appender-ref ref="STASH" />
     </root>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>

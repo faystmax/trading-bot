@@ -20,11 +20,6 @@ spring:
     username: trading_bot
     password: password
 
-logging:
-  level:
-    com.faystmax: info
-    root: warn
-
 jwt:
   secret: client_secret
   expiration: 604800000 # one week
