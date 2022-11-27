@@ -1,3 +1,4 @@
 CREATE DATABASE trading_bot;
 CREATE USER trading_bot WITH ENCRYPTED PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE trading_bot TO trading_bot;
+GRANT ALL PRIVILEGES ON SCHEMA public TO trading_bot;
