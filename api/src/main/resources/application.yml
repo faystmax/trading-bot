@@ -29,3 +29,8 @@ cors:
 
 binance:
   base-commission: 0.0001
+
+telegram:
+  bot-name: TradingAlertBot
+  owner-chat-id: 202081219
+  token: ${TELEGRAM_BOT_TOKEN:default_token}
