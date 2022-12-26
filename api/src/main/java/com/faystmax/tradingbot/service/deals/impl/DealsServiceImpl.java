@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
 import static com.faystmax.binance.api.client.domain.trade.OrderSide.BUY;
 import static com.faystmax.binance.api.client.domain.trade.OrderSide.SELL;
 import static java.util.Collections.emptyList;
-import static java.util.Comparator.*;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsFirst;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.groupingBy;
 
 @Service

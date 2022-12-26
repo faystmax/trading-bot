@@ -16,7 +16,10 @@ import org.springframework.messaging.MessagingException;
 
 import javax.mail.internet.MimeMessage;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.firstNonEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.substringBetween;
 
 @Slf4j
 @RequiredArgsConstructor

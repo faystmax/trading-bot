@@ -8,7 +8,7 @@ public interface MailIdleFactory {
     /**
      * Create mail ImapIdleChannelAdapter for specified user
      *
-     * @param user db user
+     * @param user          db user
      * @param taskScheduler task scheduler
      * @return channel adapter
      */

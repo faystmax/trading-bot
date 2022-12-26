@@ -6,7 +6,7 @@ public interface SignInService {
     /**
      * Sign in user
      *
-     * @param email user email
+     * @param email    user email
      * @param password user password
      * @return SignInResponse
      */

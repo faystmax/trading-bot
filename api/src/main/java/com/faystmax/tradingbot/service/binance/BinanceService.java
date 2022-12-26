@@ -47,14 +47,14 @@ public interface BinanceService {
     BigDecimal getLastPrice(User user, String symbol);
 
     /**
-     * @param user user
+     * @param user  user
      * @param limit maximum amount of returned trades
      * @return last trades of selected user symbol
      */
     List<Trade> getMyTrades(User user, Integer limit);
 
     /**
-     * @param user user
+     * @param user   user
      * @param symbol trading symbol
      * @return all last account orders (in last 3 months)
      */
@@ -86,7 +86,7 @@ public interface BinanceService {
     /**
      * Buy at market price
      *
-     * @param user user
+     * @param user     user
      * @param quantity amount you want to buy
      * @return order response
      */
@@ -95,7 +95,7 @@ public interface BinanceService {
     /**
      * Buy at market price by quoteQuantity
      *
-     * @param user user
+     * @param user          user
      * @param quoteQuantity specifies the amount you want to spend
      * @return order response
      */
@@ -112,7 +112,7 @@ public interface BinanceService {
     /**
      * Sell at market price
      *
-     * @param user user
+     * @param user     user
      * @param quantity amount you want to sell
      * @return order response
      */
@@ -121,7 +121,7 @@ public interface BinanceService {
     /**
      * Sell at market price selected symbol
      *
-     * @param user user
+     * @param user   user
      * @param symbol symbol
      * @return order response
      */

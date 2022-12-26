@@ -4,6 +4,7 @@ import com.faystmax.tradingbot.db.entity.User;
 import com.faystmax.tradingbot.exception.ServiceException;
 import com.faystmax.tradingbot.service.mail.MailIdleFactory;
 import com.faystmax.tradingbot.service.mail.MailIdleService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +13,6 @@ import org.springframework.integration.mail.ImapIdleChannelAdapter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

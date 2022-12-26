@@ -1,10 +1,10 @@
 package com.faystmax.tradingbot.util;
 
 import com.faystmax.tradingbot.db.entity.User;
+import jakarta.validation.constraints.NotNull;
 import lombok.experimental.UtilityClass;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 

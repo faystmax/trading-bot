@@ -7,6 +7,7 @@ import com.faystmax.tradingbot.dto.auth.UserAuthResponse;
 import com.faystmax.tradingbot.exception.SignUpException;
 import com.faystmax.tradingbot.service.auth.SignInService;
 import com.faystmax.tradingbot.service.auth.SignUpService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;

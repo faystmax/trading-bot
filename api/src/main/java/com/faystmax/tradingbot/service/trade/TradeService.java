@@ -26,7 +26,7 @@ public interface TradeService {
     /**
      * Sell at market price
      *
-     * @param user user
+     * @param user   user
      * @param symbol symbol
      * @return created Order
      */

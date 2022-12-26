@@ -13,7 +13,7 @@ public interface MessageService {
     /**
      * Send message to user
      *
-     * @param user user
+     * @param user    user
      * @param message text to send
      */
     void sendMessageToUser(User user, String message);

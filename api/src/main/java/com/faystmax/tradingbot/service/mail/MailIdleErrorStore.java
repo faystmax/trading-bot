@@ -6,7 +6,7 @@ public interface MailIdleErrorStore {
     /**
      * Put Error for user
      *
-     * @param user db user
+     * @param user      db user
      * @param throwable error
      */
     void put(User user, Throwable throwable);

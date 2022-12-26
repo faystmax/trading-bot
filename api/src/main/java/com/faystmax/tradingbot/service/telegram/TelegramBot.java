@@ -5,7 +5,7 @@ public interface TelegramBot {
      * Send message to specified chat
      *
      * @param chatId user chat id
-     * @param text text of the message
+     * @param text   text of the message
      */
     void sendMsg(long chatId, String text);
 
