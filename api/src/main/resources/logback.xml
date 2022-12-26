@@ -18,20 +18,8 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-
-        <file>${FOLDER}/${LOG_FILE}-stash.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${FOLDER}/archive/${LOG_FILE}-stash.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-    </appender>
-
     <root level="INFO">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="STASH" />
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
