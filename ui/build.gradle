@@ -6,6 +6,7 @@ plugins {
 
 frontend {
     nodeVersion = '19.0.1'
+    installScript = 'ci'
     assembleScript = 'run build'
     checkScript = 'run test'
 }
