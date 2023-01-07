@@ -20,11 +20,6 @@ allprojects {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 
-    release {
-        failOnCommitNeeded = false
-        failOnPublishNeeded = false
-    }
-
     // Deployment configuration
     remotes {
         server {
