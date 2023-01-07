@@ -10,7 +10,7 @@ frontend {
     checkScript = 'run test'
 }
 
-task deploy {
+tasks.register('deploy') {
     doLast {
         ssh.run {
             session(remotes.server) {

@@ -4,7 +4,7 @@ plugins {
     id "org.hidetake.ssh" version "2.10.1"
 }
 
-apply from: "build-${profile}.gradle"
+apply from: "build-${hasProperty('profile') ? property('profile') : 'develop'}.gradle"
 
 wrapper {
     gradleVersion = '7.6'
@@ -12,10 +12,10 @@ wrapper {
 }
 
 allprojects {
-    group = mainGroup
-    version = mainVersion + (snapshot ? '-SNAPSHOT' : '')
+    group = 'com.faystmax'
+    version = '1.2.1' + (snapshot ? '-SNAPSHOT' : '')
 
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 
