@@ -49,6 +49,12 @@
           "index"
         ]
       }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ]
   }
 }
