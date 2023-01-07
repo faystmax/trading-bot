@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'base'
     id "org.hidetake.ssh" version "2.10.1"
+    id 'net.researchgate.release' version '3.0.2'
 }
 
 apply from: "build-${hasProperty('profile') ? property('profile') : 'develop'}.gradle"
@@ -13,10 +14,15 @@ wrapper {
 
 allprojects {
     group = 'com.faystmax'
-    version = '1.2.1' + (snapshot ? '-SNAPSHOT' : '')
+    version = version
 
     configurations.configureEach {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
+    release {
+        failOnCommitNeeded = false
+        failOnPublishNeeded = false
     }
 
     // Deployment configuration
