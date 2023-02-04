@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="FOLDER" value="logs"/>
+    <property name="FOLDER" value="/var/logs/trading-bot"/>
     <property name="LOG_FILE" value="trading-bot"/>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
@@ -14,7 +14,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${FOLDER}/archive/${LOG_FILE}.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
-            <maxHistory>90</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
     </appender>
 
