@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-email:1.5'
 
-    runtimeOnly  'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core'
 
     compileOnly 'org.projectlombok:lombok'
@@ -47,7 +47,7 @@ dependencies {
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        exclude group: "com.vaadin.external.google", module:"android-json"
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.testcontainers:junit-jupiter:1.17.6'

@@ -8,7 +8,7 @@ plugins {
 apply from: "build-${hasProperty('profile') ? property('profile') : 'develop'}.gradle"
 
 wrapper {
-    gradleVersion = '7.6'
+    gradleVersion = '8.6'
     distributionType = Wrapper.DistributionType.ALL
 }
 
